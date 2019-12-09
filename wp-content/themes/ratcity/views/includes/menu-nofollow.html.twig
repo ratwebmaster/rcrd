@@ -1,0 +1,7 @@
+{% extends 'includes/menu.html.twig' %}
+
+{% block menu_item_link %}<a href="{{ item.link }}" {{ item.target ? 'target="' ~ item.target ~ '"' : '' }} rel="nofollow">{{ item.title }}</a>{% endblock %}
+
+{% block menu_item_children %}
+	{% include 'includes/menu-nofollow.html.twig' with { 'items': item.children, 'max_depth': max_depth, 'depth': depth + 1 } only %}
+{% endblock %}

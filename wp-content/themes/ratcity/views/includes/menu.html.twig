@@ -1,0 +1,28 @@
+{% set max_depth = max_depth|default(false) %}
+{% set depth = depth|default(0) %}
+
+{% if items and (max_depth == false or depth < max_depth) %}
+
+	{% block menu_items %}
+		<ul class="{{ depth > 0 ? 'sub-' : '' }}menu">
+
+			{% for item in items %}
+
+				{% block menu_item %}
+					<li id="menu-item-{{ item.id }}" class="{{ item.class }}">
+
+						{% block menu_item_link %}<a href="{{ item.link }}" {{ item.target ? 'target="' ~ item.target ~ '"' : '' }}>{{ item.title }}</a>{% endblock %}
+
+						{% block menu_item_children %}
+							{% include 'includes/menu.html.twig' with { 'items': item.children, 'max_depth': max_depth, 'depth': depth + 1 } only %}
+						{% endblock %}
+
+					</li>
+				{% endblock %}
+
+			{% endfor %}
+			
+		</ul>
+	{% endblock %}
+
+{% endif %}

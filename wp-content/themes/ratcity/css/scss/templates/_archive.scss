@@ -1,0 +1,37 @@
+
+
+body.blog,
+body.archive,
+body.search, {
+	.content-section.primary {
+		article.hentry {
+			margin-bottom: ($line-height-computed * 2);
+			&.has-post-thumbnail {
+				@include clearfix();
+				padding-left: 65px;
+				.post-thumbnail {
+					float: left;
+					margin-left: -65px;
+					width: 50px;
+				}
+				@media (min-width: $screen-md) {
+					padding-left: 115px;
+					.post-thumbnail {
+						margin-left: -115px;
+						width: 100px;
+					}
+				}
+				@media (min-width: $screen-lg) {
+					padding-left: 170px;
+					.post-thumbnail {
+						margin-left: -170px;
+						width: 150px;
+					}
+				}
+			}
+			.entry-title {
+				margin-top: 0;
+			}
+		}
+	}
+}

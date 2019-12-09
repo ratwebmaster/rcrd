@@ -1,0 +1,44 @@
+$card-grid-gutter-width: 30px;
+$card-grid-columns: 12;
+
+@mixin gen-card-grid-columns($class, $columns, $breakpoint: 0) {
+	@if $columns > 0 {
+		@for $i from 1 through $columns {
+			.card-grid.cols-#{$class}-#{$i} > .column {
+				@media (min-width: $breakpoint) {
+					width: percentage(1 / $i);
+				}
+			}
+		}
+	}
+}
+
+.visible-col-xs { @extend .visible-xs; }
+.visible-col-sm { @extend .visible-sm; }
+.visible-col-md { @extend .visible-md; }
+.visible-col-lg { @extend .visible-lg; }
+
+.card-grid {
+	margin-left: ($card-grid-gutter-width / -2);
+	margin-right: ($card-grid-gutter-width / -2);
+	@include clearfix();
+	> * {
+		display: none;
+	}
+	> .column {
+		display: block;
+		position: relative;
+		float: left;
+		width: 100%;
+		min-height: 1px;
+		padding-left: ($card-grid-gutter-width / 2);
+		padding-right: ($card-grid-gutter-width / 2);
+		> .card {
+			margin-bottom: $card-grid-gutter-width;
+		}
+	}
+}
+@include gen-card-grid-columns(xs, $card-grid-columns, 0);
+@include gen-card-grid-columns(sm, $card-grid-columns, $screen-sm);
+@include gen-card-grid-columns(md, $card-grid-columns, $screen-md);
+@include gen-card-grid-columns(lg, $card-grid-columns, $screen-lg);

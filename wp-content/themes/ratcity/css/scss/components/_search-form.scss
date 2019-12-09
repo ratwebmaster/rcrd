@@ -1,0 +1,26 @@
+
+
+.search-form {
+	margin-bottom: ($line-height-computed / 2);
+	display: table;
+	max-width: 300px;
+	label,
+	.submit-wrap {
+		display: table-cell;
+	}
+	label {
+		vertical-align: middle;
+		margin: 0;
+	}
+	.submit-wrap {
+		width: 1%;
+	}
+	input[type=search],
+	input[type=password] {
+		@include border-right-radius(0);
+	}
+	button {
+		@include border-left-radius(0);
+		margin-left: -1px;
+	}
+}

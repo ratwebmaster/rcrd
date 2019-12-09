@@ -1,0 +1,11 @@
+{% set comments = comments|default(post.comments) %}
+<div id="comments" class="comments-area">
+
+	{% if comments %}
+		<h3 class="comments-title">{{ comments|length == 1 ? 'One' : comments|length }} Comment{{ comments|length == 1 ? '' : 's' }}</h3>
+		{% include 'includes/comment-list.html.twig' with { 'comments': comments } only %}
+	{% endif %}
+	
+	{{ post.comment_form }}
+
+</div>

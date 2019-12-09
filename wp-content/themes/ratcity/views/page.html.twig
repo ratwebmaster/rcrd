@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+
+{% block page_sections_inner %}
+	<article id="post-{{ post.id }}" class="{{ post.class }}">
+
+		{% set page_section_fallback = {
+			title: post.title,
+			section_content: post.content|content,
+			crown_repeater_entry_type: 'default-section'
+		} %}
+		{% set page_content_sections = (post.meta.page_content_sections|default([ page_section_fallback ])) %}
+
+		{% if post.password_required %}
+			{% set page_section_fallback = {
+				section_content: post.content,
+				crown_repeater_entry_type: 'default-section'
+			} %}
+			{% set page_content_sections = [ page_section_fallback ] %}
+		{% endif %}
+
+		{{ block('page_sections_loop') }}
+		
+	</article>
+{% endblock %}

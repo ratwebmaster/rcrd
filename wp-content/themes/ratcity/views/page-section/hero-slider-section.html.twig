@@ -1,0 +1,59 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_inner %}
+	{% if section.slides %}
+		<div class="section-slider">
+			{% for slide in section.slides %}
+
+				{% set slide_class = ['slide'] %}
+				{% set slide_class = slide.bg_color ? slide_class|merge([use_white_foreground(slide.bg_color) ? 'white-text' : '']) : slide_class %}
+
+				{% set slide_atts = ['class="' ~ slide_class|join(' ') ~ '"'] %}
+				{% set slide_atts = slide.bg_color ? slide_atts|merge(['style="background-color: ' ~ slide.bg_color ~ ';"']) : slide_atts %}
+
+				<div {{ slide_atts|join(' ') }}>
+					
+					{% if slide.bg_image %}
+						<div class="slide-bg">
+							<div class="inner">
+								<div class="bg-image" style="background-image: url({{ get_media_url(slide.bg_image, '1600w') }});"></div>
+							</div>
+						</div>
+					{% endif %}
+
+					<div class="inner">
+						<div class="container">
+							<div class="inner">
+
+								{% if slide.title or slide.content %}
+
+									{% set contents_class = ['slide-contents'] %}
+
+									{% set contents_atts = ['class="' ~ contents_class|join(' ') ~ '"'] %}
+									{% set contents_atts = slide.bg_color ? contents_atts|merge(['style="background-color: ' ~ slide.bg_color ~ ';"']) : contents_atts %}
+
+									<div class="slide-contents-wrap">
+										<div {{ contents_atts|join(' ') }}>
+
+											{% if slide.title %}
+												<h2 class="slide-title">{{ slide.title }}</h2>
+											{% endif %}
+
+											{{ slide.content|content }}
+
+										</div>
+									</div>
+
+								{% endif %}
+
+							</div><!-- .inner -->
+						</div><!-- .container -->
+					</div>
+
+				</div>
+
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

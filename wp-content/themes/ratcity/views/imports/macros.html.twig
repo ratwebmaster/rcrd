@@ -1,0 +1,10 @@
+
+
+
+{% macro list_term_links(terms) %}
+	{% set list = [] %}
+	{% for term in terms %}
+		{% set list = list|merge(['<a href="' ~ term.url ~ '">' ~ term.name ~ '</a>']) %}
+	{% endfor %}
+	{{ list|join(', ') }}
+{% endmacro %}

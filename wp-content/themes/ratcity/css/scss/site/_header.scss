@@ -1,0 +1,107 @@
+
+
+#header {
+	background-color: $header-bg;
+	> .container {
+		> .inner {
+			@include clearfix();
+		}
+	}
+}
+
+
+/*	Branding
+---------------------------------------------------------*/
+
+#site-branding {
+	float: left;
+	margin-top: 10px;
+	margin-bottom: 12px;
+}
+#site-title {
+	font-weight: 400;
+	font-size: 20px;
+}
+#site-description {
+	font-size: 14px;
+}
+
+
+/*	Mobile Menu Toggle
+---------------------------------------------------------*/
+
+#mobile-menu-toggle {
+	@extend .btn.link;
+	float: right;
+	padding: 0;
+	border: none;
+	margin-top: 14px;
+	@include breakpoint(sm) {
+		display: none;
+	}
+	&:before {
+		@include icon($fa-var-bars);
+		margin-right: 0.4em;
+	}
+}
+
+
+/*	Header Navigation
+---------------------------------------------------------*/
+
+#header-navigation {
+	display: none;
+	float: right;
+	@media (min-width: $screen-sm) {
+		display: block;
+	}
+	ul {
+		@include list-unstyled();
+		&.menu {
+			> li {
+				float: left;
+				> a {
+					padding: 24px 10px;
+				}
+			}
+		}
+		&.sub-menu {
+			opacity: 0;
+			visibility: hidden;
+			position: absolute;
+			left: 0;
+			top: 100%;
+			width: 200px;
+			background-color: #222;
+			z-index: 90;
+			transition: opacity .15s linear, visibility 0s linear .15s;
+			a {
+				padding: 6px 10px;
+				color: #fff;
+			}
+			ul.sub-menu {
+				background-color: #111;
+				left: 100%;
+				top: 0;
+			}
+		}
+	}
+	li {
+		position: relative;
+		&:hover {
+			> a {
+				background-color: map-get($brand-colors, primary);
+				color: #fff;
+			}
+			> ul.sub-menu {
+				opacity: 1;
+				visibility: visible;
+				transition-delay: 0s;
+			}
+		}
+	}
+	a {
+		display: block;
+		transition: color linear .15s, background-color linear .15s;
+	}
+}

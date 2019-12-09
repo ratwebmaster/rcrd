@@ -1,0 +1,347 @@
+
+
+.woocommerce,
+.woocommerce-page {
+
+	.button,
+	a.button,
+	input.button,
+	button.button,
+	.buttons a,
+	.woocommerce-message .button,
+	a.added_to_cart,
+	#respond input#submit,
+	table.cart .button {
+		@include button-base();
+		@include button-size();
+		@include button-style();
+		-webkit-font-smoothing: auto;
+		&.alt {
+			@include button-style('primary');
+			-webkit-font-smoothing: auto;
+		}
+	}
+	input.button[type=submit],
+	#respond input#submit {
+		@include button-base();
+		@include button-size();
+		@include button-style('primary');
+	}
+
+	.select2-container {
+		&.select2-container-active.select2-dropdown-open {
+			.select2-choice .select2-arrow b:before {
+				content: $fa-var-angle-up;
+			}
+		}
+		.select2-choice {
+			height: $input-height-base;
+			line-height: $input-height-base - 2px;
+			border-radius: $border-radius-base;
+			font-weight: $font-weight-base;
+			.select2-arrow b {
+				&:after {
+					display: none;
+				}
+				&:before {
+					@include icon($fa-var-angle-down);
+				}
+			}
+		}
+	}
+	.select2-drop {
+		border-radius: 0;
+	}
+
+	.quantity .qty {
+		min-width: 4.5em;
+		text-align: right;
+	}
+
+	.col2-set {
+		@include row($screen-sm);
+		width: auto;
+		.col-1,
+		.col-2 {
+			@include col($screen-sm, percentage(1 / 2));
+		}
+	}
+
+	.woocommerce-result-count {
+		font-size: $font-size-sm;
+		color: $text-muted;
+		font-style: italic;
+		padding-top: ($line-height-computed / 2);
+	}
+
+	form {
+		.form-row {
+			padding: 0;
+			margin-bottom: ($line-height-computed / 2);
+			label {
+				line-height: $line-height-base;
+			}
+		}
+		.form-row-first,
+		.form-row-last {
+			width: 49%;
+		}
+	}
+
+	ul.products {
+		li.product {
+			.price {
+				color: map-get($brand-colors, primary);
+			}
+			a.button,
+			.added_to_cart {
+				@include button-size('sm');
+				margin-top: 0;
+				margin-bottom: 3px;
+			}
+			.added_to_cart {
+				@include button-style('primary');
+			}
+		}
+	}
+
+	div.product {
+		p.price,
+		span.price {
+			color: map-get($brand-colors, primary);
+		}
+		.woocommerce-tabs {
+			ul.tabs {
+				padding-left: 0;
+				li {
+					margin: 0;
+					margin-left: -5px;
+					border-top-left-radius: $border-radius-base;
+					border-top-right-radius: $border-radius-base;
+					&:first-child {
+						margin-left: 0;
+					}
+					&:before,
+					&:after {
+						display: none;
+					}
+				}
+			}
+			.panel {
+				h2:first-child {
+					margin-top: 0;
+				}
+			}
+		}
+		.related {
+			ul.products {
+				li.product {
+					float: none;
+					width: auto;
+					@include clearfix();
+				}
+			}
+		}
+	}
+
+	table.cart,
+	table.shop_table {
+		@extend .table;
+		border-radius: $border-radius-base;
+		input {
+			line-height: $line-height-base;
+		}
+		.quantity {
+			input.qty {
+				@extend .sm;
+			}
+		}
+		td.actions .coupon .input-text {
+			width: 140px;
+			line-height: $line-height-base;
+		}
+		input.button[type=submit] {
+			@include button-style();
+			@include button-size();
+		}
+	}
+
+	.cart-collaterals {
+		.cart_totals .shipping-calculator-form {
+			p {
+				margin-bottom: 6px;
+				&.form-row:first-child {
+					padding-top: 10px;
+				}
+			}
+			select,
+			input.input-text {
+				width: auto;
+			}
+		}
+		.checkout-button {
+			@include button-size('lg');
+		}
+	}
+
+	.checkout {
+		.col-2 h3#ship-to-different-address {
+			position: relative;
+			padding-left: 20px;
+			label {
+				margin: 0;
+				font-weight: $headings-font-weight;
+				font-size: inherit;
+			}
+			input[type=checkbox] {
+				position: absolute;
+				left: 0;
+				top: 6px;
+				margin: 0;
+			}
+		}
+	}
+
+	#payment {
+		border-radius: $border-radius-base;
+		.payment_methods {
+			img {
+				display: inline-block;
+			}
+		}
+		div.payment_box {
+			width: 100%;
+			&:after {
+				margin: 0;
+				top: -16px;
+				left: 30px;
+			}
+		}
+		#place_order {
+			@include button-size('lg');
+		}
+	}
+
+	.address {
+		.title .edit {
+			@include button-base();
+			@include button-style();
+			@include button-size();
+			margin: $line-height-computed 0 ($line-height-computed / 2) ($line-height-computed / 2);
+		}
+	}
+
+	form.login,
+	form.register {
+		border-radius: $border-radius-base;
+		background-color: fade-out(#000, .9);
+		padding: 14px 20px;
+		margin-bottom: ($line-height-computed / 2);
+		margin-top: ($line-height-computed / 2);
+		body.woocommerce-account & input.button[type=submit] {
+			margin-top: 0;
+			@include button-size();
+		}
+		label[for=rememberme] {
+			margin-top: 10px;
+			margin-left: 10px;
+			font-weight: normal;
+		}
+		.lost_password {
+			margin-bottom: 0;
+		}
+	}
+
+}
+
+.woocommerce-message,
+.woocommerce-info,
+.woocommerce-error {
+	&,
+	.woocommerce &,
+	.woocommerce-page & {
+		@extend .alert.success;
+		@include clearfix();
+		padding-left: 46px;
+		position: relative;
+		&:before {
+			@include icon($fa-var-check);
+			color: inherit;
+			font-size: 20px;
+			left: 17px;
+			top: 15px;
+		}
+		a {
+			color: inherit;
+			font-weight: bold;
+			&.button:hover {
+				text-decoration: none;
+			}
+		}
+		.button {
+			@include button-base();
+			@include button-size();
+			@include button-style('primary');
+			float: right;
+			margin: -7px;
+			margin-left: 20px;
+			margin-right: -20px;
+		}
+	}
+}
+.woocommerce-info {
+	&,
+	.woocommerce &,
+	.woocommerce-page & {
+		@extend .alert.info;
+		&:before {
+			content: $fa-var-info-circle;
+		}
+	}
+}
+.woocommerce-error {
+	&,
+	.woocommerce &,
+	.woocommerce-page & {
+		@extend .alert.danger;
+		&:before {
+			content: $fa-var-warning;
+		}
+	}
+}
+
+.widget_shopping_cart {
+	a.button {
+		&.checkout {
+			@include button-style('success');
+		}
+	}
+}
+
+body.tax-product_cat {
+	#primary {
+		.term-description {
+			margin-bottom: $line-height-computed;
+		}
+	}
+}
+
+body.woocommerce-account {
+	input.button[type=submit] {
+		@include button-size('lg');
+		margin-top: ($line-height-computed / 2);
+	}
+}
+
+.payment_method_authorize_net_aim,
+.payment_method_authorize_net_cim {
+	> label img {
+		display: inline-block;
+	}
+	#wc-authorize-net-aim-exp-month,
+	#wc-authorize-net-aim-exp-year,
+	#authorize-net-cim-cc-exp-month,
+	#authorize-net-cim-cc-exp-year {
+		display: inline-block;
+	}
+}

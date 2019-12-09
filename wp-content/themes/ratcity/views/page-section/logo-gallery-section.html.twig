@@ -1,0 +1,12 @@
+{% extends 'page-section/image-gallery-section.html.twig' %}
+
+
+{% block page_section_gallery_image_container %}
+	<div class="image-container">
+		<div class="inner">
+			<div class="image" style="background-image: url({{ get_media_url(image, 'medium') }});">
+				<img src="{{ get_media_url(image, 'medium') }}" alt="{{ get_media_alt_text(image)|escape('html_attr') }}">
+			</div>
+		</div>
+	</div>
+{% endblock %}

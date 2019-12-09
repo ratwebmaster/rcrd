@@ -1,0 +1,85 @@
+
+
+/*	Caption
+---------------------------------------------------------*/
+
+.wp-caption {
+	margin-bottom: ($line-height-computed / 2);
+	max-width: 100%;
+}
+.wp-caption-text {
+	font-size: $font-size-sm;
+	margin: ($line-height-computed / 4) 0 0;
+}
+
+
+/*	Image Alignment
+---------------------------------------------------------*/
+
+.alignleft,
+.alignright {
+	margin-bottom: ($line-height-computed / 2);
+}
+.aligncenter {
+	margin: 0 auto ($line-height-computed / 2);
+}
+@media (min-width: $screen-sm-min) {
+	.alignleft,
+	.alignright {
+		max-width: 50%;
+	}
+	.alignleft {
+		float: left;
+		margin: 0 $line-height-computed ($line-height-computed / 2) 0;
+	}
+	.alignright {
+		float: right;
+		margin: 0 0 ($line-height-computed / 2) $line-height-computed;
+	}
+}
+
+
+/*	Galleries
+---------------------------------------------------------*/
+
+.gallery {
+	$gutter: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	margin-left: -($gutter / 2);
+	margin-right: -($gutter / 2);
+	margin-bottom: $line-height-computed - $gutter;
+	margin-top: $line-height-computed;
+	.gallery-item {
+		padding-left: ($gutter / 2);
+		padding-right: ($gutter / 2);
+		margin-bottom: $gutter;
+		width: 100%;
+		.preview {
+			height: 0;
+			padding-top: 100%;
+			background-repeat: no-repeat;
+			background-position: center center;
+			background-size: cover;
+			background-color: #ccc;
+			img {
+				display: none;
+				width: 100%;
+			}
+		}
+		.gallery-caption {
+			display: none;
+		}
+	}
+	&.gallery-columns-2 .gallery-item { width: percentage(1 / 2); }
+	&.gallery-columns-3 .gallery-item { width: percentage(1 / 3); }
+	&.gallery-columns-4 .gallery-item { width: percentage(1 / 4); }
+	&.gallery-columns-5 .gallery-item { width: percentage(1 / 5); }
+	&.gallery-columns-6 .gallery-item { width: percentage(1 / 6); }
+	&.gallery-columns-7 .gallery-item { width: percentage(1 / 7); }
+	&.gallery-columns-8 .gallery-item { width: percentage(1 / 8); }
+	&.gallery-columns-9 .gallery-item { width: percentage(1 / 9); }
+	&.gallery-columns-10 .gallery-item { width: percentage(1 / 10); }
+	&.gallery-columns-11 .gallery-item { width: percentage(1 / 11); }
+	&.gallery-columns-12 .gallery-item { width: percentage(1 / 12); }
+}

@@ -1,0 +1,22 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_content %}
+	<div class="section-columns">
+		{% block page_section_columns %}
+
+			<div class="column-1">
+				<div class="inner">
+					{{ section.section_content_column_1|default(section.content_column_1|content) }}
+				</div>
+			</div>
+
+			<div class="column-2">
+				<div class="inner">
+					{{ section.section_content_column_2|default(section.content_column_2|content) }}
+				</div>
+			</div>
+
+		{% endblock %}
+	</div>
+{% endblock %}

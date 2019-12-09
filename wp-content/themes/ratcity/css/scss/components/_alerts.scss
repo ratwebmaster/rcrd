@@ -1,0 +1,29 @@
+
+
+.alert {
+	padding: $padding-base-horizontal;
+	margin-bottom: $line-height-computed;
+	border: 1px solid transparent;
+	border-radius: $border-radius-base;
+	h4 {
+		margin-top: 0;
+		color: inherit;
+	}
+	a {
+		font-weight: bold;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+	> p,
+	> ul {
+		margin-bottom: 0;
+	}
+	> p + p {
+		margin-top: 5px;
+	}
+	&.success { @include alert-style(tint(map-get($brand-colors, success), 90%), tint(map-get($brand-colors, success), 80%), map-get($brand-colors, success)); }
+	&.info    { @include alert-style(tint(map-get($brand-colors, info), 90%), tint(map-get($brand-colors, info), 80%), map-get($brand-colors, info)); }
+	&.warning { @include alert-style(tint(map-get($brand-colors, warning), 90%), tint(map-get($brand-colors, warning), 80%), map-get($brand-colors, warning)); }
+	&.danger  { @include alert-style(tint(map-get($brand-colors, danger), 90%), tint(map-get($brand-colors, danger), 80%), map-get($brand-colors, danger)); }
+}

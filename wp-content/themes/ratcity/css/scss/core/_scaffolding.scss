@@ -1,0 +1,237 @@
+
+
+// Box sizing
+* {
+	box-sizing: border-box;
+}
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+// Clearfix
+.clearfix {
+	@include clearfix();
+}
+
+// Body Reset
+html {
+	font-size: $font-size-base;
+	line-height: $line-height-base;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+body {
+	font-family: $font-family-base;
+	font-size: $font-size-base;
+	line-height: $line-height-base;
+	color: $text-color;
+	font-weight: $font-weight-base;
+	background-color: $body-bg;
+	-webkit-text-size-adjust: 100%;
+	-webkit-font-smoothing: subpixel-antialiased;
+	-ms-word-wrap: break-word;
+	word-wrap: break-word;
+	background-color: $footer-bg;
+}
+input,
+button,
+select,
+textarea {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+#page {
+	background-color: $body-bg;
+}
+
+// Links
+a {
+	color: $link-color;
+	text-decoration: none;
+	transition: color linear .15s;
+	&:hover,
+	&:focus {
+		color: $link-hover-color;
+	}
+}
+
+// Figures
+figure {
+	margin: 0;
+}
+
+// Embeds
+embed,
+iframe,
+object {
+	max-width: 100%;
+}
+
+// Images
+img {
+	vertical-align: middle;
+	display: block;
+	max-width: 100%;
+	width: auto;
+	height: auto;
+}
+
+// Horizontal Rules
+hr {
+	margin-top: $line-height-computed;
+	margin-bottom: $line-height-computed;
+	border: 0;
+	border-top: 1px solid $hr-border;
+}
+
+
+/*	Containers
+---------------------------------------------------------*/
+
+.container {
+	@include clearfix();
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: $container-gutter-screen-xs;
+	padding-right: $container-gutter-screen-xs;
+	max-width: $container-width-full + ($container-gutter-screen-xs * 2);
+	@media (min-width: $screen-sm) {
+		padding-left: $container-gutter-screen-sm;
+		padding-right: $container-gutter-screen-sm;
+		max-width: $container-width-full + ($container-gutter-screen-sm * 2);
+	}
+	@media (min-width: $screen-md) {
+		padding-left: $container-gutter-screen-md;
+		padding-right: $container-gutter-screen-md;
+		max-width: $container-width-full + ($container-gutter-screen-md * 2);
+	}
+	@media (min-width: $screen-lg) {
+		padding-left: $container-gutter-screen-lg;
+		padding-right: $container-gutter-screen-lg;
+		max-width: $container-width-full + ($container-gutter-screen-lg * 2);
+	}
+}
+
+
+/*	Grid System
+---------------------------------------------------------*/
+
+.row {
+	@include row(0, $default-grid-gutter);
+}
+.col {
+	@include col(0, 100%, $default-grid-gutter);
+}
+@include gen-col(xs, $default-grid-columns, 0);
+@include gen-col(sm, $default-grid-columns, $screen-sm);
+@include gen-col(md, $default-grid-columns, $screen-md);
+@include gen-col(lg, $default-grid-columns, $screen-lg);
+
+
+/*	Responsive Utilities
+---------------------------------------------------------*/
+
+// Visibility Utilities
+
+@at-root {
+	@-ms-viewport {
+		width: device-width;
+	}
+}
+
+@include responsive-invisibility('.visible-xs');
+@include responsive-invisibility('.visible-sm');
+@include responsive-invisibility('.visible-md');
+@include responsive-invisibility('.visible-lg');
+
+.visible-xs-block,
+.visible-xs-inline,
+.visible-xs-inline-block,
+.visible-sm-block,
+.visible-sm-inline,
+.visible-sm-inline-block,
+.visible-md-block,
+.visible-md-inline,
+.visible-md-inline-block,
+.visible-lg-block,
+.visible-lg-inline,
+.visible-lg-inline-block {
+	display: none !important;
+}
+
+@media (max-width: $screen-xs-max) { @include responsive-visibility('.visible-xs'); }
+.visible-xs-block {        @media (max-width: $screen-xs-max) { display: block !important; } }
+.visible-xs-inline {       @media (max-width: $screen-xs-max) { display: inline !important; } }
+.visible-xs-inline-block { @media (max-width: $screen-xs-max) { display: inline-block !important; } }
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { @include responsive-visibility('.visible-sm'); }
+.visible-sm-block {        @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { display: block !important; } }
+.visible-sm-inline {       @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { display: inline !important; } }
+.visible-sm-inline-block { @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { display: inline-block !important; } }
+
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) { @include responsive-visibility('.visible-md'); }
+.visible-md-block {        @media (min-width: $screen-md-min) and (max-width: $screen-md-max) { display: block !important; } }
+.visible-md-inline {       @media (min-width: $screen-md-min) and (max-width: $screen-md-max) { display: inline !important; } }
+.visible-md-inline-block { @media (min-width: $screen-md-min) and (max-width: $screen-md-max) { display: inline-block !important; } }
+
+@media (min-width: $screen-lg-min) { @include responsive-visibility('.visible-lg'); }
+.visible-lg-block {        @media (min-width: $screen-lg-min) { display: block !important; } }
+.visible-lg-inline {       @media (min-width: $screen-lg-min) { display: inline !important; } }
+.visible-lg-inline-block { @media (min-width: $screen-lg-min) { display: inline-block !important; } }
+
+@media (max-width: $screen-xs-max) { @include responsive-invisibility('.hidden-xs'); }
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) { @include responsive-invisibility('.hidden-sm'); }
+@media (min-width: $screen-md-min) and (max-width: $screen-md-max) { @include responsive-invisibility('.hidden-md'); }
+@media (min-width: $screen-lg-min) { @include responsive-invisibility('.hidden-lg'); }
+
+
+// Print Utilities
+
+@include responsive-invisibility('.visible-print');
+@media print { @include responsive-visibility('.visible-print'); }
+.visible-print-block {
+	display: none !important;
+	@media print { display: block !important; } }
+.visible-print-inline {
+	display: none !important;
+	@media print { display: inline !important; }
+}
+.visible-print-inline-block {
+	display: none !important;
+	@media print { display: inline-block !important; }
+}
+
+@media print { @include responsive-invisibility('.hidden-print'); }
+
+
+/*	Screen Reading Utilities
+---------------------------------------------------------*/
+
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+	@include square(1px);
+	overflow: hidden;
+	&:hover,
+	&:active,
+	&:focus {
+		background-color: $body-bg;
+		border-radius: 3px;
+		box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.6);
+		clip: auto !important;
+		color: $text-color;
+		display: block;
+		font-size: $font-size-base;
+		font-weight: bold;
+		height: auto;
+		left: 5px;
+		line-height: $line-height-base;
+		padding: ($line-height-computed / 2) $line-height-computed;;
+		text-decoration: none;
+		top: 5px;
+		width: auto;
+		z-index: 100000;
+	}
+}

@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+
+{% block page_sections %}
+	<section class="page-section primary has-sidebar">
+		<div class="inner">
+			<div class="container">
+				<div class="inner">
+			
+					{{ block('content') }}
+			
+				</div><!-- .inner -->
+			</div><!-- .container -->
+		</div><!-- .inner -->
+	</section><!-- .page-section -->
+{% endblock %}
+
+
+{% block content %}
+	
+	{% block primary %}
+		<div class="content-section primary" role="main">
+			<div class="inner">
+			
+				{% include 'includes/pagination.html.twig' with { 'class': 'above' } %}
+
+				{% for post in posts %}
+
+					<article id="post-{{ post.id }}" class="{{ post.class }}">
+						{% block article_content %}
+
+							{% if post.thumbnail %}
+								<a href="{{ post.link }}"><img class="post-thumbnail" src="{{ get_media_url(post.thumbnail, 'thumbnail') }}" /></a>
+							{% endif %}
+
+							<header class="entry-header">
+								<h2 class="entry-title"><a href="{{ post.link }}">{{ post.title }}</a></h2>
+								<div class="entry-meta">
+									<p class="entry-author">By <a href="{{ post.author.posts_url }}">{{ post.author.display_name }}</a></p>
+									<p class="entry-date">Posted on <a href="{{ post.link }}">{{ post.date_posted|date('M j, Y') }}</a></p>
+								</div>
+							</header>
+
+							<div class="entry-excerpt">
+								<p>{{ post.excerpt }}</p>
+							</div>
+
+							<footer class="entry-meta">
+								{% if post.terms['category'] %}
+									<p class="entry-categories">Category: {{ macros.list_term_links(post.terms['category']) }}</p>
+								{% endif %}
+								{% if post.terms['post_tag'] %}
+									<p class="entry-tags">Tags: {{ macros.list_term_links(post.terms['post_tag']) }}</p>
+								{% endif %}
+							</footer>
+
+						{% endblock %}
+					</article>
+
+				{% endfor %}
+
+				{% include 'includes/pagination.html.twig' with { 'class': 'below' } %}
+			
+			</div><!-- .inner -->
+		</div><!-- .content-section.primary -->
+	{% endblock %}
+
+	{% block secondary %}
+		<aside class="content-section secondary widget-area" role="complementary">
+			<div class="inner">
+				{{ sidebar.widgets }}
+			</div><!-- .inner -->
+		</aside><!-- .content-section.secondary -->
+	{% endblock %}
+
+{% endblock %}

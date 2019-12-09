@@ -1,0 +1,37 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if section.faqs %}
+		<div class="section-faqs">
+			{% for faq in section.faqs if faq.question and faq.response %}
+				<div class="faq">
+
+					<div class="question">
+						<div class="inner">
+							<h4>{{ faq.question }}</h4>
+						</div>
+					</div>
+
+					<div class="response">
+						<div class="inner">
+							{{ faq.response|content }}
+						</div>
+					</div>
+
+				</div>
+			{% endfor %}
+		</div>
+
+	{% endif %}
+	
+{% endblock %}

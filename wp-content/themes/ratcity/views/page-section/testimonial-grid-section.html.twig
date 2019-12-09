@@ -1,0 +1,48 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if section.testimonials %}
+		
+		{% set data_col_widths = [ 'data-cols-xs="1"', 'data-cols-sm="1"', 'data-cols-md="1"', 'data-cols-lg="1"' ] %}
+		{% set data_col_widths = section.column_count == 2 ? [ 'data-cols-xs="1"', 'data-cols-sm="2"', 'data-cols-md="2"', 'data-cols-lg="2"' ] : data_col_widths %}
+		{% set data_col_widths = section.column_count == 3 ? [ 'data-cols-xs="1"', 'data-cols-sm="2"', 'data-cols-md="3"', 'data-cols-lg="3"' ] : data_col_widths %}
+		{% set data_col_widths = section.column_count == 4 ? [ 'data-cols-xs="1"', 'data-cols-sm="2"', 'data-cols-md="3"', 'data-cols-lg="4"' ] : data_col_widths %}
+
+		<div class="section-testimonials card-grid" {{ data_col_widths|join(' ') }}>
+			{% for testimonial in section.testimonials if testimonial.content %}
+				<div class="testimonial-container">
+					<blockquote class="testimonial">
+
+						{{ testimonial.content|content }}
+					
+						{% if testimonial.source_name or testimonial.source_org %}
+							<footer class="source">
+								{% if testimonial.source_name %}
+									<span class="name">{{ testimonial.source_name }}</span>
+								{% endif %}
+								{% if testimonial.source_org and testimonial.source_org_url %}
+									<span class="org"><a href="{{ testimonial.source_org_url }}" target="_blank">{{ testimonial.source_org }}</a></span>
+								{% elseif testimonial.source_org %}
+									<span class="org">{{ testimonial.source_org }}</span>
+								{% endif %}
+							</footer>
+						{% endif %}
+
+					</blockquote>
+				</div>
+			{% endfor %}
+		</div>
+
+	{% endif %}
+	
+{% endblock %}

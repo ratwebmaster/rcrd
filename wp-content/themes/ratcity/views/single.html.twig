@@ -1,0 +1,39 @@
+{% extends 'index.html.twig' %}
+
+
+{% block primary %}
+	<div class="content-section primary" role="main">
+		<div class="inner">
+		
+			<article id="post-{{ post.id }}" class="{{ post.class }}">
+				{% block article_content %}
+
+					<header class="entry-header">
+						<h1 class="entry-title">{{ post.title }}</h1>
+						<div class="entry-meta">
+							<p class="entry-author">By <a href="{{ post.author.posts_url }}">{{ post.author.display_name }}</a></p>
+							<p class="entry-date">Posted on {{ post.date_posted|date('M j, Y') }}</p>
+						</div>
+					</header>
+					
+					<div class="entry-content">
+						{{ post.content|content }}
+					</div>
+
+					<footer class="entry-meta">
+						{% if post.terms['category'] %}
+							<p class="entry-categories">Category: {{ macros.list_term_links(post.terms['category']) }}</p>
+						{% endif %}
+						{% if post.terms['post_tag'] %}
+							<p class="entry-tags">Tags: {{ macros.list_term_links(post.terms['post_tag']) }}</p>
+						{% endif %}
+					</footer>
+
+				{% endblock %}
+			</article>
+			
+			{% include 'includes/comments.html.twig' %}
+		
+		</div><!-- .inner -->
+	</div><!-- .content-section.primary -->
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_inner %}
+	{% if section.slider_images %}
+		<div class="section-slider">
+			{% for image in section.slider_images %}
+
+				<div class="slide">
+					
+					<div class="slide-bg">
+						<div class="inner">
+							<div class="bg-image" style="background-image: url({{ get_media_url(image, '1600w') }});">
+								<img src="{{ get_media_url(image, '1600w') }}">
+							</div>
+						</div>
+					</div>
+					
+					<div class="inner">
+
+						{% set caption = get_media_alt_text(image) %}
+						{% if caption %}
+							<div class="slide-caption">
+								<div class="inner">
+									{{ caption|content }}
+								</div>
+							</div>
+						{% endif %}
+
+					</div>
+
+				</div>
+
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

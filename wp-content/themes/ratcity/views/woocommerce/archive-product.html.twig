@@ -1,0 +1,13 @@
+{% extends 'index.html.twig' %}
+
+{% block primary %}
+	<div class="content-section primary" role="main">
+		
+		{# {% include 'includes/pagination.html.twig' with { 'class': 'above' } %} #}
+
+		{{ get_woocommerce_content() }}
+
+		{% include 'includes/pagination.html.twig' with { 'class': 'below' } %}
+
+	</div><!-- .content-section.primary -->
+{% endblock %}

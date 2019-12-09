@@ -1,0 +1,59 @@
+{% set class = class|default('') %}
+{% set max_page_links = max(5, max_page_links|default(5)) %}
+{% if pagination %}
+	<nav class="pagination {{ class }}">
+		<h3 class="screen-reader-text">Page Navigation</h3>
+		<ul class="menu">
+
+			{% if pagination.prev %}
+				<li class="prev"><a href="{{ pagination.prev }}"><span>Previous</span></a></li>
+			{% else %}
+				<li class="prev no-link"><a><span>Previous</span></a></li>
+			{% endif %}
+			
+			{% set index_min = max(1, pagination.current_page - ((max_page_links - 2) / 2)|round(0, 'ceil')) %}
+			{% set index_max = min(pagination.pages|length - 2, pagination.current_page - 1 + ((max_page_links - 2) / 2)|round(0, 'floor')) %}
+			
+			{% set index_min = index_min == 1 ? 0 : index_min %}
+			{% set index_max = index_max == pagination.pages|length - 2 ? pagination.pages|length - 1 : index_max %}
+			
+			{% if index_max - index_min + 2 < max_page_links %}
+				{% if index_min == 0 %}
+					{% set index_max = index_max + (max_page_links - (index_max - index_min + 2)) %}
+					{% set index_max = index_max == pagination.pages|length - 2 ? pagination.pages|length - 1 : index_max %}
+				{% elseif index_max == pagination.pages|length - 1 %}
+					{% set index_min = index_min - (max_page_links - (index_max - index_min + 2)) %}
+					{% set index_min = index_min == 1 ? 0 : index_min %}
+				{% endif %}
+			{% endif %}
+
+			{% if index_min > 0 %}
+				<li class="page page-1 {{ pagination.current_page == 1 ? 'current' : '' }}">
+					<a href="{{ pagination.pages[0] }}"><span>1</span></a>
+				</li>
+				<li class="no-link"><a><span>&hellip;</span></a></li>
+			{% endif %}
+
+			{% set page_links = pagination.pages|slice(index_min, index_max - index_min + 1) %}
+			{% for index, page_link in page_links %}
+				<li class="page page-{{ index + index_min + 1 }} {{ pagination.current_page == index + index_min + 1 ? 'current' : '' }}">
+					<a href="{{ page_link }}"><span>{{ index + index_min + 1 }}</span></a>
+				</li>
+			{% endfor %}
+
+			{% if index_max < pagination.pages|length - 1 %}
+				<li class="no-link"><a><span>&hellip;</span></a></li>
+				<li class="page page-{{ pagination.pages|length }}">
+					<a href="{{ pagination.pages[pagination.pages|length - 1] }}"><span>{{ pagination.pages|length }}</span></a>
+				</li>
+			{% endif %}
+
+			{% if pagination.next %}
+				<li class="next"><a href="{{ pagination.next }}"><span>Next</span></a></li>
+			{% else %}
+				<li class="next no-link"><a><span>Previous</span></a></li>
+			{% endif %}
+
+		</ul>
+	</nav>
+{% endif %}

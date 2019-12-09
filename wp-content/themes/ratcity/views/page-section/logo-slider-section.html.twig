@@ -1,0 +1,40 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if section.slider_images %}
+		<div class="section-slider-wrap">
+			<div class="inner">
+				<div class="section-slider">
+					{% for image in section.slider_images %}
+						<div class="image-container">
+							<div class="inner">
+								<div class="image" style="background-image: url({{ get_media_url(image, 'medium') }});">
+									<img src="{{ get_media_url(image, 'medium') }}" alt="{{ get_media_alt_text(image)|escape('html_attr') }}">
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	
+	{% if section.section_content_secondary|default(section.content_secondary|content) %}
+		<div class="section-content-secondary">
+			<div class="inner">
+				{{ section.section_content_secondary|default(section.content_secondary|content) }}
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_content %}
+	<div class="section-grid">
+		{% block page_section_grid_cells %}
+
+			{% for cell in section.cells %}
+				<div class="cell">
+					<div class="inner">
+						{{ cell.content|content }}
+					</div>
+				</div>
+			{% endfor %}
+
+		{% endblock %}
+	</div>
+{% endblock %}

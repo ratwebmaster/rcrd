@@ -1,0 +1,41 @@
+{% set max_depth = max_depth|default(false) %}
+{% set depth = depth|default(0) %}
+
+{% if comments and (max_depth == false or depth < max_depth) %}
+	<ol class="{{ depth > 0 ? 'children' : 'comment-list' }}">
+		{% for comment in comments %}
+			<li id="comment-{{ comment.id }}" class="{{ comment.class }}">
+				<article class="comment-body">
+
+					<footer class="comment-meta">
+
+						<div class="comment-author vcard">
+							{{ comment.avatar }}
+							<strong class="fn">{{ comment.author.name }}</strong> <span class="says">says:</span>
+						</div>
+
+						<div class="comment-metadata">
+							<a href="{{ comment.url }}">
+								<time datetime="{{ comment.date|date('c') }}">{{ comment.date|date('F j, Y \\a\\t g:ia') }}</time>
+							</a>
+							{% if comment.edit_url %}
+								<span class="edit-link"><a href="{{ comment.edit_url }}">Edit</a></span>
+							{% endif %}
+						</div>
+						
+						{% if not comment.approved %}
+							<p class="comment-awaiting-moderation">Your comment is awaiting moderation.</p>
+						{% endif %}
+
+					</footer>
+
+					<div class="comment-content">{{ comment.content }}</div>
+
+					{{ comment.reply_link({ 'depth': depth + 1, 'max_depth': max_depth|default(4) }) }}
+
+				</article>
+				{% include 'includes/comment-list.html.twig' with { 'comments': comment.children, 'max_depth': max_depth, 'depth': depth + 1 } only %}
+			</li>
+		{% endfor %}
+	</ol>
+{% endif %}

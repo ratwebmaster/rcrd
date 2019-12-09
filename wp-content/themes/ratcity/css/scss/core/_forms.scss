@@ -1,0 +1,263 @@
+
+
+/*	Normalize Non-Controls
+---------------------------------------------------------*/
+
+fieldset {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	min-width: 0;
+}
+
+legend {
+	display: block;
+	width: 100%;
+	padding: 0;
+	margin-bottom: $line-height-computed;
+	font-size: ($font-size-base * 1.5);
+	line-height: inherit;
+	color: $legend-color;
+	border: 0;
+	border-bottom: 1px solid $legend-border-color;
+}
+
+label {
+	display: inline-block;
+	max-width: 100%;
+	margin-bottom: ($line-height-computed / 4);
+	font-weight: $label-font-weight;
+}
+
+
+/*	Normalize Form Input Controls
+---------------------------------------------------------*/
+
+.form-control {
+	@include input-base();
+	@include input-size();
+	@include input-style();
+
+	&::placeholder {
+		color: $input-color-placeholder;
+	}
+	
+	&:focus {
+		@include input-style($input-color, $input-bg, $input-border-focus, #{$input-box-shadow, 0 0 8px $input-border-focus});
+	}
+
+	&[disabled],
+	&[readonly],
+	fieldset[disabled] & {
+		background-color: $input-bg-disabled;
+	}
+
+	&.sm {
+		@include input-size('sm');
+	}
+
+	&.lg {
+		@include input-size('lg');
+	}
+
+	.field.success & {
+		@include input-style($input-color, $input-bg, map-get($brand-colors, success));
+		&:focus {
+			@include input-style($input-color, $input-bg, darken(map-get($brand-colors, success), 10%), #{$input-box-shadow, 0 0 6px fadeout(map-get($brand-colors, success), 40%)});
+		}
+	}
+
+	.field.warning & {
+		@include input-style($input-color, $input-bg, map-get($brand-colors, warning));
+		&:focus {
+			@include input-style($input-color, $input-bg, darken(map-get($brand-colors, warning), 10%), #{$input-box-shadow, 0 0 6px fadeout(map-get($brand-colors, warning), 40%)});
+		}
+	}
+
+	.field.error & {
+		@include input-style($input-color, $input-bg, map-get($brand-colors, danger));
+		&:focus {
+			@include input-style($input-color, $input-bg, darken(map-get($brand-colors, danger), 10%), #{$input-box-shadow, 0 0 6px fadeout(map-get($brand-colors, danger), 40%)});
+		}
+	}
+
+}
+
+#{text-inputs()},
+select,
+textarea {
+	@extend .form-control;
+}
+
+textarea,
+select[multiple],
+select[size] {
+	height: auto;
+}
+
+textarea,
+select[multiple] {
+	line-height: $line-height-base;
+	&.sm,
+	&.lg {
+		height: auto;
+	}
+}
+
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+input[type="month"] {
+	line-height: $input-height-base;
+	&.sm {
+		line-height: $input-height-sm;
+	}
+	&.lg {
+		line-height: $input-height-lg;
+	}
+}
+
+select {
+	&.sm {
+		height: $input-height-sm;
+		line-height: $input-height-sm;
+	}
+	&.lg {
+		height: $input-height-lg;
+		line-height: $input-height-lg;
+	}
+}
+
+input[type="search"] {
+	box-sizing: border-box;
+	-webkit-appearance: none;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+	margin: 4px 0 0;
+	margin-top: 1px \9;
+	line-height: normal;
+	&[disabled],
+	&.disabled,
+	fieldset[disabled] & {
+		cursor: not-allowed;
+	}
+}
+
+input[type="file"] {
+	display: block;
+}
+
+input[type="range"] {
+	display: block;
+	width: 100%;
+}
+
+input[type="file"]:focus,
+input[type="radio"]:focus,
+input[type="checkbox"]:focus {
+	outline: none;
+}
+
+output {
+	display: block;
+	padding-top: ($padding-base-vertical + 1);
+	font-size: $font-size-base;
+	line-height: $line-height-base;
+	color: $input-color;
+}
+
+
+/*	Form Fields
+---------------------------------------------------------*/
+
+.field {
+	margin-bottom: ($line-height-computed / 2);
+
+	&.success {
+		label,
+		.help-block,
+		.radio,
+		.checkbox {
+			color: map-get($brand-colors, success);
+		}
+	}
+
+	&.warning {
+		label,
+		.help-block,
+		.radio,
+		.checkbox {
+			color: map-get($brand-colors, warning);
+		}
+	}
+
+	&.error {
+		label,
+		.help-block,
+		.radio,
+		.checkbox {
+			color: map-get($brand-colors, danger);
+		}
+	}
+
+}
+
+// Checkboxes and Radios
+.radio,
+.checkbox {
+	position: relative;
+	display: block;
+	min-height: $line-height-computed;
+	margin-top: ($line-height-computed / 2);
+	margin-bottom: ($line-height-computed / 2);
+	label {
+		padding-left: 20px;
+		margin-bottom: 0;
+		font-weight: $font-weight-base;
+		cursor: pointer;
+	}
+	&.disabled,
+	fieldset[disabled] & {
+		label {
+			cursor: not-allowed;
+		}
+	}
+}
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] {
+	position: absolute;
+	margin-left: -20px;
+	margin-top: 4px \9;
+}
+.radio + .radio,
+.checkbox + .checkbox {
+	margin-top: -($line-height-computed / 4);
+}
+
+
+/*	Static Input
+---------------------------------------------------------*/
+
+.static-input {
+	padding-top: ($padding-base-vertical + 1);
+	padding-bottom: ($padding-base-vertical + 1);
+	margin-bottom: 0;
+	&.lg,
+	&.sm {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
+
+
+/*	Input Help Blocks
+---------------------------------------------------------*/
+
+.input-help-block {
+	display: block;
+	margin-top: ($line-height-computed / 4);
+	margin-bottom: ($line-height-computed / 4);
+	color: $text-muted;
+}

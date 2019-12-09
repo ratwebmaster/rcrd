@@ -1,0 +1,155 @@
+
+
+// Baseline styles
+table,
+.table {
+	background-color: $table-bg;
+	width: 100%;
+	max-width: 100%;
+	margin-bottom: $line-height-computed;
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				padding: $table-cell-padding;
+				line-height: $line-height-base;
+				vertical-align: top;
+				border-top: 1px solid $table-border-color;
+			}
+		}
+	}
+	> thead > tr > th {
+		vertical-align: bottom;
+		border-bottom: 2px solid $table-border-color;
+	}
+	> caption + thead,
+	> colgroup + thead,
+	> thead:first-child {
+		> tr:first-child {
+			> th,
+			> td {
+				border-top: 0;
+			}
+		}
+	}
+	> tbody + tbody {
+		border-top: 2px solid $table-border-color;
+	}
+	table {
+		background-color: $body-bg;
+	}
+}
+
+td,
+th {
+	text-align: left;
+}
+
+// Condensed Tables
+table.condensed {
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				padding: $table-condensed-cell-padding;
+			}
+		}
+	}
+}
+
+// Bordered Tables
+table.bordered {
+	border: 1px solid $table-border-color;
+	> thead,
+	> tbody,
+	> tfoot {
+		> tr {
+			> th,
+			> td {
+				border: 1px solid $table-border-color;
+			}
+		}
+	}
+	> thead > tr {
+		> th,
+		> td {
+			border-bottom-width: 2px;
+		}
+	}
+}
+
+// Striped Tables
+table.striped {
+	> tbody > tr:nth-child(odd) {
+		> td,
+		> th {
+			background-color: $table-bg-accent;
+		}
+	}
+}
+
+// Hover Rows Effect
+table.hover {
+	> tbody > tr:hover {
+		> td,
+		> th {
+			background-color: $table-bg-hover;
+		}
+	}
+}
+
+// Responsive Table Container
+.responsive-table-container {
+	@media screen and (max-width: $screen-xs-max) {
+		width: 100%;
+		margin-bottom: ($line-height-computed * 0.75);
+		overflow-y: hidden;
+		overflow-x: auto;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+		border: 1px solid $table-border-color;
+		-webkit-overflow-scrolling: touch;
+		> table {
+			margin-bottom: 0;
+			> thead,
+			> tbody,
+			> tfoot {
+				> tr {
+					> th,
+					> td {
+						white-space: nowrap;
+					}
+				}
+			}
+		}
+		> table.bordered {
+			border: 0;
+			> thead,
+			> tbody,
+			> tfoot {
+				> tr {
+					> th:first-child,
+					> td:first-child {
+						border-left: 0;
+					}
+					> th:last-child,
+					> td:last-child {
+						border-right: 0;
+					}
+				}
+			}
+			> tbody,
+			> tfoot {
+				> tr:last-child {
+					> th,
+					> td {
+						border-bottom: 0;
+					}
+				}
+			}
+		}
+	}
+}

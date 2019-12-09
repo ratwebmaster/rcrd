@@ -1,0 +1,103 @@
+{% block page_section %}
+
+	{% set section_class = ['page-section', section.crown_repeater_entry_type|default('')]|merge(section_class|default([])) %}
+	{% set section_class = not prev_section ? section_class|merge(['first']) : section_class %}
+	{% set section_class = not prev_section ? section_class|merge(['last']) : section_class %}
+	{% set section_class = section_class|merge(section.custom_class|default('')|split(' ')) %}
+	{% set section_class = section.index_options ? section_class|merge(section.index_options) : section_class %}
+	{% set section_class = section.width_constraint ? section_class|merge(['width-constraint-' ~ section.width_constraint]) : section_class %}
+	{% set section_class = section.layout ? section_class|merge(['layout-' ~ section.layout]) : section_class %}
+	{% set section_class = section.column_count ? section_class|merge(['column-count-' ~ section.column_count]) : section_class %}
+	{% set section_class = section.width ? section_class|merge(['width-' ~ section.width]) : section_class %}
+	{% set section_class = section.aspect_ratio ? section_class|merge(['aspect-ratio-' ~ section.aspect_ratio]) : section_class %}
+	{% set section_class = section.vertical_alignment ? section_class|merge(['vertical-alignment-' ~ section.vertical_alignment]) : section_class %}
+	{% set section_class = section.horizontal_alignment ? section_class|merge(['horizontal-alignment-' ~ section.horizontal_alignment]) : section_class %}
+	{% set section_class = section.reverse_column_order ? section_class|merge(['reverse-column-order']) : section_class %}
+	{% set section_class = section.layout_options ? section_class|merge(section.layout_options) : section_class %}
+	{% set section_class = section.bg_color ? section_class|merge([use_white_foreground(section.bg_color) ? 'white-text' : '']) : section_class %}
+	{% set section_class = section.bg_color and get_luminosity(section.bg_color) == 1 ? section_class|merge(['white-bg']) : section_class %}
+	
+	{% set unmergable_section_types = [
+		'pagination-section',
+		'search-form-section',
+		'internal-page-navigation-section',
+		'image-tile-grid-section',
+		'image-gallery-section',
+		'image-gallery-slider-section',
+		'contact-info-section',
+		'recent-communictions-section',
+		'featured-news-tile-grid-section',
+		'testimonial-index-section',
+		'staff-member-index-section',
+		'press-release-index-section',
+		'resource-index-section',
+		'newsletter-index-section',
+		'event-index-section',
+		'location-index-section'
+	] %}
+
+	{% set section_class = not section.bg_image and get_luminosity(section.bg_color) > 0.9 ? section_class|merge(['section-divider-eligible']) : section_class %}
+	
+	{% if next_section %}
+		{% set section_class = section.bg_color|lower == next_section.bg_color|lower and not section.bg_image and not next_section.bg_image and section.crown_repeater_entry_type not in unmergable_section_types and next_section.crown_repeater_entry_type not in unmergable_section_types ? section_class|merge(['same-bg-as-next']) : section_class %}
+	{% endif %}
+
+	{% if prev_section %}
+		{% set section_class = section.bg_color|lower == prev_section.bg_color|lower and not section.bg_image and not prev_section.bg_image and section.crown_repeater_entry_type not in unmergable_section_types and prev_section.crown_repeater_entry_type not in unmergable_section_types ? section_class|merge(['same-bg-as-prev']) : section_class %}
+	{% endif %}
+
+	{% set section_title = section.section_title|default(section.title|default('')) %}
+
+	{% set section_atts = (section.custom_id ? ['id="section-' ~ function('sanitize_title', section.custom_id) ~ '"'] : []) %}
+	{% set section_atts = section_atts|merge(['class="' ~ section_class|join(' ') ~ '"']) %}
+	{% set section_atts = section.bg_color ? section_atts|merge(['style="background-color: ' ~ section.bg_color ~ ';"']) : section_atts %}
+
+	<section {{ section_atts|join(' ') }}>
+
+		{% if section.custom_id %}
+			<a name="{{ function('sanitize_title', section.custom_id) }}" class="section-anchor"></a>
+		{% endif %}
+
+		{% block page_section_bg %}
+			{% if section.bg_image %}
+				<div class="section-bg">
+					<div class="inner">
+						<div class="bg-image" style="background-image: url({{ get_media_url(section.bg_image, '1600w') }});"></div>
+					</div>
+				</div>
+			{% endif %}
+		{% endblock %}
+
+		<div class="inner">
+
+			{% block page_section_inner %}
+
+				<div class="container">
+
+					<div class="inner">
+						{% block page_section_contents %}
+
+							{% block page_section_title %}
+								{% if section_title and not prev_section %}
+									<h1 class="section-title">{{ section_title }}</h1>
+								{% elseif section_title %}
+									<h2 class="section-title">{{ section_title }}</h2>
+								{% endif %}
+							{% endblock %}
+						
+							{% block page_section_content %}
+								{{ section.section_content|default(section.content|content) }}
+							{% endblock %}
+
+						{% endblock %}
+					</div><!-- .inner -->
+
+				</div><!-- .container -->
+
+			{% endblock %}
+			
+		</div>
+
+	</section><!-- .page-section -->
+
+{% endblock %}

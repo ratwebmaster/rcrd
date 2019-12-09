@@ -1,0 +1,151 @@
+{% extends 'page-section/default-section.html.twig' %}
+{% import _self as locations_map_section_macros %}
+
+
+{% block page_section_bg %}
+	{% if section.locations or (section.locations_source == 'branch_locations' and (section.locations_branch_locations_filter == 'all' or section.branch_locations_locations)) %}
+		<div class="section-map">
+			<div class="inner">
+
+				{% set map_points = [] %}
+				
+				{{ dump(section.locations_source) }}
+				{% if section.locations_source == 'branch_locations' %}
+					
+					{% set branch_locations = [] %}
+					{% if not section.locations_branch_locations_filter %}
+						{% set branch_locations = get_posts({ post_type: 'branch_location', posts_per_page: -1, orderby: 'title', order: 'ASC' }) %}
+					{% elseif section.branch_locations_locations %}
+						{% set branch_locations = get_posts({ post_type: 'branch_location', posts_per_page: -1, orderby: 'post__in', order: 'ASC', post__in: section.branch_locations_locations }) %}
+					{% endif %}
+
+					{% for location in branch_locations if location.meta.branch_location_coordinates.lat and location.meta.branch_location_coordinates.lng %}
+
+						{% set infobox_content %}
+							<h4>{{ location.title }}</h4>
+							{{ location.excerpt|content }}
+							{% if location.meta.branch_location_address %}
+								<div class="location-address">
+									{{ location.meta.branch_location_address|nl2br }}
+								</div>
+							{% endif %}
+						{% endset %}
+
+						{% set map_point = {
+							'lat': location.meta.branch_location_coordinates.lat,
+							'lng': location.meta.branch_location_coordinates.lng,
+							'title': location.title,
+							'infoBoxContent': infobox_content ~ ''
+						} %}
+
+						{% set map_points = map_points|merge([map_point]) %}
+
+					{% endfor %}
+
+				{% else %}
+					
+					{% for location in section.locations if location.coordinates.lat and location.coordinates.lng %}
+
+						{% set infobox_content %}
+							{% if location.title %}
+								<h4>{{ location.title }}</h4>
+							{% endif %}
+							{{ location.description|content }}
+							{% if location.address %}
+								<div class="location-address">
+									{{ location.address|nl2br }}
+								</div>
+							{% endif %}
+						{% endset %}
+
+						{% set map_point = {
+							'lat': location.coordinates.lat,
+							'lng': location.coordinates.lng,
+							'title': location.title,
+							'infoBoxContent': infobox_content ~ ''
+						} %}
+
+						{% set map_points = map_points|merge([map_point]) %}
+
+					{% endfor %}
+
+				{% endif %}
+				
+
+				{% set map_settings = {
+					'autoAddMarkers': false
+				} %}
+
+				{{ get_map(map_points, map_settings) }}
+
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}
+
+
+{% block page_section_contents %}
+
+	{% if section_title or section.section_content|default(section.content|content) or section.locations %}
+
+		{% set contents_class = ['section-contents'] %}
+
+		{% set contents_atts = ['class="' ~ contents_class|join(' ') ~ '"'] %}
+		{% set contents_atts = section.bg_color ? contents_atts|merge(['style="background-color: ' ~ section.bg_color ~ ';"']) : contents_atts %}
+
+		<div class="section-contents-wrap">
+			<div {{ contents_atts|join(' ') }}>
+
+				{{ parent() }}
+				
+				{% if section.locations or (section.locations_source == 'branch_locations' and (section.locations_branch_locations_filter == 'all' or section.branch_locations_locations)) %}
+					<ul class="location-list">
+
+						{% if section.locations_source == 'branch_locations' %}
+					
+							{% set branch_locations = [] %}
+							{% if not section.locations_branch_locations_filter %}
+								{% set branch_locations = get_posts({ post_type: 'branch_location', posts_per_page: -1, orderby: 'title', order: 'ASC' }) %}
+							{% elseif section.branch_locations_locations %}
+								{% set branch_locations = get_posts({ post_type: 'branch_location', posts_per_page: -1, orderby: 'post__in', order: 'ASC', post__in: section.branch_locations_locations }) %}
+							{% endif %}
+
+							{% for location in branch_locations %}
+								<li>
+									<h4>{{ location.title }}</h4>
+									{{ location.excerpt|content }}
+									{% if location.meta.branch_location_address %}
+										<div class="location-address">
+											{{ location.meta.branch_location_address|nl2br }}
+										</div>
+									{% endif %}
+								</li>
+							{% endfor %}
+
+						{% else %}
+							
+							{% for location in section.locations %}
+								<li>
+									{% if location.title %}
+										<h4>{{ location.title }}</h4>
+									{% endif %}
+									{{ location.description|content }}
+									{% if location.address %}
+										<div class="location-address">
+											{{ location.address|nl2br }}
+										</div>
+									{% endif %}
+								</li>
+							{% endfor %}
+
+						{% endif %}
+
+					</ul>
+				{% endif %}
+
+			</div>
+		</div>
+
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,249 @@
+
+
+/*	Headings
+---------------------------------------------------------*/
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: $headings-font-family;
+	font-weight: $headings-font-weight;
+	line-height: $headings-line-height;
+	color: $headings-color;
+}
+
+h1, h2, h3 {
+	margin-top: $line-height-computed;
+	margin-bottom: ($line-height-computed / 2);
+}
+h4, h5, h6 {
+	margin-top: ($line-height-computed / 2);
+	margin-bottom: ($line-height-computed / 2);
+}
+
+h1 { font-size: $font-size-h1; }
+h2 { font-size: $font-size-h2; }
+h3 { font-size: $font-size-h3; }
+h4 { font-size: $font-size-h4; }
+h5 { font-size: $font-size-h5; }
+h6 { font-size: $font-size-h6; }
+
+
+/*	Body Text
+---------------------------------------------------------*/
+
+p {
+	margin: 0 0 ($line-height-computed / 2);
+}
+
+.lead {
+	margin-bottom: $line-height-computed;
+	font-size: floor($font-size-base * 1.15);
+	@media (min-width: $screen-sm-min) {
+		font-size: floor($font-size-base * 1.5);
+	}
+}
+
+
+/*	Emphasis
+---------------------------------------------------------*/
+
+small,
+.small {
+	font-size: floor((100% * $font-size-sm / $font-size-base));
+}
+
+cite {
+	font-style: normal;
+}
+
+mark,
+.mark {
+	background-color: tint(map-get($brand-colors, warning), 40%);
+	padding: .2em;
+}
+
+// Alignment
+@each $align in (left, right, center, justify) {
+	.text-#{$align} {
+		text-align: $align;
+	}
+	@each $breakpoint-key in map-keys($breakpoints) {
+		$breakpoint-width: map-get($breakpoints, $breakpoint-key);
+		@include breakpoint($breakpoint-width) {
+			.#{$breakpoint-key}-text-#{$align} {
+				text-align: $align;
+			}
+		}
+	}
+}
+
+.text-nowrap       { white-space: nowrap; }
+
+
+// Transformation
+.text-lowercase    { text-transform: lowercase; }
+.text-uppercase    { text-transform: uppercase; }
+.text-capitalize   { text-transform: capitalize; }
+
+// Contextual Colors
+.text-muted        { color: $text-muted; }
+.text-primary      { color: map-get($brand-colors, primary); }
+.text-success      { color: map-get($brand-colors, success); }
+.text-info         { color: map-get($brand-colors, info); }
+.text-warning      { color: map-get($brand-colors, warning); }
+.text-danger       { color: map-get($brand-colors, danger); }
+
+
+/*	Lists
+---------------------------------------------------------*/
+
+ul,
+ol {
+	margin-top: 0;
+	margin-bottom: ($line-height-computed / 2);
+	ul,
+	ol {
+		margin-bottom: 0;
+	}
+}
+
+.list-unstyled {
+	@include list-unstyled();
+}
+
+.list-gapped {
+	> li {
+		margin-bottom: ($line-height-computed / 2);
+		> ul,
+		> ol {
+			margin-top: ($line-height-computed / 2);
+		}
+	}
+}
+
+// Definition Lists
+dl {
+	margin-top: 0;
+	margin-bottom: $line-height-computed;
+}
+dt,
+dd {
+	line-height: $line-height-base;
+}
+dt {
+	font-weight: bold;
+}
+dd {
+	margin-left: 0;
+}
+
+
+/*	Code
+---------------------------------------------------------*/
+
+// Inline and Block Code
+code,
+kbd,
+pre,
+samp {
+	font-family: $font-family-monospace;
+}
+
+// Inline Code
+code {
+	padding: 2px 4px;
+	font-size: 90%;
+	color: $code-color;
+	background-color: $code-bg;
+	border-radius: $border-radius-base;
+}
+
+// Keyboard Input
+kbd {
+	padding: 2px 4px;
+	font-size: 90%;
+	color: $kbd-color;
+	background-color: $kbd-bg;
+	border-radius: $border-radius-sm;
+	box-shadow: inset 0 -1px 0 rgba(0,0,0,.25);
+	kbd {
+		padding: 0;
+		font-size: 100%;
+		box-shadow: none;
+	}
+}
+
+// Code Blocks
+pre {
+	display: block;
+	padding: (($line-height-computed - 1) / 2);
+	margin: 0 0 ($line-height-computed / 2);
+	font-size: ($font-size-base - 1);
+	line-height: $line-height-base;
+	word-break: break-all;
+	word-wrap: break-word;
+	color: $pre-color;
+	background-color: $pre-bg;
+	border: 1px solid $pre-border-color;
+	border-radius: $border-radius-base;
+	&.scrollable {
+		max-height: $pre-scrollable-max-height;
+		overflow-y: scroll;
+	}
+	code {
+		padding: 0;
+		font-size: inherit;
+		color: inherit;
+		white-space: pre-wrap;
+		background-color: transparent;
+		border-radius: 0;
+	}
+}
+
+
+/*	Miscellaneous
+---------------------------------------------------------*/
+
+// Abbreviations and Acronyms
+abbr[title],
+abbr[data-original-title] {
+	cursor: help;
+	border-bottom: 1px dotted $abbr-border-color;
+}
+.initialism {
+	font-size: 90%;
+	text-transform: uppercase;
+}
+
+// Blockquotes
+blockquote {
+	padding: ($line-height-computed / 2) $line-height-computed;
+	margin: 0 0 $line-height-computed;
+	font-family: $blockquote-font-family;
+	font-size: $blockquote-font-size;
+	line-height: $blockquote-line-height;
+	font-weight: $blockquote-font-weight;
+	border-left: 5px solid $blockquote-border-color;
+	p,
+	ul,
+	ol {
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+	footer {
+		display: block;
+		font-size: 80%;
+		line-height: $line-height-base;
+		color: $text-muted;
+		&:before {
+			content: '\2014 \00A0'; // em dash, nbsp
+		}
+	}
+}
+
+// Addresses
+address {
+	margin-bottom: $line-height-computed;
+	font-style: normal;
+	line-height: $line-height-base;
+}

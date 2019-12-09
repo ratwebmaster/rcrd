@@ -1,0 +1,21 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+
+		{% set contents_class = ['section-contents'] %}
+
+		{% set contents_atts = ['class="' ~ contents_class|join(' ') ~ '"'] %}
+		{% set contents_atts = section.bg_color ? contents_atts|merge(['style="background-color: ' ~ section.bg_color ~ ';"']) : contents_atts %}
+
+		<div class="section-contents-wrap">
+			<div {{ contents_atts|join(' ') }}>
+				{{ parent() }}
+			</div>
+		</div>
+
+	{% endif %}
+
+{% endblock %}

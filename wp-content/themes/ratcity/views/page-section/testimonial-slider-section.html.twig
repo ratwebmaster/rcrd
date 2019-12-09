@@ -1,0 +1,53 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if section.testimonials %}
+		<div class="section-slider-wrap">
+			<div class="inner">
+				<div class="section-slider">
+					{% for testimonial in section.testimonials if testimonial.content %}
+						<div class="testimonial-container">
+							<blockquote class="testimonial">
+
+								{{ testimonial.content|content }}
+							
+								{% if testimonial.source_name or testimonial.source_org %}
+									<footer class="source">
+										{% if testimonial.source_name %}
+											<span class="name">{{ testimonial.source_name }}</span>
+										{% endif %}
+										{% if testimonial.source_org and testimonial.source_org_url %}
+											<span class="org"><a href="{{ testimonial.source_org_url }}" target="_blank">{{ testimonial.source_org }}</a></span>
+										{% elseif testimonial.source_org %}
+											<span class="org">{{ testimonial.source_org }}</span>
+										{% endif %}
+									</footer>
+								{% endif %}
+
+							</blockquote>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	{% endif %}
+	
+	{% if section.section_content_secondary|default(section.content_secondary|content) %}
+		<div class="section-content-secondary">
+			<div class="inner">
+				{{ section.section_content_secondary|default(section.content_secondary|content) }}
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}

@@ -1,0 +1,15 @@
+
+
+body.single {
+	.content-section.primary {
+		article.hentry {
+			margin-bottom: ($line-height-computed * 2);
+			.entry-title {
+				margin-top: 0;
+			}
+			footer.entry-meta {
+				margin-top: $line-height-computed;
+			}
+		}
+	}
+}

@@ -1,0 +1,20 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "main": "gulpfile.js",
+  "author": "Jordan Crown",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-sass": "^3.1.0",
+    "gulp-autoprefixer": "^2.2.0",
+    "gulp-bless": "^3.0.1",
+    "gulp-cssnano": "^2.1.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0"
+  }
+}

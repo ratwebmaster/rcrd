@@ -1,0 +1,394 @@
+
+
+/*	Sizing
+---------------------------------------------------------*/
+
+@mixin size($width, $height) {
+	width: $width;
+	height: $height;
+}
+
+@mixin square($width) {
+	@include size($width, $width);
+}
+
+
+/*	Breakpoints
+---------------------------------------------------------*/
+
+@mixin breakpoint($value) {
+	$str: breakpoint($value);
+	@if $str == '' {
+		@content;
+	} @else {
+		@media #{$str} {
+			@content;
+		}
+	}
+}
+
+
+/*	One-Sided Border Radius
+---------------------------------------------------------*/
+
+@mixin border-top-radius($radius) {
+	border-top-right-radius: $radius;
+	 border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+	border-bottom-right-radius: $radius;
+	   border-top-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+	border-bottom-right-radius: $radius;
+	 border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+	border-bottom-left-radius: $radius;
+	   border-top-left-radius: $radius;
+}
+
+
+/*	Gradients
+---------------------------------------------------------*/
+
+@mixin gradient-horizontal($start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100%) {
+	background-image: linear-gradient(to right, $start-color $start-percent, $end-color $end-percent);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=1);
+}
+@mixin gradient-vertical($start-color: #555, $end-color: #333, $start-percent: 0%, $end-percent: 100%) {
+	background-image: linear-gradient(to bottom, $start-color $start-percent, $end-color $end-percent);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0);
+}
+@mixin gradient-directional($start-color: #555, $end-color: #333, $deg: 45deg) {
+	background-repeat: repeat-x;
+	background-image: linear-gradient($deg, $start-color, $end-color);
+}
+@mixin gradient-horizontal-three-colors($start-color: #00b3ee, $mid-color: #7a43b6, $color-stop: 50%, $end-color: #c3325f) {
+	background-image: linear-gradient(to right, $start-color, $mid-color $color-stop, $end-color);
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=1);
+}
+@mixin gradient-vertical-three-colors($start-color: #00b3ee, $mid-color: #7a43b6, $color-stop: 50%, $end-color: #c3325f) {
+	background-image: linear-gradient($start-color, $mid-color $color-stop, $end-color);
+	background-repeat: no-repeat;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#{ie-hex-str($start-color)}', endColorstr='#{ie-hex-str($end-color)}', GradientType=0);
+}
+@mixin gradient-radial($inner-color: #555, $outer-color: #333) {
+	background-image: radial-gradient(circle, $inner-color, $outer-color);
+	background-repeat: no-repeat;
+}
+@mixin gradient-striped($color: rgba(255,255,255,.15), $angle: 45deg) {
+	background-image: linear-gradient($angle, $color 25%, transparent 25%, transparent 50%, $color 50%, $color 75%, transparent 75%, transparent);
+}
+
+// Reset filters for IE
+@mixin reset-filter() {
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+
+/*	Grid System
+---------------------------------------------------------*/
+
+// Grid Row
+@mixin row($breakpoint: 0, $gutter: 30px) {
+	@include breakpoint($breakpoint) {
+		@include clearfix();
+		margin-left: -($gutter / 2);
+		margin-right: -($gutter / 2);
+	}
+}
+
+// Grid Column
+@mixin col($breakpoint: 0, $width: 100%, $gutter: 30px) {
+	@include breakpoint($breakpoint) {
+		float: left;
+		width: $width;
+		padding-left: ($gutter / 2);
+		padding-right: ($gutter / 2);
+	}
+}
+
+// Grid Column Offset
+@mixin col-offset($breakpoint: 0, $offset: 0) {
+	@include breakpoint($breakpoint) {
+		margin-left: $offset;
+	}
+}
+
+// Grid Column Push/Pull
+@mixin col-push($breakpoint: 0, $push: 0) {
+	@include breakpoint($breakpoint) {
+		position: relative;
+		left: $push;
+	}
+}
+
+// Default Grid System Setup
+@mixin gen-col($size, $span, $breakpoint: 0) {
+	@include breakpoint($breakpoint) {
+		@if $span >= 0 {
+			@for $i from 0 through $span {
+				.col.#{$size}-push-#{$i},
+				.col.#{$size}-pull-#{$i} {
+					position: relative;
+				}
+				@if $span > 0 {
+					.col.#{$size}-#{$i} {
+						width: percentage($i / $span);
+					}
+					.col.#{$size}-offset-#{$i} {
+						margin-left: percentage($i / $span);
+					}
+					.col.#{$size}-push-#{$i} {
+						left: percentage($i / $default-grid-columns);
+					}
+					.col.#{$size}-pull-#{$i} {
+						left: -(percentage($i / $default-grid-columns));
+					}
+				} @else {
+					.col.#{$size}-push-#{$i},
+					.col.#{$size}-pull-#{$i} {
+						left: 0;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+/*	Icons
+---------------------------------------------------------*/
+
+@mixin icon($icon-char, $icon-font: FontAwesome) {
+	@include fa-icon();
+	font-family: $icon-font;
+	content: $icon-char;
+}
+
+
+/*	Utilities
+---------------------------------------------------------*/
+
+// Clearfix
+@mixin clearfix() {
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+// Visibility Utilities
+@mixin responsive-visibility($parent) {
+	#{$parent} {
+		display: block !important;
+	}
+	table#{$parent}            { display: table; }
+	tr#{$parent}               { display: table-row !important; }
+	th#{$parent}, td#{$parent} { display: table-cell !important; }
+}
+@mixin responsive-invisibility($parent) {
+	#{$parent} {
+		display: none !important;
+	}
+}
+
+
+/*	Type
+---------------------------------------------------------*/
+
+@mixin list-unstyled() {
+	list-style: none;
+	padding-left: 0;
+}
+
+
+/*	Forms
+---------------------------------------------------------*/
+
+@mixin input-base() {
+	display: block;
+	width: 100%;
+	font-weight: $font-weight-base;
+	background-image: none;
+	border-style: solid;
+	transition: background-color linear .15s, border-color linear .15s, box-shadow linear .15s;
+	&:focus {
+		outline: none;
+	}
+	&[disabled],
+	&[readonly],
+	fieldset[disabled] & {
+		cursor: not-allowed;
+		opacity: 1;
+	}
+}
+
+@mixin input-size($height: $input-height-base, $font-size: $font-size-base, $line-height: $line-height-base, $border-width: $input-border-width, $border-radius: $input-border-radius) {
+	
+	@if type_of($height) == string {
+		@if $height == 'sm' {
+			$height: $input-height-sm;
+			$font-size: $font-size-sm;
+			$border-radius: $border-radius-sm;
+		} @else if $height == 'lg' {
+			$height: $input-height-lg;
+			$font-size: $font-size-lg;
+			$border-radius: $border-radius-lg;
+		} @else {
+			$height: $input-height-base;
+		}
+	}
+
+	$line-height: round(if(unit($line-height) == '', ($line-height * $font-size), $line-height));
+	$padding-top: floor(($height - $line-height - ($border-width * 2)) / 2);
+	$padding-bottom: ($height - $line-height - $padding-top - ($border-width * 2));
+	$padding-side: round(($height - $font-size) * 0.4);
+
+	font-size: $font-size;
+	line-height: $line-height;
+	border-radius: $border-radius;
+	border-width: $border-width;
+	height: $height;
+	padding: $padding-top $padding-side $padding-bottom;
+}
+
+@mixin input-style($color: $input-color, $bg-color: $input-bg, $border-color: $input-border, $box-shadow: $input-box-shadow) {
+	color: $color;
+	background-color: $bg-color;
+	border-color: $border-color;
+	box-shadow: $box-shadow;
+}
+
+
+/*	Buttons
+---------------------------------------------------------*/
+
+@mixin button-base() {
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: $button-font-weight;
+	text-align: center;
+	vertical-align: middle;
+	cursor: pointer;
+	background-image: none;
+	border-style: solid;
+	text-shadow: none;
+	white-space: normal;
+	transition: background-color linear .15s, border-color linear .15s, color linear .15s, box-shadow linear .15s;
+	user-select: none;
+	&:focus,
+	&:active,
+	&.active {
+		outline: none;
+	}
+	&.disabled,
+	&[disabled],
+	fieldset[disabled] & {
+		cursor: not-allowed;
+		pointer-events: none;
+		opacity: .65;
+	}
+}
+
+@mixin button-size($height: $button-height-base, $font-size: $font-size-base, $line-height: $line-height-base, $border-width: $button-border-width, $border-radius: $border-radius-base) {
+	
+	@if type_of($height) == string {
+		@if $height == 'xs' {
+			$height: $button-height-xs;
+			$font-size: $font-size-sm;
+			$border-radius: $border-radius-sm;
+		} @else if $height == 'sm' {
+			$height: $button-height-sm;
+			$font-size: $font-size-sm;
+			$border-radius: $border-radius-sm;
+		} @else if $height == 'lg' {
+			$height: $button-height-lg;
+			$font-size: $font-size-lg;
+			$border-radius: $border-radius-lg;
+		} @else {
+			$height: $button-height-base;
+		}
+	}
+
+	$line-height: round(if(unit($line-height) == '', ($line-height * $font-size), $line-height));
+	$padding-top: floor(($height - $line-height - ($border-width * 2)) / 2);
+	$padding-bottom: ($height - $line-height - $padding-top - ($border-width * 2));
+	$padding-side: round(($height - $font-size) * 0.6);
+
+	font-size: $font-size;
+	line-height: $line-height;
+	border-radius: $border-radius;
+	border-width: $border-width;
+	height: $height;
+	padding: $padding-top $padding-side $padding-bottom;
+}
+
+@mixin button-style($bg-color: $button-bg, $color: null, $border-color: $button-border, $box-shadow: $button-box-shadow) {
+
+	@if type_of($bg-color) == string {
+		@if map-has-key($brand-colors, $bg-color) {
+			$bg-color: map-get($brand-colors, $bg-color);
+			$border-color: darken($bg-color, $button-border-darken-weight);
+			$color: if($color == null, foreground($bg-color, $text-color, #fff), $color);
+		} @else {
+			$bg-color: $button-bg;
+		}
+	}
+
+	$color: if($color == null, foreground($bg-color, $text-color, #fff), $color);
+
+	color: $color !important;
+	background-color: $bg-color;
+	border-color: $border-color;
+	box-shadow: $box-shadow;
+
+	&:hover,
+	&:focus,
+	&:active,
+	&.active {
+		color: $color !important;
+		background-color: darken($bg-color, 10%);
+		border-color: darken($border-color, 10%);
+	}
+	&:active,
+	&.active {
+		background-image: none;
+	}
+	&.disabled,
+	&[disabled],
+	fieldset[disabled] & {
+		&,
+		&:hover,
+		&:focus,
+		&:active,
+		&.active {
+			background-color: $bg-color;
+			border-color: $border-color;
+		}
+	}
+}
+
+
+/*	Alerts
+---------------------------------------------------------*/
+
+@mixin alert-style($bg, $border, $color) {
+	background-color: $bg;
+	border-color: $border;
+	color: $color;
+	hr {
+		border-top-color: darken($border, 5%);
+	}
+	.alert-link {
+		color: darken($color, 10%);
+	}
+}
