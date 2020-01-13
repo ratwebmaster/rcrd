@@ -3,8 +3,8 @@
  * Plugin Name: Crown Members
  * Description: Adds support for member entries.
  * Version: 1.1.0
- * Author: Jordan Crown
- * Author URI: http://www.jordancrown.com
+ * Author: RCRD Webmaster
+ * Author URI: http://www.ratcityrollerderby.com
  * License: GNU General Pulic License v2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
  */
@@ -12,6 +12,7 @@
 use Crown\Post\Type as PostType;
 use Crown\Post\MetaBox;
 use Crown\Post\Taxonomy;
+use Crown\AdminPage;
 
 use Crown\Form\Field;
 use Crown\Form\FieldGroup;
@@ -19,19 +20,24 @@ use Crown\Form\FieldGroupSet;
 use Crown\Form\Input\Text as TextInput;
 use Crown\Form\Input\Media as MediaInput;
 use Crown\Form\Input\RichTextarea;
+use Crown\Form\Input\Select;
+use Crown\Form\FieldRepeater;
 
 use Crown\ListTableColumn;
 use Crown\Shortcode;
+use Crown\UIRule;
 
 
 if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
-	class CrownMember {
+    class CrownMember {
 
 		public static $init = false;
 
 		public static $MemberPostType;
-		public static $MemberDepartmentTaxonomy;
+		public static $MemberTeamTaxonomy;
+		public static $MemberStatusTaxonomy;
 		public static $MemberListShortcode;
+		public static $MemberInterviewPage;
 
 
 		public static function init() {
@@ -44,6 +50,7 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 			add_action('after_setup_theme', array(__CLASS__, 'registerPostTypes'));
 			add_action('after_setup_theme', array(__CLASS__, 'registerTaxonomies'));
 			add_action('after_setup_theme', array(__CLASS__, 'registerShortcodes'));
+//            add_action('after_setup_theme', array(__CLASS__, 'registerInterviewPage'));
 
 			add_action('admin_enqueue_scripts', array(__CLASS__, 'registerAdminStyles'));
 
@@ -55,18 +62,18 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 			
 			foreach($wp_roles->role_objects as $role) {
 				foreach(array('publish', 'delete', 'delete_others', 'delete_private', 'delete_published', 'edit', 'edit_others', 'edit_private', 'edit_published', 'read_private') as $cap) {
-					if($role->has_cap($cap.'_posts')) {
-						$role->add_cap($cap.'_members');
-					}
+                    if($role->has_cap($cap.'_posts')) {
+                        $role->add_cap($cap.'_members');
+                    }
 				}
-				foreach(array('manage', 'edit', 'delete') as $cap) {
-					if($role->has_cap('manage_categories')) {
-						$role->add_cap($cap.'_member_departments');
-					}
-				}
-				if($role->has_cap('edit_posts')) {
-					$role->add_cap('assign_member_departments');
-				}
+//				foreach(array('manage', 'edit', 'delete') as $cap) {
+//					if($role->has_cap('manage_categories')) {
+//						$role->add_cap($cap.'_member_teams');
+//					}
+//				}
+//				if($role->has_cap('edit_posts')) {
+//					$role->add_cap('assign_member_teams');
+//				}
 			}
 
 			flush_rewrite_rules();
@@ -78,11 +85,11 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 			
 			foreach($wp_roles->role_objects as $role) {
 				foreach(array('publish', 'delete', 'delete_others', 'delete_private', 'delete_published', 'edit', 'edit_others', 'edit_private', 'edit_published', 'read_private') as $cap) {
-					$role->remove_cap($cap.'_members');
+                    $role->remove_cap($cap.'_members');
 				}
-				foreach(array('manage', 'edit', 'delete', 'assign') as $cap) {
-					$role->remove_cap($cap.'_member_departments');
-				}
+//				foreach(array('manage', 'edit', 'delete', 'assign') as $cap) {
+//					$role->remove_cap($cap.'_member_teams');
+//				}
 			}
 			
 			flush_rewrite_rules();
@@ -92,20 +99,20 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 		public static function registerPostTypes() {
 
 			self::$MemberPostType = new PostType(array(
-				'name' => 'member',
-				'singularLabel' => 'Member',
-				'pluralLabel' => 'Members',
-				'settings' => array(
-					'supports' => false,
-					'rewrite' => array('slug' => 'member', 'with_front' => false),
-					'menu_icon' => 'dashicons-businessman',
-					'has_archive' => false,
-					'publicly_queryable' => true,
-					'show_in_nav_menus' => false,
-					'exclude_from_search' => false,
-					'capability_type' => array('member', 'members'),
-					'map_meta_cap' => true
-				),
+                'name' => 'member',
+                'singularLabel' => 'Member',
+                'pluralLabel' => 'Members',
+                'settings' => array(
+                    'supports' => array('title', 'thumbnail', 'excerpt'),
+                    'rewrite' => array('slug' => 'member', 'with_front' => false),
+                    'menu_icon' => 'dashicons-id',
+                    'has_archive' => false,
+                    'publicly_queryable' => true,
+                    'show_in_nav_menus' => false,
+                    'exclude_from_search' => false,
+                    'capability_type' => array('member', 'members'),
+                    'map_meta_cap' => true
+                ),
 				'metaBoxes' => array(
 					new MetaBox(array(
 						'id' => 'member-details',
@@ -113,85 +120,71 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 						'priority' => 'high',
 						'fields' => array(
 							new FieldGroup(array(
-								'class' => 'no-border two-column large-left',
+								'class' => 'no-border two-column',
 								'fields' => array(
-									new FieldGroup(array(
-										'class' => 'no-border',
-										'fields' => array(
-											new FieldGroup(array(
-												'class' => 'no-border two-column',
-												'saveMetaCb' => array(__CLASS__, 'saveMemberPostAttributes'),
-												'fields' => array(
-													new Field(array(
-														'label' => 'First Name',
-														'input' => new TextInput(array('name' => 'member_first_name', 'class' => 'input-large'))
-													)),
-													new Field(array(
-														'label' => 'Last Name',
-														'input' => new TextInput(array('name' => 'member_last_name', 'class' => 'input-large'))
-													))
-												)
-											)),
-											new Field(array(
-												'label' => 'Job Title',
-												'input' => new TextInput(array('name' => 'member_title'))
-											)),
-											new Field(array(
-												'label' => 'Phone Number',
-												'input' => new TextInput(array('name' => 'member_phone'))
-											)),
-											new Field(array(
-												'label' => 'Email',
-												'input' => new TextInput(array('name' => 'member_email'))
-											)),
-											new Field(array(
-												'label' => 'Office',
-												'input' => new TextInput(array('name' => 'member_office'))
-											)),
-											new Field(array(
-												'label' => 'LinkedIn Profile URL',
-												'input' => new TextInput(array('name' => 'member_linkedin_url'))
-											))
-										)
-									)),
-									new FieldGroup(array(
-										'class' => 'no-border',
-										'fields' => array(
-											new Field(array(
-												'label' => 'Headshot Image',
-												'input' => new MediaInput(array('name' => 'member_headshot', 'buttonLabel' => 'Select Image', 'mimeType' => 'image', 'class' => 'headshot'))
-											))
-										)
-									))
+                                    new Field(array(
+                                        'label' => 'Number',
+                                        'input' => new TextInput(array('name' => 'member_number'))
+                                    )),
+                                    new Field(array(
+                                        'label' => 'Pronouns',
+                                        'input' => new TextInput(array('name' => 'member_pronouns'))
+                                    )),
 								)
-							))
+							)),
+                            new Field(array(
+                                'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('taxonomy' => 'member_team', 'inputName' => 'tax_input[member_team][announcers]'), 'value' => 1))),
+                                'label' => 'Website (where applicable for volunteers or affiliates without numbers)',
+                                'input' => new TextInput(array('name' => 'member_website'))
+                            )),
+                            new Field(array(
+                                'label' => 'Description/Bio copy',
+                                'input' => new RichTextarea(array('name' => 'member_bio', 'rows' => '10'))
+                            )),
 						)
 					)),
 					new MetaBox(array(
-						'id' => 'member-bio',
-						'title' => 'Member Bio',
+						'id' => 'member-interview',
+						'title' => 'Member Interview',
 						'priority' => 'high',
 						'fields' => array(
-							new Field(array(
-								'input' => new RichTextarea(array('name' => 'member_bio', 'rows' => 16))
-							))
+                            new FieldRepeater(array(
+                                'addNewLabel' => 'Select A Question',
+                                'name' => 'member_questions',
+                                'fields' => array(
+                                    new Field(array(
+                                        'label' => 'Question',
+                                        'input' => new Select(array('name' => 'question', 'options' => array(
+                                            array('value' => 'q1', 'label' => 'What is your birthdate?'),
+                                            array('value' => 'q2', 'label' => 'What is your hometown?'),
+                                            array('value' => 'q3', 'label' => 'What other sports have you played?'),
+                                            array('value' => 'q4', 'label' => 'What position do you prefer on the track?'),
+                                            array('value' => 'q5', 'label' => 'What do you do for a living?'),
+                                        )))
+                                    )),
+                                    new Field(array(
+                                        'label' => 'Answer',
+                                        'input' => new TextInput(array('name' => 'answer'))
+                                    ))
+                                )
+                            ))
 						)
 					))
 				),
 				'listTableColumns' => array(
 					new ListTableColumn(array(
 						'key' => 'member-image',
-						'title' => '',
+						'title' => 'Photo',
 						'position' => 1,
 						'outputCb' => function($postId, $args) {
-							$imageId = get_post_meta($postId, 'member_headshot', true);
+							$imageId = get_post_meta($postId, '_thumbnail_id', true);
 							$imageSrc = wp_get_attachment_image_src($imageId, 'thumbnail');
 							if($imageSrc) echo '<a href="'.admin_url('post.php?post='.$postId.'&action=edit').'"><div class="image-wrap"><div class="image" style="background-image: url('.$imageSrc[0].');"></div></div></a>';
 						}
 					)),
 					new ListTableColumn(array(
 						'key' => 'member-details',
-						'title' => 'Details',
+						'title' => 'Number',
 						'position' => 3,
 						'outputCb' => array(__CLASS__, 'outputMemberDetailsColumn')
 					))
@@ -201,60 +194,69 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 		}
 
 
-		public static function saveMemberPostAttributes($field, $input, $type, $objectId, $value) {
-			$postData = array(
-				'ID' => $objectId,
-				'post_title' => array(),
-				'post_name' => ''
-			);
-			if(isset($input['member_first_name']) && !empty($input['member_first_name'])) $postData['post_title'][] = $input['member_first_name'];
-			if(isset($input['member_last_name']) && !empty($input['member_last_name'])) $postData['post_title'][] = $input['member_last_name'];
-			$postData['post_title'] = implode(' ', $postData['post_title']);
-			$postData['post_name'] = sanitize_title($postData['post_title']);
-			wp_update_post($postData);
-		}
-
-
 		public static function outputMemberDetailsColumn($postId, $args) {
 			$details = array(
-				'title' => get_post_meta($postId, 'member_title', true),
-				'phone' => get_post_meta($postId, 'member_phone', true),
-				'email' => get_post_meta($postId, 'member_email', true),
-				'office' => get_post_meta($postId, 'member_office', true)
+				'number' => get_post_meta($postId, 'member_number', true)
 			);
-			$output = array();
-			if(!empty($details['title'])) $output[] = '<em>'.$details['title'].'</em>';
-			if(!empty($details['phone'])) $output[] = $details['phone'];
-			if(!empty($details['email'])) $output[] = '<a href="mailto:'.$details['email'].'">'.$details['email'].'</a>';
-			if(!empty($details['office'])) $output[] = 'Office: '.$details['office'];
-			echo implode('<br>', $output);
+            $output = '';
+			if(!empty($details['number'])) $output = $details['number'];
+			echo $output;
 		}
 
 
 		public static function registerTaxonomies() {
 
-			self::$MemberDepartmentTaxonomy = new Taxonomy(array(
-				'name' => 'member_department',
-				'singularLabel' => 'Department',
-				'pluralLabel' => 'Departments',
+			self::$MemberTeamTaxonomy = new Taxonomy(array(
+				'name' => 'member_team',
+				'singularLabel' => 'Team',
+				'pluralLabel' => 'Teams',
 				'postTypes' => array('member'),
 				'settings' => array(
 					'hierarchical' => true,
-					'rewrite' => array('slug' => 'departments', 'with_front' => false),
+					'rewrite' => array('slug' => 'teams', 'with_front' => false),
 					'show_in_nav_menus' => false,
 					'publicly_queryable' => false,
 					'labels' => array(
-						'menu_name' => 'Departments',
-						'all_items' => 'All Departments'
+						'menu_name' => 'Teams',
+						'all_items' => 'All Teams'
 					),
-					'capabilities' => array(
-						'manage_terms' => 'manage_member_departments',
-						'edit_terms' => 'edit_member_departments',
-						'delete_terms' => 'delete_member_departments',
-						'assign_terms' => 'assign_member_departments'
-					)
-				)
+//					'capabilities' => array(
+//						'manage_terms' => 'manage_member_teams',
+//						'edit_terms' => 'edit_member_teams',
+//						'delete_terms' => 'delete_member_teams',
+//						'assign_terms' => 'assign_member_teams'
+//					)
+				),
+                'fields' => array(
+                    new Field(array(
+                        'label' => 'Team Logo',
+                        'input' => new MediaInput(array('name' => 'team_logo', 'buttonLabel' => 'Select Image', 'mimeType' => 'image'))
+                    ))
+                ),
 			));
+
+            self::$MemberStatusTaxonomy = new Taxonomy(array(
+                'name' => 'member_status',
+                'singularLabel' => 'Status',
+                'pluralLabel' => 'Statuses',
+                'postTypes' => array('member'),
+                'settings' => array(
+                    'hierarchical' => true,
+                    'rewrite' => array('slug' => 'statuses', 'with_front' => false),
+                    'show_in_nav_menus' => false,
+                    'publicly_queryable' => false,
+                    'labels' => array(
+                        'menu_name' => 'Status',
+                        'all_items' => 'All Statuses'
+                    ),
+//                    'capabilities' => array(
+//                        'manage_terms' => 'manage_member_statuses',
+//                        'edit_terms' => 'edit_member_statuses',
+//                        'delete_terms' => 'delete_member_statuses',
+//                        'assign_terms' => 'assign_member_statuses'
+//                    )
+                )
+            ));
 
 		}
 
@@ -265,11 +267,50 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 				'tag' => 'member_list',
 				'getOutputCb' => array(__CLASS__, 'getMemberListShortcode'),
 				'defaultAtts' => array(
-					'department' => ''
+					'team' => ''
 				)
 			));
 
 		}
+
+
+        public static function registerInterviewPage() {
+
+            self::$MemberInterviewPage = new AdminPage(array(
+                'parent' => 'edit.php?post_type=member',
+                'position' => 0,
+                'title' => 'Interview Questions',
+                'menuTitle' => 'Member Questions',
+                'capability' => 'manage_options',
+                'fields' => array(
+                    new FieldGroup(array(
+                        'outputCb' => array(__CLASS__, 'getQuestionsList'),
+                    )),
+                    new FieldRepeater(array(
+                        'addNewLabel' => 'Add New Question',
+                        'name' => 'member_questions',
+                        'fields' => array(
+                            new Field(array(
+                                'label' => 'Question',
+                                'input' => new Select(array('name' => 'question', 'options' => array(
+                                    array('value' => 'q1', 'label' => 'What is your birthdate?'),
+                                    array('value' => 'q2', 'label' => 'What is your hometown?'),
+                                    array('value' => 'q3', 'label' => 'What other sports have you played?'),
+                                    array('value' => 'q4', 'label' => 'What position do you prefer on the track?'),
+                                    array('value' => 'q5', 'label' => 'What do you do for a living?'),
+                                )))
+                            )),
+                        )
+                    ))
+                )
+
+            ));
+
+        }
+
+        public static function getQuestionsList() {
+		    return "Hello!";
+        }
 
 
 		public static function getMemberListShortcode($atts, $content) {
@@ -281,12 +322,12 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 				'orderby' => 'meta_value title',
 				'order' => 'ASC'
 			);
-			if(!empty($atts['department'])) {
+			if(!empty($atts['team'])) {
 				$queryArgs['tax_query'] = array(
 					array(
-						'taxonomy' => 'member_department',
-						'field' => strcmp(intval($atts['department']), $atts['department']) === 0 ? 'term_id' : 'slug',
-						'terms' => $atts['department']
+						'taxonomy' => 'member_team',
+						'field' => strcmp(intval($atts['team']), $atts['team']) === 0 ? 'term_id' : 'slug',
+						'terms' => $atts['team']
 					)
 				);
 			}
