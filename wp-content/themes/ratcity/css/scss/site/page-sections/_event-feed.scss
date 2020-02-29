@@ -1,0 +1,19 @@
+section.page-section.event-feed-section {
+  .event {
+    margin-top: 2rem;
+    &__date {
+      text-transform: uppercase;
+      font-weight: 600;
+      color: map-get($brand-colors, green);
+    }
+    @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+      &:nth-child(even) { padding-left: 1rem; }
+      &:nth-child(odd) { padding-right: 1rem; }
+    }
+    & + .event {
+      @media (min-width: $screen-md-min) {
+        margin-left: 2rem;
+      }
+    }
+  }
+}

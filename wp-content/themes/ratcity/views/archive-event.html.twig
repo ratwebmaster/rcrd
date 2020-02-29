@@ -1,0 +1,281 @@
+{% extends 'index.html.twig' %}
+
+{% block head_meta %}
+	<title>Championship Schedule</title>
+	{{ parent() }}
+{% endblock %}
+
+{% block main %}
+
+	{% if sidebar.enabled %}
+
+		<div class="main__wrapper relative">
+
+			{{ parent() }}
+
+			{{ block('sidebar') }}
+
+		</div>
+
+	{% else %}
+
+		{{ parent() }}
+
+	{% endif %}
+
+{% endblock %}
+
+
+{% block page_sections %}
+
+	{% set index_page_id = site.theme_options_event_index_page %}
+	{% set index_page = get_post(index_page_id) %}
+
+	{% set page_content_sections = index_page.meta.page_content_sections %}
+
+	{{ block('page_sections_loop') }}
+
+	<section class="page-section">
+		<div class="inner">
+			<div class="container">
+				<div class="inner">
+
+					{{ block('index_filters') }}
+			
+					{{ block('content') }}
+			
+				</div><!-- .inner -->
+			</div><!-- .container -->
+		</div><!-- .inner -->
+	</section><!-- .page-section -->
+{% endblock %}
+
+{% block index_filters %}
+	<div class="section-filters">
+
+		<form action="{{ get_url(site.theme_options_event_index_page) }}" class="filter__events flex flex-wrap-xs justify-center align-items-center">
+
+			{% set options = get_event_type_index_filter_options() %} {# fetches all event_types to populate select drop down #}
+			<div class="form-group__types">
+				<div class="dropdown">
+					<select name="types">
+						<label name="types" type="hidden">Event Type Filter Options</label>
+						{% for option in options %}
+							{% if option.active %}
+								<option value="{{ option.key }}" selected>{{ option.label }}</option>
+							{% else %}
+								<option value="{{ option.key }}">{{ option.label }}</option>
+							{% endif %}
+{#							<a class="dropdown-item {{ option.key }} {{ option.active ? 'active' : '' }} event-type-dropdown-item" href="{{ option.url }}" data-key="{{ option.key }}"><span class="icon {{ option.icon ? option.icon : 'placeholder' }}"></span><span class="label">{{ option.label }}</span></a>#}
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+
+{#			{% set options = get_month_index_filter_options() %} #}{# fetches all event_types to populate select drop down #}
+{#			<div class="form-group__month">#}
+{#				<div class="dropdown">#}
+{#					<select name="month">#}
+{#						<label name="month" type="hidden">Event Month Filter Options</label>#}
+{#						{% for option in options %}#}
+{#							{% if option.active %}#}
+{#								<option value="{{ option.key }}" selected>{{ option.label }}</option>#}
+{#							{% else %}#}
+{#								<option value="{{ option.key }}">{{ option.label }}</option>#}
+{#							{% endif %}#}
+{#							#}{#							<a class="dropdown-item {{ option.key }} {{ option.active ? 'active' : '' }} event-type-dropdown-item" href="{{ option.url }}" data-key="{{ option.key }}"><span class="icon {{ option.icon ? option.icon : 'placeholder' }}"></span><span class="label">{{ option.label }}</span></a>#}
+{#						{% endfor %}#}
+{#					</select>#}
+{#				</div>#}
+{#			</div>#}
+
+			{% set options = get_event_year_index_filter_options(events) %}
+			<div class="form-group__year">
+				<div class="dropdown">
+					<select name="event_year">
+						<label name="year" type="hidden">Event Year Filter Options</label>
+						{% for option in options %}
+							{% if option.active %}
+								<option value="{{ option.key }}" selected>{{ option.label }}</option>
+							{% else %}
+								<option value="{{ option.key }}">{{ option.label }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+
+			<div class="form-group__submit">
+				<button type="submit" class="hidden btn">Go</button>
+			</div>
+			<div class="form-group__reset">
+				<a class="btn white" href="{{ get_url(site.theme_options_event_index_page) }}" class="reset">{{ 'Reset' }}</a>
+			</div>
+
+		</form>
+
+	</div>
+{% endblock %}
+
+
+{% block content %}
+	
+	{% block primary %}
+		<div class="content-section" role="main">
+			<div class="inner">
+
+				{% block article_content %}
+
+				<div class="table flex">
+					<div class="flex__row">
+						<div class="flex__header event__date">{{ site.event_archive_date }}</div>
+						<div class="flex__header event__title">{{ site.event_archive_name }}</div>
+						<div class="flex__header event__location">{{ site.event_archive_location }}</div>
+						<div class="flex__header event__registration">{{ site.event_archive_registration }}</div>
+					</div>
+
+					{% set events = filtered_events ? filtered_events : events %}
+
+				{% for post in events %}
+
+					{% if post.event_type_championship == 1 %}
+
+						<div class="flex__row event">
+							<div class="flex__cell event__date">
+
+								{% if post.event_date_tbd %}
+									<strong>TBD</strong>
+								{% else %}
+									{% set start = post.event_start_date ? post.event_start_date : '' %}
+									{% set end = post.event_end_date ? post.event_end_date : '' %}
+									{% set conjunction = ' - ' %}
+
+		{#							{% if end|date('nj') - start|date('nj') == 1 %}#}
+		{#								{% set conjunction = ' - ' %}#}
+		{#							{% endif %}#}
+
+									{% if start != '' and end != '' %}
+										{% if start|date('F j') == end|date('F j') %}
+											{% set end = '' %}
+											{% set conjunction = '' %}
+										{% elseif start|date('F') == end|date('F') %}
+											{% set end = end|date('j') %}
+										{% else %}
+											{% set end = end|date('F j') %}
+										{% endif %}
+
+										{{ start|date('F j') }}{{ conjunction }}{{ end }}
+									{% else %}
+										<strong>TBD</strong>
+									{% endif %}
+								{% endif %}
+							</div>
+							<div class="flex__cell event__title">
+								{% set venue = get_post(post.event_venue) %}
+								<strong><a href="{{ post.link }}">{{ post.title }}</a></strong>
+								<div>{{ venue.title ? venue.title : 'TBD' }}</div>
+							</div>
+							<div class="flex__cell event__location">
+
+								{% set reg_open = post.event_details_registration_open ? (post.event_details_registration_open ~ (post.event_details_registration_open_time ? post.event_details_registration_open_time : '00:00'))|date('c') %}
+								{% set reg_close = post.event_details_registration_deadline ? (post.event_details_registration_deadline ~ (post.event_details_registration_deadline_time ? post.event_details_registration_deadline_time: '23:59'))|date('c') %}
+								{% set now = function('current_time', 'c') %}
+
+								{% if post.event_details_status %}
+									<div class="event-status text-danger">{{ post.event_details_status }}</div>
+								{% endif %}
+
+								{% if reg_open and reg_close %}
+
+									{% if now >= reg_open %} {# if today is after registration opens #}
+										{# registration is open #}
+										{% if now > reg_close %} {# if today is after registration closes #}
+											{# registration is closed #}
+											<div class="event-closed">Registration Closed</div>
+
+										{% else %}
+											<div class="event-register">
+												<a class="btn block" href="{{ post.event_details_registration_link }}"{{ post.event_details_target_blank ? ' target="_blank"' : '' }}>{{ post.event_details_registration_label }}</a>
+												<p class="event-register-deadline"><strong>Deadline:</strong> {{ reg_close|date('M d') }} {{ reg_close|date('g:i a') }}</p>
+
+											</div>
+										{% endif %}
+
+										{% set pdf_registration = post.event_details_registration_pdf is iterable ? post.event_details_registration_pdf[0] : post.event_details_registration_pdf %}
+										{% set pdf_label = post.event_details_registration_pdf_label is iterable ? post.event_details_registration_pdf_label[0] : post.event_details_registration_pdf_label %}
+										{% if pdf_registration %}
+											<a href="{{ get_media_url(pdf_registration) }}">{{ pdf_label ? pdf_label : 'PDF ENTRY FORM' }}</a>
+										{% endif %}
+									{% else %} {# today is before registration #}
+										<div class="event-upcoming">
+											{% if now|date('Y-m-d') == reg_open|date('Y-m-d') %}
+												Registration<br />opens {{ reg_open|date('g:i a') }}
+											{% else %}
+												Registration<br />opens {{ reg_open|date('m/d') }}
+											{% endif %}
+										</div>
+									{% endif %}
+
+								{% else %}
+
+									<div class="event-soon">Coming soon!</div>
+
+								{% endif %}
+
+							</div>
+							<div class="flex__cell event__registration">
+
+								{% if (post.event_result_link_type == 'internal' and post.event_result_link_internal) or (post.event_result_link_type == 'internal' and post.event_result_link_external) or post.event_details_additional_links %}
+
+									{% if (post.event_result_link_type == 'internal' and post.event_result_link_internal) or (post.event_result_link_type == 'internal' and post.event_result_link_external) %}{# if a result post has been created with #}
+										{% set result_link = post.event_result_link_type == 'internal' ? get_url(post.event_result_link_internal) : post.event_result_link_external %}
+										<div class="event-results"><a class="" href="{{ result_link }}"{{ post.event_result_target_blank ? ' target="_blank"' : '' }}>{{ post.event_result_link_label ? post.event_result_link_label : 'Results/Photos' }}</a></div>
+									{% endif %}
+
+									{% if post.event_details_additional_links %}
+
+										{% for link in post.event_details_additional_links %}
+
+											<div class="event-register-link"><a href="{{ link.event_details_additional_link }}"{{ link.event_additional_target_blank ? ' target="_blank"' : '' }}>{{ link.event_details_additional_label }}</a></div>
+
+										{% endfor %}
+
+									{% endif %}
+
+								{% else %}
+
+									<div class="event-soon">Coming soon!</div>
+
+								{% endif %}
+
+							</div>
+						</div>
+
+					{% endif %}
+
+				{% endfor %}
+
+				</div>
+
+		{% endblock %} {# primary #}
+
+		{% include 'includes/pagination.html.twig' with { 'class': 'below' } %}
+
+		</div><!-- .inner -->
+	</div><!-- .content-section.primary -->
+{% endblock %} {# content #}
+
+
+
+{% endblock %}
+
+
+{% block sidebar %}
+	{% if sidebar %}
+		<div id="side">
+			<nav id="side-nav" role="navigation" class="">
+				{% include 'includes/menu.html.twig' with { 'items': sidebar.menu } only %}
+			</nav><!-- #header-navigation -->
+		</div>
+	{% endif %}
+{% endblock %}

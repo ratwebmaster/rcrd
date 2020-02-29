@@ -2,9 +2,40 @@
 
 .btn {
 
-	@include button-base();
-	@include button-size();
-	@include button-style();
+	display: inline-block;
+	margin-bottom: 0;
+	font-weight: $button-font-weight;
+	font-family: $font-family-header;
+	letter-spacing: 1.25px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 0.75em 1em;
+	text-shadow: none;
+	border-radius: 2em;
+	//border-width: $button-border-width;
+	//border-style: solid;
+	//border-color: $button-border;
+	line-height: 1.1875;
+	text-transform: uppercase;
+
+	@media (max-width: $screen-xs-max) {
+		padding: 0.75em 1.75em;
+	}
+
+	background-color: map-get($brand-colors, primary);
+	color: map-get($brand-colors, black);
+
+	&:hover,
+	&:focus,
+	&:active,
+	&.active {
+		background-color: map-get($brand-colors, green);
+		color: map-get($brand-colors, white) !important;
+	}
+
+	//@include button-base();
+	//@include button-size();
+	//@include button-style();
 
 	&:active,
 	&.active {
@@ -16,17 +47,35 @@
 	fieldset[disabled] & {
 		box-shadow: none;
 	}
-	
-	&, &.default { @include button-style(); }
-	@each $key, $color in $brand-colors {
-		&.#{$key} { @include button-style($color, null, $color); }
-	}
-	&.white { @include button-style(#fff, null, #fff); }
 
-	&.lg { @include button-size('lg'); }
-	&, &.md { @include button-size(); }
-	&.sm { @include button-size('sm'); }
-	&.xs { @include button-size('xs'); }
+	&.primary {
+	}
+
+
+	&.outline {
+		background-color: rgba(map-get($brand-colors, green), 0);
+		color: map-get($brand-colors, green);
+		border: 1px solid map-get($brand-colors, green);
+		letter-spacing: .37px;
+		font-weight: 600;
+		&:hover,
+		&:focus,
+		&:active,
+		&.active {
+			background-color: map-get($brand-colors, green);
+			color: $button-color !important;
+		}
+	}
+
+	&.lg {
+		font-size: 2.2rem;
+		//padding: 1.5em 3em;
+	}
+	&.sm {
+		font-size: 1.6rem;
+		letter-spacing: 0;
+		padding: 0.5em 1.75em;
+	}
 
 	&.link {
 		@include button-style(transparent, $link-color, transparent, none);
@@ -62,9 +111,4 @@ button,
 input[type=button],
 input[type=submit] {
 	@extend .btn;
-}
-
-input[type=submit],
-button[type=submit] {
-	@extend .btn.primary;
 }

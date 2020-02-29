@@ -68,7 +68,7 @@
 /*	Units
 ---------------------------------------------------------*/
 
-$rem-base: 16px !default;
+$rem-base: $rem-base !default;
 
 @function strip-unit($num) {
 	@return $num / ($num * 0 + 1);

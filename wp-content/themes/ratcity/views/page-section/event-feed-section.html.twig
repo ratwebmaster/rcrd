@@ -1,0 +1,84 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% set feed_items = [] %}
+	{% if section.post_source == 'event_types' %}
+		{% if section.post_categories %}
+			{% set feed_items = get_posts({
+				post_type: 'event',
+				posts_per_page: 4,
+				meta_query: [{ key: 'event_start_timestamp', compare: '>=', value: (now|date('Y-m-d')) ~ '00:00:00' }],
+				tax_query: [{ taxonomy: 'event_type', terms: section.event_types }],
+				orderby: 'event_start_timestamp',
+				order: 'ASC'
+			}) %}
+		{% endif %}
+	{% elseif section.post_source == 'specific' %}
+		{% if section.events %}
+			{% set feed_items = get_posts({
+				post_type: 'event',
+				posts_per_page: -1,
+				post__in: section.events,
+				orderby: 'post__in',
+				order: 'ASC'
+			}) %}
+		{% endif %}
+	{% else %}
+		{% set feed_items = get_posts({
+			post_type: 'event',
+			posts_per_page: 4,
+			meta_query: [{ key: 'event_start_timestamp', compare: '>=', value: (now|date('Y-m-d')) ~ '00:00:00' }],
+			orderby: 'event_start_timestamp',
+			order: 'ASC'
+		}) %}
+	{% endif %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if feed_items %}
+		<div class="section-slider-wrap">
+			<div class="inner">
+				<div class="section-slider">
+					<div class="events flex flex-wrap flex-no-wrap-md">
+						{% for event in feed_items %}
+							<div class="event flex-25-md flex-50-sm flex-100">
+
+								<div class="event__image">
+									{% if event.meta._thumbnail_id %}
+										<img src="{{ get_media_url(event.meta._thumbnail_id, '1000w') }}" alt="{{ get_media_alt_text(event.meta._thumbnail_id)|escape('html_attr') }}">
+									{% endif %}
+								</div>
+
+								{% if event.meta.event_start_date %}
+									<div class="event__date">
+										{{ event.meta.event_start_date|date('F j') }}
+									</div>
+								{% endif %}
+
+								{% if event.title %}
+									<div class="event__title">
+										{{ event.title }}
+									</div>
+								{% endif %}
+
+								<div class="event__content">{{ event.excerpt ? event.excerpt|content : get_custom_excerpt(event.meta.event_details)|content }}</div>
+
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="events__link text-center"><a class="btn outline" href="{{ get_url(section.events_feed_button_link) }}">{{ section.events_feed_button_label }}</a></div>
+	{% endif %}
+
+{% endblock %}

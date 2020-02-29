@@ -10,6 +10,11 @@
 @import 'config/_mixins';
 @import 'config/_fonts';
 @import 'config/_icons';
+@import "config/flexbox/flex";
+@import "config/flexbox/align";
+@import "config/flexbox/justify";
+@import "config/flexbox/order";
+@import "config/flexbox/width";
 
 // Core CSS
 @import 'core/_normalize';

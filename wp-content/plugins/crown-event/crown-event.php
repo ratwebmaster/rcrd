@@ -115,7 +115,7 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownEvents')) {
                 'singularLabel' => 'Event',
                 'pluralLabel' => 'Events',
                 'settings' => array(
-                    'supports' => array('title', 'thumbnail', 'page-attributes'),
+                    'supports' => array('title', 'thumbnail', 'page-attributes', 'excerpt'),
                     'rewrite' => array('slug' => 'events', 'with_front' => false),
                     'menu_icon' => 'dashicons-calendar',
                     'has_archive' => true,
@@ -206,7 +206,8 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownEvents')) {
                         'fields' => array(
                             new Field(array(
                                 'label' => 'Event Copy',
-                                'input' => new RichTextarea(array('name' => 'event_details'))
+                                'input' => new RichTextarea(array('name' => 'event_details')),
+                                'saveMetaCb' => array(__CLASS__, 'saveExcerpt'),
                             )),
                             new Field(array(
                                 'label' => 'Facebook Event Link',
@@ -274,6 +275,13 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownEvents')) {
             foreach($fields as $field) {
                 $field->saveValue($input, 'post', $post->ID);
             }
+        }
+
+        public static function saveExcerpt($post, $input, $fields) {
+            if (!isset($post['post_excerpt'])) $post['post_excerpt'] = $input['event_details'];
+
+            $post->saveValue($post['post_excerpt'], 'post', $post->ID);
+
         }
 
 

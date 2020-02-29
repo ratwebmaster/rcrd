@@ -4,33 +4,39 @@
 ---------------------------------------------------------*/
 
 $brand-colors: (
-	primary:                           #428bca,
+	primary:                           #8DC63F, // Rat City Green
 	success:                           #5cb85c,
 	info:                              #5bc0de,
 	warning:                           #f0ad4e,
 	danger:                            #d9534f,
+	black:							   #000000, // Black duh
+	grey:							   #818380, // Gray
+	green:							   #497C04, // Medium Dark RC Green
+	light-gray:						   #EFEFEE, // Grey
+	light-green:					   #F5F6F4, // Very light RC Green
+	white:							   #FFFFFF, // White duh
 );
 
 
 /*	Scaffolding
 ---------------------------------------------------------*/
 
-$rem-base:                             16px;
+$rem-base:                             10px;
 
-$body-bg:                              #fff;
-$header-bg:                            #f4f4f4;
-$footer-bg:                            #444;
+$body-bg:                              map-get($brand-colors,white);
+$header-bg:                            map-get($brand-colors,black);
+$footer-bg:                            map-get($brand-colors,black);
 
-$text-color:                           #333;
+$text-color:                           map-get($brand-colors,black);
 $text-muted:                           #aaa;
 
 $link-color:                           map-get($brand-colors, primary);
-$link-hover-color:                     darken($link-color, 15%);
+$link-hover-color:                     map-get($brand-colors, green);
 
-$hr-border:                            #ccc;
+$hr-border:                            map-get($brand-colors, primary);
 $abbr-border-color:                    #ccc;
 
-$mobile-menu-width:                    250px;
+$mobile-menu-width:                    100vw;
 
 $default-grid-gutter:                  30px;
 $default-grid-columns:                 12;
@@ -39,23 +45,24 @@ $default-grid-columns:                 12;
 /*	Typography
 ---------------------------------------------------------*/
 
+$font-family-header:				   'Montserrat', Helvetica, sans-serif;
 $font-family-sans-serif:               'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $font-family-serif:                    Georgia, 'Times New Roman', Times, serif;
 $font-family-monospace:                Menlo, Monaco, Consolas, 'Courier New', monospace;
 $font-family-base:                     $font-family-sans-serif;
 
-$font-weight-base:                     300;
+$font-weight-base:                     400;
 
-$font-size-base:                       15px;
-$font-size-lg:                         18px;
-$font-size-sm:                         12px;
+$font-size-base:                       16px;
+$font-size-lg:                         20px;
+$font-size-sm:                         14px;
 
-$font-size-h1:                         36px;
-$font-size-h2:                         30px;
-$font-size-h3:                         24px;
-$font-size-h4:                         18px;
-$font-size-h5:                         14px;
-$font-size-h6:                         12px;
+$font-size-h1:                         48px;
+$font-size-h2:                         36px;
+$font-size-h3:                         28px;
+$font-size-h4:                         24px;
+$font-size-h5:                         16px;
+$font-size-h6:                         18px;
 
 $line-height-base:                     1.4;
 $line-height-lg:                       1.6;
@@ -129,7 +136,7 @@ $button-bg:                               #fff;
 $button-color:                            $text-color;
 $button-border:                           #ccc;
 $button-border-width:                     1px;
-$button-font-weight:                      $font-weight-base;
+$button-font-weight:                      700;
 $button-box-shadow:                       none;
 
 $button-border-darken-weight:             4%;

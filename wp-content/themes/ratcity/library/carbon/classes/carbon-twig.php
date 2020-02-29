@@ -82,6 +82,7 @@ if(!class_exists('CarbonTwig')) {
 			$functions = array(
 				'function' => array('callback' => array(&$this, 'functionFunction')),
 				'action' => array('callback' => array(&$this, 'functionAction')),
+				'get_url' => array('callback' => array(&$this, 'functionGetUrl')),
 				'get_media_url' => array('callback' => array(&$this, 'functionGetMediaUrl')),
 				'get_media_filename' => array('callback' => array(&$this, 'functionGetMediaFilename')),
 				'get_media_filetype' => array('callback' => array(&$this, 'functionGetMediaFiletype')),
@@ -96,7 +97,8 @@ if(!class_exists('CarbonTwig')) {
 				'get_terms' => array('callback' => array(&$this, 'functionGetTerms')),
 				'use_white_foreground' => array('callback' => array(&$this, 'functionUseWhiteForeground')),
 				'get_luminosity' => array('callback' => array(&$this, 'functionGetLuminosity')),
-				'compare_colors' => array('callback' => array(&$this, 'functionCompareColors'))
+				'compare_colors' => array('callback' => array(&$this, 'functionCompareColors')),
+                'get_custom_excerpt' => array('callback' => array(&$this, 'functionBuildExcerpt'))
 			);
 			$functions = apply_filters('carbon_twig_functions', $functions);
 
@@ -212,6 +214,10 @@ if(!class_exists('CarbonTwig')) {
 
 		}
 
+		public function functionGetUrl($postId) {
+		    return get_permalink($postId);
+        }
+
 		public function functionGetMediaUrl($mediaId, $size = '') {
 			if(empty($size)) {
 				return wp_get_attachment_url($mediaId);
@@ -314,6 +320,13 @@ if(!class_exists('CarbonTwig')) {
 			$luminosityB = $this->functionGetLuminosity($hexB);
 			return 1 - abs($luminosityA - $luminosityB);
 		}
+
+		public function functionBuildExcerpt($string, $wordcount = 20, $ellipsis = '...') {
+		    $words = str_word_count($string, 2);
+		    $shortened = array_slice($words, 0, $wordcount);
+
+		    return implode(' ', $shortened) . $ellipsis;
+        }
 
 	}
 }

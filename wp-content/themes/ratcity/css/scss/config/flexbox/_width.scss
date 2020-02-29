@@ -1,0 +1,35 @@
+.flex {
+  &-100 { flex-basis: 100%; }
+  &-75 { flex-basis: 75%; }
+  &-50 { flex-basis: 50%; }
+  &-33 { flex-basis: 33%; }
+  &-25 { flex-basis: 25%; }
+  @media (min-width: $screen-sm-min) {
+    &-100-sm { flex-basis: 100%; }
+    &-75-sm { flex-basis: 75%; }
+    &-50-sm { flex-basis: 50%; }
+    &-33-sm { flex-basis: 33%; }
+    &-25-sm { flex-basis: 25%; }
+  }
+  @media (min-width: $screen-md-min) {
+    &-100-md { flex-basis: 100%; }
+    &-75-md { flex-basis: 75%; }
+    &-50-md { flex-basis: 50%; }
+    &-33-md { flex-basis: 33%; }
+    &-25-md { flex-basis: 25%; }
+  }
+  @media (min-width: $screen-lg-min) {
+    &-100-lg { flex-basis: 100%; }
+    &-75-lg { flex-basis: 75%; }
+    &-50-lg { flex-basis: 50%; }
+    &-33-lg { flex-basis: 33%; }
+    &-25-lg { flex-basis: 25%; }
+  }
+  @media (min-width: 1200px) {
+    &-100-xl { flex-basis: 100%; }
+    &-75-xl { flex-basis: 75%; }
+    &-50-xl { flex-basis: 50%; }
+    &-33-xl { flex-basis: 33%; }
+    &-25-xl { flex-basis: 25%; }
+  }
+}

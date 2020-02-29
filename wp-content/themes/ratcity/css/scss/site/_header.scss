@@ -9,14 +9,26 @@
 	}
 }
 
+.header {
+	&__branding-logo {
+		img {
+			max-height: 8rem;
+		}
+	}
+}
+
+.page-header {
+	background-size: cover;
+	background-position: center;
+}
 
 /*	Branding
 ---------------------------------------------------------*/
 
 #site-branding {
-	float: left;
-	margin-top: 10px;
-	margin-bottom: 12px;
+	//float: left;
+	//margin-top: 10px;
+	//margin-bottom: 12px;
 }
 #site-title {
 	font-weight: 400;
@@ -51,17 +63,20 @@
 
 #header-navigation {
 	display: none;
-	float: right;
+	margin-right: auto;
 	@media (min-width: $screen-sm) {
 		display: block;
+		flex-basis: 100%;
 	}
 	ul {
 		@include list-unstyled();
 		&.menu {
+			display: flex;
+			margin: 0;
+			padding: 0 1.5em;
 			> li {
-				float: left;
 				> a {
-					padding: 24px 10px;
+					padding: 2.1875em 1.5em;
 				}
 			}
 		}
@@ -91,7 +106,7 @@
 		&:hover {
 			> a {
 				background-color: map-get($brand-colors, primary);
-				color: #fff;
+				color: map-get($brand-colors, black);
 			}
 			> ul.sub-menu {
 				opacity: 1;
@@ -101,7 +116,12 @@
 		}
 	}
 	a {
+		color: map-get($brand-colors, white);
+		text-transform: uppercase;
+		font-family: $font-family-header;
+		font-weight: 600;
+		letter-spacing: 1.125px;
 		display: block;
-		transition: color linear .15s, background-color linear .15s;
+		transition: color ease-out .15s, background-color ease-out .15s;
 	}
 }
