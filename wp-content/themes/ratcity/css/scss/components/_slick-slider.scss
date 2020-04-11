@@ -1,0 +1,38 @@
+.section-slider {
+  padding: 0 30px;
+  .slick-track {
+    display: flex;
+    justify-content: center;
+  }
+  &.sponsors .slick-track { align-items: center; }
+  .slick-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 3.2rem;
+    @media (min-width: $screen-md-min) {
+      width: 1em;
+    }
+    line-height: 1;
+    text-align: center;
+    &-prev {
+      @media (min-width: $screen-md-min) {
+        right: 100%;
+      }
+      @media (max-width: $screen-sm-max) {
+        left: -9px;
+        z-index: 2;
+      }
+    }
+    &-next {
+      @media (min-width: $screen-md-min) {
+        left: 100%;
+      }
+      @media (max-width: $screen-sm-max) {
+        right: -9px;
+        z-index: 2;
+      }
+    }
+  }
+
+}

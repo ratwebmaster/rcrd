@@ -10,63 +10,55 @@
 			@include clearfix();
 		}
 	}
-	a {
-		color: #ddd;
-		&:hover {
-			color: #fff;
-		}
+	//a {
+	//	color: #ddd;
+	//	&:hover {
+	//		color: #fff;
+	//	}
+	//}
+	h4, .h4 {
+		font-size: 2.2rem;
+		color: map-get($brand-colors, white);
+		margin-bottom: .75em;
+	}
+	input[type="email"] {
+		border-radius: 2em;
+		box-shadow: none;
+		background: none;
+		font-style: italic;
+		font-size: 1.8rem;
+		display: inline-block;
+		max-width: 350px;
+		line-height: 1.0555555556;
+		padding: 0.6112em 1em;
+		height: auto;
+		color: map-get($brand-colors, white);
+	}
+	#mc_embed_signup .clear {
+		display: inline-block;
 	}
 }
 
-
-/*	Footer Navigation
----------------------------------------------------------*/
-
-#footer-navigation {
-	margin-bottom: $line-height-computed;
-	@media (min-width: $screen-md) {
-		float: left;
+.footer {
+	&__connect + &__legal {
+		margin-top: 4rem;
 	}
-	ul {
-		@extend .list-unstyled;
-		&.menu {
-			@include clearfix();
-			@media (min-width: $screen-sm) {
-				> li {
-					float: left;
-					margin-left: 20px;
-					&:first-child {
-						margin-left: 0;
+	&__legal {
+		font-size: 1.4rem;
+		color: map-get($brand-colors, light-gray);
+		strong { color: map-get($brand-colors, white); }
+		&-links {
+			font-weight: 600;
+			a {
+				+ a {
+					&:before {
+						content: '|';
+						padding-right: .35em;
+						margin-left: .25em;
+						color: map-get($brand-colors, white);
 					}
 				}
 			}
 		}
-		&.sub-menu {
-			font-size: $font-size-sm;
-			li {
-				margin-bottom: 0;
-			}
-			a {
-				color: #aaa;
-			}
-		}
-	}
-	li {
-		margin-bottom: ($line-height-computed / 4);
-	}
-	a {
-		color: #fff;
-	}
-}
-
-
-/*	Site Legal Info
----------------------------------------------------------*/
-
-#site-legal {
-	font-size: $font-size-sm;
-	@media (min-width: $screen-md) {
-		float: right;
-		text-align: right;
 	}
 }

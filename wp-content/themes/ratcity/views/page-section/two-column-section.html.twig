@@ -1,22 +1,77 @@
 {% extends 'page-section/default-section.html.twig' %}
 
 
-{% block page_section_content %}
+{% block page_section_contents %}
+<div class="intro-text{{ section.intro_content_layout == 'centered' ? ' text-center' }}">
+
+	{% block page_section_title %}
+
+		{# section header, including specified heading level #}
+		{% if section.title_h_level == 'h1' %}
+			{% set h_level = 'h2' %}
+			{% if section_title and not prev_section %}
+				{% set h_class = 'h1 section-header' %}
+			{% endif %}
+		{% else %}
+			{% set h_level = section.title_h_level|default('h2') %}
+			{% set h_class = 'section-header' %}
+		{% endif %}
+
+		{% if section_title %}
+			<{{ h_level }} class="{{ h_class }} {{ use_white_foreground(section.bg_color) ? 'text-white' }}">{{ section_title }}</{{ h_level }}>
+		{% endif %}
+
+	{% endblock %}
+
+	{% block page_section_content %}
+		{{ section.section_content|default(section.content|content) }}
+	{% endblock %}
+
+	</div>
+
 	<div class="section-columns">
-		{% block page_section_columns %}
+	{% block page_section_columns %}
 
-			<div class="column-1">
-				<div class="inner">
-					{{ section.section_content_column_1|default(section.content_column_1|content) }}
-				</div>
-			</div>
+		<div class="column-1" style="background-color: {{ section.bg_color_column_1 ? section.bg_color_column_1 : 'inherit' }};">
+			<div class="inner">
 
-			<div class="column-2">
-				<div class="inner">
-					{{ section.section_content_column_2|default(section.content_column_2|content) }}
-				</div>
-			</div>
+				{# section header, including specified heading level #}
+				{% if section.title_h_level_column_1 == 'h1' %}
+					{% set h_level = 'h2' %}
+					{% if section.title_column_1 and not prev_section %}
+						{% set h_class = 'h1 section-title' %}
+					{% endif %}
+				{% else %}
+					{% set h_level = section.title_h_level_column_1|default('h2') %}
+					{% set h_class = 'section-header' %}
+				{% endif %}
 
-		{% endblock %}
+				{% if section.title_column_1 %}<{{ h_level }} class="{{ h_class }}">{{ section.title_column_1 }}</{{ h_level }}>{% endif %}
+
+			{{ section.section_content_column_1|default(section.content_column_1|content) }}
+		</div>
+		</div>
+
+		<div class="column-2" style="background-color: {{ section.bg_color_column_2 ? section.bg_color_column_2 : 'inherit' }};">
+			<div class="inner">
+
+				{# section header, including specified heading level #}
+				{% if section.title_h_level_column_2 == 'h1' %}
+					{% set h_level = 'h2' %}
+					{% if section.title_column_2 and not prev_section %}
+						{% set h_class = 'h1 section-title' %}
+					{% endif %}
+				{% else %}
+					{% set h_level = section.title_h_level_column_2|default('h2') %}
+					{% set h_class = 'section-header' %}
+				{% endif %}
+
+				{% if section.title_column_2 %}<{{ h_level }} class="{{ h_class }}">{{ section.title_column_2 }}</{{ h_level }}>{% endif %}
+
+			{{ section.section_content_column_2|default(section.content_column_2|content) }}
+		</div>
+		</div>
+
+	{% endblock %}
 	</div>
 {% endblock %}

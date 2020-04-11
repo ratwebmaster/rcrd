@@ -55,12 +55,35 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSectionBlogPost
 							'multiple' => true,
 							'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'post_source'), 'value' => 'tag')))
 						)),
-						new Field(array(
-							'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'post_source'), 'value' => array('recent', 'category', 'tag')))),
-							'label' => 'Maximum Number of Slides to Display',
-							'description' => 'Posts will be grouped three per slide.',
-							'input' => new Select(array('name' => 'max_slides_to_display', 'defaultValue' => 3, 'class' => 'input-xsmall', 'options' => array(1, 2, 3, 4, 5, 6)))
-						))
+						new FieldGroup(array(
+						    'class' => 'two-column no-border',
+						    'fields' => array(
+                                new Field(array(
+                                    'label' => 'Maximum Number of Slides to Display',
+                                    'input' => new Select(array('name' => 'max_slides_to_display', 'defaultValue' => 3, 'class' => 'input-xsmall', 'options' => array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
+                                )),
+                                new Field(array(
+                                    'label' => 'Number of Posts to Display before Sliding',
+                                    'input' => new Select(array('name' => 'num_slides_to_display', 'defaultValue' => 3, 'class' => 'input-xsmall', 'options' => array(1, 2, 3, 4)))
+                                )),
+                            ),
+                            'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'post_source'), 'value' => array('recent', 'category', 'tag')))),
+                        )),
+                        new FieldGroup(array(
+                            'label' => 'View More Button',
+                            'class' => 'two-column no-border',
+                            'fields' => array(
+                                new Field(array(
+                                    'label' => 'Blog Link',
+                                    'input' => new Select(array('name' => 'blog_button_link')),
+                                    'getOutputCb' => array(__CLASS__, 'setPageSelectInputOptions')
+                                )),
+                                new Field(array(
+                                    'label' => 'All Events button label',
+                                    'input' => new TextInput(array('name' => 'blog_button_label', 'placeholder' => 'View All Posts'))
+                                )),
+                            )
+                        ))
 					)
 				))
 			);
@@ -82,6 +105,17 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSectionBlogPost
 				static::getSectionCustomIdAndClassFields()
 			);
 		}
+
+
+        public static function setPageSelectInputOptions($field) {
+            $options[] = array('value' => '', 'label' => 'Please Select');
+            $posts = get_posts(array('post_type' => 'page', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+            foreach($posts as $post) {
+                $options[] = array('value' => $post->ID, 'label' => $post->post_title, 'depth' => 0);
+            }
+            $field->getInput()->setOptions($options);
+
+        }
 
 
 		public static function getFallbackContent($input) {

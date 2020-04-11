@@ -598,7 +598,7 @@ if(!class_exists('Zero')) {
 
             $context['page_header'] = (object)array(
                 'configuration' => 'default',
-//                'title' => '',
+                'title' => '',
 //                'callout' => '',
                 'page_header_image' => '',
                 'page_header_slides' => [],
@@ -611,12 +611,10 @@ if(!class_exists('Zero')) {
             );
 
             $context['page_footer'] = (object)array(
-                'company_blurb_title' => '',
-                'company_blurb' => '',
-                'office' => array(),
-                'connect_title' => '',
-                'connect_text' => '',
-                'connect_subscribe' => '',
+                'email_signup' => get_option('theme_options_footer_subscribe'),
+                'social_header' => get_option('theme_options_footer_social_header'),
+                'nonprofit' => get_option('theme_options_footer_nonprofit_text'),
+                'links' => get_repeater_entries('blog', 'theme_options_footer_links'),
             );
 
 
@@ -668,9 +666,9 @@ if(!class_exists('Zero')) {
                 $configuration = get_post_meta($postId, 'page_header_type', true);
                 if(!empty($configuration)) $context['page_header']->configuration = $configuration;
 
-//                $context['page_header']->title = get_the_title($postId);
-//                $title = $configuration != 'disabled' ? get_post_meta($postId, 'page_header_title', true) : get_post_meta($postId, 'page_header_disabled_title', true);
-//                if(!empty($title)) $context['page_header']->title = $title;
+                $context['page_header']->title = get_the_title($postId);
+                $title = $configuration != 'disabled' ? get_post_meta($postId, 'page_header_title', true) : get_post_meta($postId, 'page_header_disabled_title', true);
+                if(!empty($title)) $context['page_header']->title = $title;
 
 //                $text = get_post_meta($postId, 'page_header_text', true);
 //                if(!empty($text)) $context['page_header']->content = $text;

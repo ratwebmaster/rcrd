@@ -4,11 +4,11 @@
 {% block page_section_contents %}
 
 	{% set feed_items = [] %}
-	{% if section.post_source == 'event_types' %}
-		{% if section.post_categories %}
+	{% if section.post_source == 'category' %}
+		{% if section.event_types %}
 			{% set feed_items = get_posts({
 				post_type: 'event',
-				posts_per_page: 4,
+				posts_per_page: section.max_slides_to_display,
 				meta_query: [{ key: 'event_start_timestamp', compare: '>=', value: (now|date('Y-m-d')) ~ '00:00:00' }],
 				tax_query: [{ taxonomy: 'event_type', terms: section.event_types }],
 				orderby: 'event_start_timestamp',
@@ -28,7 +28,7 @@
 	{% else %}
 		{% set feed_items = get_posts({
 			post_type: 'event',
-			posts_per_page: 4,
+			posts_per_page: section.max_slides_to_display,
 			meta_query: [{ key: 'event_start_timestamp', compare: '>=', value: (now|date('Y-m-d')) ~ '00:00:00' }],
 			orderby: 'event_start_timestamp',
 			order: 'ASC'
@@ -36,7 +36,7 @@
 	{% endif %}
 
 	{% if section_title or section.section_content|default(section.content|content) %}
-		<div class="section-content">
+		<div class="section-content text-{{ section.intro_content_layout == 'centered' ? 'center' : 'left' }}">
 			<div class="inner">
 				{{ parent() }}
 			</div>
@@ -46,34 +46,46 @@
 	{% if feed_items %}
 		<div class="section-slider-wrap">
 			<div class="inner">
-				<div class="section-slider">
-					<div class="events flex flex-wrap flex-no-wrap-md">
+				<div class="section-slider events flex justify-center">
+
+						{% if section.num_slides_to_display == 1 %}
+							{% set classes_width = 'flex-100' %}
+						{% elseif section.num_slides_to_display == 2 %}
+							{% set classes_width = 'flex-50-sm flex-100' %}
+						{% elseif section.num_slides_to_display == 3 %}
+							{% set classes_width = 'flex-33-md flex-50-sm flex-100' %}
+						{% elseif section.num_slides_to_display == 4 %}
+							{% set classes_width = 'flex-25-md flex-50-sm flex-100' %}
+						{% endif %}
+
 						{% for event in feed_items %}
-							<div class="event flex-25-md flex-50-sm flex-100">
+							<div class="event {{ classes_width }}">
 
-								<div class="event__image">
-									{% if event.meta._thumbnail_id %}
-										<img src="{{ get_media_url(event.meta._thumbnail_id, '1000w') }}" alt="{{ get_media_alt_text(event.meta._thumbnail_id)|escape('html_attr') }}">
+								<a class="event__link" href="{{ event.url }}">
+
+									<div class="event__image">
+										{% if event.meta._thumbnail_id %}
+											<img src="{{ get_media_url(event.meta._thumbnail_id, '1000w') }}" alt="{{ get_media_alt_text(event.meta._thumbnail_id)|escape('html_attr') }}">
+										{% endif %}
+									</div>
+
+									{% if event.meta.event_start_date %}
+										<div class="event__date">
+											{{ event.meta.event_start_date|date('F j') }}
+										</div>
 									{% endif %}
-								</div>
 
-								{% if event.meta.event_start_date %}
-									<div class="event__date">
-										{{ event.meta.event_start_date|date('F j') }}
-									</div>
-								{% endif %}
+									{% if event.title %}
+										<div class="event__title h4">
+											{{ event.title }}
+										</div>
+									{% endif %}
 
-								{% if event.title %}
-									<div class="event__title">
-										{{ event.title }}
-									</div>
-								{% endif %}
+									<div class="event__content">{{ event.excerpt ? event.excerpt|content : get_custom_excerpt(event.meta.event_details)|content }}</div>
 
-								<div class="event__content">{{ event.excerpt ? event.excerpt|content : get_custom_excerpt(event.meta.event_details)|content }}</div>
-
+								</a>
 							</div>
 						{% endfor %}
-					</div>
 				</div>
 			</div>
 		</div>

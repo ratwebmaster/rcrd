@@ -110,9 +110,20 @@
 {#										{% endif %}#}
 {#									{% endblock %}#}
 								</div>
-							{% else %}
+							{% elseif page_header.configuration == 'default' %}
 								<div class="page-header {{ page_header.configuration }}" style="background-image: url({{ page_header.page_header_image ? page_header.page_header_image : site_branding.banner_default }});">
-{#									{{ block('header_overlay') }}#}
+								</div>
+							{% else %}
+								<div class="page-header {{ page_header.configuration }}">
+									<div class="container">
+										<div class="inner">
+											<div class="page-header__content">
+												{% if page_header.title %}
+													<h1 class="page-header__title">{{ page_header.title }}</h1>
+												{% endif %}
+											</div>
+										</div>
+									</div>
 								</div>
 							{% endif %}
 						{% else %}
@@ -168,17 +179,34 @@
 				<footer id="footer" role="contentinfo">
 					<div class="container">
 						<div class="inner">
-							
-							{% block footer_navigation %}
-								<nav id="footer-navigation">
-									{% include 'includes/menu.html.twig' with { 'items': theme.menus['footer'].items, 'max_depth': 2 } only %}
-								</nav><!-- #footer-navigation -->
-							{% endblock %}
 
-							<p id="site-legal">
-								&copy; {{ 'now'|date('Y') }} {{ site.title }}<br>
-								<a href="http://www.jordancrown.com" title="Seattle web design company" rel="designer">Seattle Website Design</a> by Jordan Crown Design
-							</p>
+							<!--
+								'email_signup' => get_option('theme_options_footer_subscribe'),
+								'social_header' => get_option('theme_options_footer_social_header'),
+								'nonprofit' => get_option('theme_options_footer_nonprofit_text'),
+								'links' => get_repeater_entries('theme_options_footer_links'),
+
+								Begin Mailchimp Signup Form
+							<link href="//cdn-images.mailchimp.com/embedcode/horizontal-slim-10_7.css" rel="stylesheet" type="text/css">
+							-->
+							
+							<div class="footer">
+								<div class="footer__connect flex-sm">
+									<div class="footer__connect-subscribe">{{ page_footer.email_signup }}</div>
+									<div class="footer__connect-social">
+										<h4>{{ page_footer.social_header }}</h4>
+										{% include 'includes/social-media.html.twig' %}
+									</div>
+								</div>
+								<div class="footer__legal">
+									<div class="footer__legal-copyright">{{ page_footer.nonprofit|content }}</div>
+									<div class="footer__legal-links">
+										{% for link in page_footer.links %}
+											<a class="" href="{{ link.theme_footer_privacy_link_type == 'internal' ? get_url(link.theme_footer_privacy_internal) : link.theme_footer_privacy_external }}">{{ link.theme_footer_privacy_internal ? get_title(link.theme_footer_privacy_internal, link.theme_footer_privacy_label) : link.theme_footer_privacy_label }}</a>
+										{% endfor %}
+									</div>
+								</div>
+							</div>
 
 						</div><!-- .inner -->
 					</div><!-- .container -->

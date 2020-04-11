@@ -1,5 +1,10 @@
 <?php
 
+use Crown\Form\Field;
+use Crown\Form\FieldGroup;
+
+use Crown\Form\Input\CheckboxSet;
+
 include_once(dirname(__FILE__).'/page-section.php');
 
 
@@ -28,8 +33,19 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSectionDefault'
 
 		protected static function getStyleFields() {
 			return array(
-				static::getSectionBgColorField(),
-				static::getSectionBgImageField(),
+			    new FieldGroup(array(
+			        'class' => 'no-border two-column',
+                    'fields' => array(
+                        static::getSectionBgColorField(),
+                        static::getSectionBgImageField(),
+                    )
+                )),
+				new Field(array(
+				    'label' => 'Theme Accents',
+                    'input' => new CheckboxSet(array('name' => 'accent', 'options' => array(
+                        array('value' => 'underline', 'label' => 'Thick line below header')
+                    )))
+                )),
 				static::getSectionCustomIdAndClassFields()
 			);
 		}

@@ -1,0 +1,13 @@
+.page-header {
+  &__content {
+    padding-top: 4.6rem;
+    padding-bottom: 4.6rem;
+  }
+  &__title {
+    color: map-get($brand-colors, white);
+    text-shadow: 0 1px 3px rgba(map-get($brand-colors, black),.3);
+  }
+  &.gradient {
+    background-image: linear-gradient(to right, map-get($brand-colors, black), #497C04 40%, map-get($brand-colors, primary));
+  }
+}

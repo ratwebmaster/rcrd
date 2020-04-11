@@ -127,7 +127,8 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 							static::getHeadingLevelField(array('inputName' => 'title_h_level_column_1'))
 						)
 					)),
-					static::getContentField(array('inputName' => 'content_column_1', 'rows' => 10))
+					static::getContentField(array('inputName' => 'content_column_1', 'rows' => 10)),
+			        static::getColorField(array('label' => 'Background Color', 'inputName' => 'bg_color_column_1', 'themeColorsContext' => 'section_bg'))
 				)
 			));
 		}
@@ -144,7 +145,8 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 							static::getHeadingLevelField(array('inputName' => 'title_h_level_column_2'))
 						)
 					)),
-					static::getContentField(array('inputName' => 'content_column_2', 'rows' => 10))
+					static::getContentField(array('inputName' => 'content_column_2', 'rows' => 10)),
+                    static::getColorField(array('label' => 'Background Color', 'inputName' => 'bg_color_column_2', 'themeColorsContext' => 'section_bg'))
 				)
 			));
 		}

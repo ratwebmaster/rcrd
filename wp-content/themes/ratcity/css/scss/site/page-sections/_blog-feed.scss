@@ -1,0 +1,45 @@
+section.page-section.blog-post-slider-section {
+  .blog-post {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    .post {
+      &__date {
+        text-transform: uppercase;
+        font-weight: 600;
+        color: map-get($brand-colors, green);
+        transition: all .25s ease-out;
+      }
+      &__title {
+        color: map-get($brand-colors, white);
+        transition: all .25s ease-out .25s;
+      }
+      &__link {
+        text-decoration: none;
+        &:hover, &:focus, &:active {
+          .post {
+            &__date {
+              color: map-get($brand-colors, primary);
+              transition: all .25s ease-out .25s;
+            }
+            &__title {
+              color: map-get($brand-colors, primary);
+              transition: all .25s ease-out;
+            }
+          }
+        }
+      }
+      @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+        &:nth-child(even) { padding-left: 2rem; }
+        &:nth-child(odd) { padding-right: 2rem; }
+      }
+    }
+    & + .blog-post {
+      @media (min-width: $screen-md-min) {
+        margin-left: 4rem;
+      }
+    }
+    &s__link {
+      margin-top: 2rem;
+    }
+  }
+}

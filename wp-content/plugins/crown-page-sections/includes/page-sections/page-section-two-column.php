@@ -1,5 +1,8 @@
 <?php
 
+use Crown\Form\Field;
+use Crown\Form\FieldGroup;
+
 include_once(dirname(__FILE__).'/page-section.php');
 
 
@@ -32,8 +35,13 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSectionTwoColum
 
 		protected static function getStyleFields() {
 			return array(
-				static::getSectionBgColorField(),
-				static::getSectionBgImageField(),
+                new FieldGroup(array(
+                    'class' => 'no-border two-column',
+                    'fields' => array(
+                        static::getSectionBgColorField(),
+                        static::getSectionBgImageField(),
+                    )
+                )),
 				static::getSectionCustomIdAndClassFields()
 			);
 		}

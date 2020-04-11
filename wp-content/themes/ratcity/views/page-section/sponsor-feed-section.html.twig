@@ -1,0 +1,79 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% set feed_items = [] %}
+	{% if section.post_source == 'specific' %}
+		{% if section.sponsors %}
+			{% set feed_items = get_posts({
+				post_type: 'sponsor',
+				posts_per_page: -1,
+				post__in: section.sponsors,
+				orderby: 'post__in',
+				order: 'ASC'
+			}) %}
+		{% endif %}
+	{% else %}
+		{% set feed_items = get_posts({
+			post_type: 'sponsor',
+			posts_per_page: -1,
+			orderby: 'sponsorship_start_timestamp',
+			order: 'ASC'
+		}) %}
+	{% endif %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content text-{{ section.intro_content_layout == 'centered' ? 'center' : 'left' }}">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if feed_items %}
+		<div class="section-slider-wrap">
+			<div class="inner">
+				<div class="section-slider sponsors">
+
+						{% for item in feed_items %}
+
+							{% set start = item.meta.sponsorship_start_date ? (item.meta.sponsorship_start_date ~ '00:00')|date('Y-m-d') %}
+							{% set end = item.meta.sponsorship_end_date ? (item.meta.sponsorship_end_date ~ '23:59')|date('Y-m-d') %}
+							{% set now = function('current_time', 'Y-m-d') %}
+
+							{% if start <= now and end >= now %}
+
+								<div class="sponsor">
+{#									{% set benefits = [] %}#}
+{#									{% for benefit in item.terms.sponsor_benefit %}#}
+{#										{% set benefits = benefits|merge([benefit.name]) %}#}
+{#									{% endfor %}#}
+{#									{{ dump(benefits) }}#}
+{#									{% if 'Click-through Ad' in benefits %}#}
+										<a class="sponsor__link" href="{{ item.meta.sponsor_website }}">
+											{{ block('logo') }}
+										</a>
+{#									{% else %}#}
+{#										{{ block('logo') }}#}
+{#									{% endif %}#}
+								</div>
+
+							{% endif %}
+
+						{% endfor %}
+				</div>
+			</div>
+		</div>
+
+	{% endif %}
+
+{% endblock %}
+
+{% block logo %}
+	<div class="sponsor__image">
+		{% if item.meta._thumbnail_id %}
+			<img src="{{ get_media_url(item.meta._thumbnail_id, '1000w') }}" alt="{{ get_media_alt_text(event.meta._thumbnail_id)|escape('html_attr') }}">
+		{% endif %}
+	</div>
+{% endblock %}

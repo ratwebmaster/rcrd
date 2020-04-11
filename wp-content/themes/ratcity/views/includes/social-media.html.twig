@@ -1,0 +1,21 @@
+{% set include_profiles = include_profiles|default(['facebook', 'instagram', 'twitter', 'youtube']) %}
+
+{% set profile_label_translations = profile_label_translations|default({
+    'facebook': '<i class="fa fa-facebook-official" aria-hidden="true"></i>',
+    'instagram': '<i class="fa fa-instagram" aria-hidden="true"></i>',
+    'twitter': '<i class="fa fa-twitter" aria-hidden="true"></i>',
+    'youtube': '<i class="fa fa-youtube" aria-hidden="true"></i>',
+}) %}
+
+{% set profile_links = [] %}
+{% for key in include_profiles if attribute(social_media_profiles, key) is defined and attribute(social_media_profiles, key).url %}
+    {% set profile_links = profile_links|merge([{ key: key, label: key|replace(profile_label_translations), url: attribute(social_media_profiles, key).url }]) %}
+
+{% endfor %}
+{% if profile_links %}
+    <ul class="social-icons list-unstyled flex flex-row align-items-center justify-center-xs">
+        {% for link in profile_links %}
+            <li class="{{ link.key }}"><a href="{{ link.url }}" target="_blank"><span class="label">{{ link.label }}</span></a></li>
+        {% endfor %}
+    </ul>
+{% endif %}

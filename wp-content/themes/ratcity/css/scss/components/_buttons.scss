@@ -17,13 +17,17 @@
 	//border-color: $button-border;
 	line-height: 1.1875;
 	text-transform: uppercase;
+	transition: all .15s ease-in-out;
 
 	@media (max-width: $screen-xs-max) {
 		padding: 0.75em 1.75em;
 	}
 
-	background-color: map-get($brand-colors, primary);
-	color: map-get($brand-colors, black);
+	&, &.primary {
+		background-color: map-get($brand-colors, primary);
+		color: map-get($brand-colors, black);
+	}
+
 
 	&:hover,
 	&:focus,
@@ -31,6 +35,7 @@
 	&.active {
 		background-color: map-get($brand-colors, green);
 		color: map-get($brand-colors, white) !important;
+		transition: all .15s ease-in-out;
 	}
 
 	//@include button-base();
@@ -48,14 +53,11 @@
 		box-shadow: none;
 	}
 
-	&.primary {
-	}
-
 
 	&.outline {
 		background-color: rgba(map-get($brand-colors, green), 0);
 		color: map-get($brand-colors, green);
-		border: 1px solid map-get($brand-colors, green);
+		border: 1px solid;
 		letter-spacing: .37px;
 		font-weight: 600;
 		&:hover,
@@ -63,7 +65,23 @@
 		&:active,
 		&.active {
 			background-color: map-get($brand-colors, green);
-			color: $button-color !important;
+			color: map-get($brand-colors, white) !important;
+		}
+		.white-text & {
+			text-decoration: none;
+			color: map-get($brand-colors, white);
+			border-color: map-get($brand-colors, white);
+			transition: all .15s ease-in-out;
+			&:hover,
+			&:focus,
+			&:active,
+			&.active {
+				background-color: map-get($brand-colors, green);
+				border-color: map-get($brand-colors, green);
+				color: map-get($brand-colors, white) !important;
+				opacity: 1;
+				transition: all .15s ease-in-out;
+			}
 		}
 	}
 
@@ -110,5 +128,8 @@
 button,
 input[type=button],
 input[type=submit] {
+	&, &.primary {
+		border: 0;
+	}
 	@extend .btn;
 }

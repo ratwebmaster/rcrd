@@ -1,0 +1,15 @@
+ul.social-icons {
+  li {
+    font-size: 3.8rem;
+    line-height: 1;
+    & + li {
+      margin-left: .5em;
+    }
+    a {
+      color: map-get($brand-colors, white);
+      &:hover, &:active, &:focus {
+        color: map-get($brand-colors, primary);
+      }
+    }
+  }
+}

@@ -16,6 +16,10 @@
 	{% set section_class = section.layout_options ? section_class|merge(section.layout_options) : section_class %}
 	{% set section_class = section.bg_color ? section_class|merge([use_white_foreground(section.bg_color) ? 'white-text' : '']) : section_class %}
 	{% set section_class = section.bg_color and get_luminosity(section.bg_color) == 1 ? section_class|merge(['white-bg']) : section_class %}
+
+	{% for accent in section.accent %}
+		{% set section_class = section_class|merge(['accent-' ~ accent]) %}
+	{% endfor %}
 	
 	{% set unmergable_section_types = [
 		'pagination-section',
@@ -78,11 +82,20 @@
 						{% block page_section_contents %}
 
 							{% block page_section_title %}
-								{% if section_title and not prev_section %}
-									<h1 class="section-title">{{ section_title }}</h1>
-								{% elseif section_title %}
-									<h2 class="section-title">{{ section_title }}</h2>
+
+								{# section header, including specified heading level #}
+								{% if section.title_h_level == 'h1' %}
+									{% set h_level = 'h2' %}
+									{% if section_title and not prev_section %}
+										{% set h_class = 'h1 section-title' %}
+									{% endif %}
+								{% else %}
+									{% set h_level = section.title_h_level|default('h2') %}
+									{% set h_class = 'section-title' %}
 								{% endif %}
+
+								{% if section_title %}<{{ h_level }} class="{{ h_class }} {{ (section.intro_content_layout == 'centered') ? 'text-center' }}">{{ section_title }}</{{ h_level }}>{% endif %}
+
 							{% endblock %}
 						
 							{% block page_section_content %}

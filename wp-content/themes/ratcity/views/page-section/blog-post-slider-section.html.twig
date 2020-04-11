@@ -1,0 +1,86 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% set feed_items = [] %}
+	{% if section.post_source == 'category' %}
+		{% if section.post_categories %}
+			{% set feed_items = get_posts({
+				post_type: 'post',
+				posts_per_page: section.max_slides_to_display,
+				tax_query: [{ taxonomy: 'event_type', terms: section.post_categories }],
+			}) %}
+		{% endif %}
+	{% elseif section.post_source == 'specific' %}
+		{% if section.posts %}
+			{% set feed_items = get_posts({
+				post_type: 'post',
+				posts_per_page: -1,
+				post__in: section.posts,
+				orderby: 'post__in',
+				order: 'ASC'
+			}) %}
+		{% endif %}
+	{% else %}
+		{% set feed_items = get_posts({
+			post_type: 'post',
+			posts_per_page: section.max_slides_to_display,
+		}) %}
+	{% endif %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content text-{{ section.intro_content_layout == 'centered' ? 'center' : 'left' }}">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if feed_items %}
+		<div class="section-slider-wrap">
+			<div class="inner">
+				<div class="section-slider blog-posts flex justify-center">
+
+					{% if section.num_slides_to_display == 1 %}
+						{% set classes_width = 'flex-100' %}
+					{% elseif section.num_slides_to_display == 2 %}
+						{% set classes_width = 'flex-50-sm flex-100' %}
+					{% elseif section.num_slides_to_display == 3 %}
+						{% set classes_width = 'flex-33-md flex-50-sm flex-100' %}
+					{% elseif section.num_slides_to_display == 4 %}
+						{% set classes_width = 'flex-25-md flex-50-sm flex-100' %}
+					{% endif %}
+
+					{% for post in feed_items %}
+						<div class="blog-post {{ classes_width }}">
+
+							<a class="post__link" href="{{ post.url }}">
+
+{#									<div class="post__image">#}
+{#										{% if post.meta._thumbnail_id %}#}
+{#											<img src="{{ get_media_url(post.meta._thumbnail_id, '1000w') }}" alt="{{ get_media_alt_text(post.meta._thumbnail_id)|escape('html_attr') }}">#}
+{#										{% endif %}#}
+{#									</div>#}
+
+								<div class="post__date">
+									{{ post.post_date|date('m/j/Y') }}
+								</div>
+
+								<div class="post__title h4">
+									{{ post.title }}
+								</div>
+
+{#									<div class="post__content">{{ post.excerpt ? post.excerpt|content : get_custom_excerpt(post.meta.event_details)|content }}</div>#}
+
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+		<div class="blog-posts__link text-center"><a class="btn outline" href="{{ get_url(section.blog_button_link) }}">{{ section.blog_button_label }}</a></div>
+	{% endif %}
+
+{% endblock %}

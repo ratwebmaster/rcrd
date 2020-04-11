@@ -1,0 +1,257 @@
+section.page-section.two-column-section {
+  .section-columns {
+    @include row($screen-sm);
+    &:before { display: none; }
+    @media (min-width: $screen-sm) {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .column-1,
+    .column-2 {
+      @include col($screen-sm, percentage(1));
+      padding: 1em 1.5em;
+      position: relative;
+    }
+  }
+  &.vertical-alignment-middle .section-columns {
+    align-items: center;
+  }
+  &.vertical-alignment-bottom .section-columns {
+    align-items: flex-end;
+  }
+
+  &.layout-1-1 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(1 / 2); }
+      .section-columns .column-2 { width: percentage(1 / 2); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 2); }
+        .section-columns .column-2 { left: percentage(-1 / 2); }
+      }
+    }
+
+  }
+
+  &.layout-1-6 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(1 / 4); }
+      .section-columns .column-2 { width: percentage(3 / 4); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(3 / 4); }
+        .section-columns .column-2 { left: percentage(-1 / 4); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(1 / 5); }
+      .section-columns .column-2 { width: percentage(4 / 5); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(4 / 5); }
+        .section-columns .column-2 { left: percentage(-1 / 5); }
+      }
+    }
+    @media (min-width: $screen-lg) {
+      .section-columns .column-1 { width: percentage(1 / 6); }
+      .section-columns .column-2 { width: percentage(5 / 6); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(5 / 6); }
+        .section-columns .column-2 { left: percentage(-1 / 6); }
+      }
+    }
+  }
+  &.layout-6-1 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(3 / 4); }
+      .section-columns .column-2 { width: percentage(1 / 4); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 4); }
+        .section-columns .column-2 { left: percentage(-3 / 4); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(4 / 5); }
+      .section-columns .column-2 { width: percentage(1 / 5); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 5); }
+        .section-columns .column-2 { left: percentage(-4 / 5); }
+      }
+    }
+    @media (min-width: $screen-lg) {
+      .section-columns .column-1 { width: percentage(5 / 6); }
+      .section-columns .column-2 { width: percentage(1 / 6); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 6); }
+        .section-columns .column-2 { left: percentage(-5 / 6); }
+      }
+    }
+  }
+
+  &.layout-1-3 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(1 / 3); }
+      .section-columns .column-2 { width: percentage(2 / 3); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(2 / 3); }
+        .section-columns .column-2 { left: percentage(-1 / 3); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(1 / 4); }
+      .section-columns .column-2 { width: percentage(3 / 4); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(3 / 4); }
+        .section-columns .column-2 { left: percentage(-1 / 4); }
+      }
+    }
+  }
+  &.layout-3-1 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(2 / 3); }
+      .section-columns .column-2 { width: percentage(1 / 3); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 3); }
+        .section-columns .column-2 { left: percentage(-2 / 3); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(3 / 4); }
+      .section-columns .column-2 { width: percentage(1 / 4); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 4); }
+        .section-columns .column-2 { left: percentage(-3 / 4); }
+      }
+    }
+  }
+
+  &.layout-1-2 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(1 / 3); }
+      .section-columns .column-2 { width: percentage(2 / 3); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(2 / 3); }
+        .section-columns .column-2 { left: percentage(-1 / 3); }
+      }
+    }
+  }
+  &.layout-2-1 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(2 / 3); }
+      .section-columns .column-2 { width: percentage(1 / 3); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 3); }
+        .section-columns .column-2 { left: percentage(-2 / 3); }
+      }
+    }
+  }
+
+  &.layout-5-7 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(5 / 12); }
+      .section-columns .column-2 { width: percentage(7 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(7 / 12); }
+        .section-columns .column-2 { left: percentage(-5 / 12); }
+      }
+    }
+  }
+  &.layout-7-5 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(7 / 12); }
+      .section-columns .column-2 { width: percentage(5 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(5 / 12); }
+        .section-columns .column-2 { left: percentage(-7 / 12); }
+      }
+    }
+  }
+
+  &.layout-2-_1-3 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(5 / 12); }
+      .section-columns .column-2 { width: percentage(7 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(7 / 12); }
+        .section-columns .column-2 { left: percentage(-5 / 12); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(5 / 12); }
+      .section-columns .column-2 { width: percentage(1 / 2); margin-left: percentage(1 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 2) + percentage(1 / 12); }
+        .section-columns .column-2 { left: percentage(-5 / 12); margin-left: 0; }
+      }
+    }
+    @media (min-width: $screen-lg) {
+      .section-columns .column-1 { width: percentage(1 / 3); }
+      .section-columns .column-2 { width: percentage(1 / 2); margin-left: percentage(1 / 6); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 2) + percentage(1 / 6); }
+        .section-columns .column-2 { left: percentage(-1 / 3); margin-left: 0; }
+      }
+    }
+  }
+  &.layout-3-_1-2 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(7 / 12); }
+      .section-columns .column-2 { width: percentage(5 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(5 / 12); }
+        .section-columns .column-2 { left: percentage(-7 / 12); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(1 / 2); }
+      .section-columns .column-2 { width: percentage(5 / 12); margin-left: percentage(1 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(5 / 12) + percentage(1 / 12); }
+        .section-columns .column-2 { left: percentage(-1 / 2); margin-left: 0; }
+      }
+    }
+    @media (min-width: $screen-lg) {
+      .section-columns .column-1 { width: percentage(1 / 2); }
+      .section-columns .column-2 { width: percentage(1 / 3); margin-left: percentage(1 / 6); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 3) + percentage(1 / 6); }
+        .section-columns .column-2 { left: percentage(-1 / 2); margin-left: 0; }
+      }
+    }
+  }
+
+  &.layout-5-_1-6 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(5 / 12); }
+      .section-columns .column-2 { width: percentage(7 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(7 / 12); }
+        .section-columns .column-2 { left: percentage(-5 / 12); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(5 / 12); }
+      .section-columns .column-2 { width: percentage(1 / 2); margin-left: percentage(1 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(1 / 2) + percentage(1 / 12); }
+        .section-columns .column-2 { left: percentage(-5 / 12); margin-left: 0; }
+      }
+    }
+  }
+  &.layout-6-_1-5 {
+    @media (min-width: $screen-sm) {
+      .section-columns .column-1 { width: percentage(7 / 12); }
+      .section-columns .column-2 { width: percentage(5 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(5 / 12); }
+        .section-columns .column-2 { left: percentage(-7 / 12); }
+      }
+    }
+    @media (min-width: $screen-md) {
+      .section-columns .column-1 { width: percentage(1 / 2); }
+      .section-columns .column-2 { width: percentage(5 / 12); margin-left: percentage(1 / 12); }
+      &.reverse-column-order {
+        .section-columns .column-1 { left: percentage(5 / 12) + percentage(1 / 12); }
+        .section-columns .column-2 { left: percentage(-1 / 2); margin-left: 0; }
+      }
+    }
+  }
+
+}

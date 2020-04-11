@@ -41,13 +41,14 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSections')) {
 			'CrownPageSectionGrid',
 			'CrownPageSectionImageGallery',
 			'CrownPageSectionImageSlider',
-			'CrownPageSectionLogoGallery',
-			'CrownPageSectionLogoSlider',
+//			'CrownPageSectionLogoGallery',
+//			'CrownPageSectionLogoSlider',
 			'CrownPageSectionFaq',
 			'CrownPageSectionTestimonialSlider',
 			'CrownPageSectionTestimonialGrid',
 			'CrownPageSectionBlogPostSlider',
-            'CrownPageSectionEventFeed'
+            'CrownPageSectionEventFeed',
+            'CrownPageSectionSponsorFeed'
 		);
 
 		public static $init = false;

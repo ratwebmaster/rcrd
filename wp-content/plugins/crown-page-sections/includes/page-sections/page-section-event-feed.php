@@ -46,14 +46,23 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSectionEventFee
 							'multiple' => true,
 							'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'post_source'), 'value' => 'category')))
 						)),
-						new Field(array(
-							'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'post_source'), 'value' => array('recent', 'category', 'tag')))),
-							'label' => 'Maximum Number of Events to Display',
-							'input' => new Select(array('name' => 'max_slides_to_display', 'defaultValue' => 4, 'class' => 'input-xsmall', 'options' => array(1, 2, 3, 4, 5, 6)))
-						)),
+                        new FieldGroup(array(
+                            'class' => 'two-column no-border',
+                            'fields' => array(
+                                new Field(array(
+                                    'label' => 'Maximum Number of Events to Display',
+                                    'input' => new Select(array('name' => 'max_slides_to_display', 'defaultValue' => 4, 'class' => 'input-xsmall', 'options' => array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)))
+                                )),
+                                new Field(array(
+                                    'label' => 'Number of Events to Display before Sliding',
+                                    'input' => new Select(array('name' => 'num_slides_to_display', 'defaultValue' => 4, 'class' => 'input-xsmall', 'options' => array(1, 2, 3, 4)))
+                                )),
+                            ),
+                            'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'post_source'), 'value' => array('recent', 'category', 'tag')))),
+                        )),
                         new FieldGroup(array(
                             'label' => 'View More Button',
-                            'class' => 'two-column',
+                            'class' => 'two-column no-border',
                             'fields' => array(
                                 new Field(array(
                                     'label' => 'Events Link',

@@ -98,7 +98,8 @@ if(!class_exists('CarbonTwig')) {
 				'use_white_foreground' => array('callback' => array(&$this, 'functionUseWhiteForeground')),
 				'get_luminosity' => array('callback' => array(&$this, 'functionGetLuminosity')),
 				'compare_colors' => array('callback' => array(&$this, 'functionCompareColors')),
-                'get_custom_excerpt' => array('callback' => array(&$this, 'functionBuildExcerpt'))
+                'get_custom_excerpt' => array('callback' => array(&$this, 'functionBuildExcerpt')),
+                'get_title' => array('callback' => array(&$this, 'functionGetTitle'))
 			);
 			$functions = apply_filters('carbon_twig_functions', $functions);
 
@@ -326,6 +327,17 @@ if(!class_exists('CarbonTwig')) {
 		    $shortened = array_slice($words, 0, $wordcount);
 
 		    return implode(' ', $shortened) . $ellipsis;
+        }
+
+        public function functionGetTitle($postId, $savedLabel = null) {
+            if ($savedLabel) {
+                return $savedLabel;
+            }
+
+            $post_data = get_post($postId);
+            $post_title = $post_data->post_title;
+
+            return $post_title;
         }
 
 	}

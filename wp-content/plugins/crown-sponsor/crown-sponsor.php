@@ -172,14 +172,14 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownSponsor')) {
                                         )
                                     )),
                                 ),
-                                'saveMetaCb' => array(__CLASS__, 'saveSponsorshipDateMetaBox'),
                             )),
                             new Field(array(
                                 'label' => 'Website',
                                 'input' => new TextInput(array('name' => 'sponsor_website'))
                             )),
 
-                        )
+                        ),
+                                'saveMetaCb' => array(__CLASS__, 'saveSponsorshipDateMetaBox'),
                     )),
                 ),
                 'listTableColumns' => array(
@@ -200,41 +200,38 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownSponsor')) {
 
 
         public static function saveSponsorshipDateMetaBox($post, $input, $args, $fields) {
-            $startYear = isset($input['sponsorship_start_year']) ? $input['sponsorship_start_year'] : '';
-            $startMonth = isset($input['sponsorship_start_month']) ? $input['sponsorship_start_month'] : '';
             $startDate = isset($input['sponsorship_start_date']) ? $input['sponsorship_start_date'] : '';
-            $startYear = isset($input['sponsorship_end_year']) ? $input['sponsorship_end_year'] : '';
-            $startMonth = isset($input['sponsorship_end_month']) ? $input['sponsorship_end_month'] : '';
+//            $startYear = isset($input['sponsorship_start_year']) ? $input['sponsorship_start_year'] : '';
+//            $startMonth = isset($input['sponsorship_start_month']) ? $input['sponsorship_start_month'] : '';
+
             $endDate = isset($input['sponsorship_end_date']) ? $input['sponsorship_end_date'] : '';
+//            $endYear = isset($input['sponsorship_end_year']) ? $input['sponsorship_end_year'] : '';
+//            $endMonth = isset($input['sponsorship_end_month']) ? $input['sponsorship_end_month'] : '';
 
-            $startTimestamp = strtotime($startDate) ? strtotime($startDate) : '';
-            $endTimestamp = strtotime($endDate) ? strtotime($endDate) : '';
+//            $startTimestamp = strtotime($startDate) ? strtotime($startDate) : '';
+//            $endTimestamp = strtotime($endDate) ? strtotime($endDate) : '';
 
-            if(!empty($startTimestamp)) {
-                $input['sponsorship_start_year'] = date('Y', $startTimestamp);
-            }
-            if(!empty($startTimestamp)) {
-                $input['sponsorship_start_month'] = date('F', $startTimestamp);
-            }
-            if(!empty($endTimestamp)) {
-                $input['sponsorship_end_year'] = date('Y', $startTimestamp);
-            }
-            if(!empty($endTimestamp)) {
-                $input['sponsorship_end_month'] = date('F', $startTimestamp);
-            }
-            if(empty($startTimestamp) && !empty($endTimestamp)) {
-                $startTimestamp = $endTimestamp - 3600;
-                $input['sponsorship_start_date'] = date('Y-m-d', $startTimestamp);
-                $input['sponsorship_start_time'] = date('H:i:s', $startTimestamp);
-            }
-            if(!empty($startTimestamp) && empty($endTimestamp)) {
-                $endTimestamp = $startTimestamp + (3600);
-                $input['sponsorship_end_date'] = date('Y-m-d', $endTimestamp);
-                $input['sponsorship_end_time'] = date('H:i:s', $endTimestamp);
-            }
+//            if(!empty($startDate)) {
+//                $input['sponsorship_start_year'] = date('Y', $startDate);
+//                $input['sponsorship_start_month'] = date('F', $startDate);
+//            }
+//            if(!empty($endDate)) {
+//                $input['sponsorship_end_year'] = date('Y', $endDate);
+//                $input['sponsorship_end_month'] = date('F', $endDate);
+//            }
+//            if(empty($startDate) && !empty($endDate)) {
+//                $startDate = $endDate - (60*60*24*365);
+//                $input['sponsorship_start_date'] = date('Y-m-d', $startDate);
+//                $input['sponsorship_start_time'] = date('H:i:s', $startDate);
+//            }
+//            if(!empty($startDate) && empty($endDate)) {
+//                $endDate = $startDate + (60*60*24*365);
+//                $input['sponsorship_end_date'] = date('Y-m-d', $endDate);
+//                $input['sponsorship_end_time'] = date('H:i:s', $endDate);
+//            }
 
-            if(!empty($startTimestamp)) $input['sponsorship_start_timestamp'] = date('Y-m-d H:i:s', $startTimestamp);
-            if(!empty($endTimestamp)) $input['sponsorship_end_timestamp'] = date('Y-m-d H:i:s', $endTimestamp);
+            if(!empty($startDate)) $input['sponsorship_start_timestamp'] = date('Y-m-d H:i:s',$startDate);
+            if(!empty($endDate)) $input['sponsorship_end_timestamp'] = date('Y-m-d H:i:s',$endDate);
 
             foreach($fields as $field) {
                 $field->saveValue($input, 'post', $post->ID);

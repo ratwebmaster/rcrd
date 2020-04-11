@@ -1,18 +1,63 @@
 section.page-section.event-feed-section {
   .event {
+    $e: &;
     margin-top: 2rem;
+    margin-bottom: 2rem;
+    &__image {
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+     &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #8DC63F;
+        opacity: 0.5;
+        transform: skewY(10deg) translateY(150%) scaleY(1.5);
+        transition: transform .25s ease-in-out;
+      }
+    }
     &__date {
       text-transform: uppercase;
       font-weight: 600;
       color: map-get($brand-colors, green);
     }
+    &__title {
+      color: map-get($brand-colors, black);
+    }
+    &__content {
+      margin-top: .5em;
+      font-size: 14px;
+      color: map-get($brand-colors, black);
+    }
+    &__link {
+      &:hover, &:focus, &:active {
+        .event {
+          &__image {
+            &:after {
+              transform: skewY(10deg) translateY(0%) scaleY(1.5);
+              transition: transform .25s ease-in-out;
+            }
+          }
+        }
+      }
+    }
+    &s {
+      width: 100%;
+      &__link {
+        margin-top: 2rem;
+      }
+    }
     @media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
-      &:nth-child(even) { padding-left: 1rem; }
-      &:nth-child(odd) { padding-right: 1rem; }
+      &:nth-child(even) { padding-left: 2rem; }
+      &:nth-child(odd) { padding-right: 2rem; }
     }
     & + .event {
       @media (min-width: $screen-md-min) {
-        margin-left: 2rem;
+        margin-left: 4rem;
       }
     }
   }
