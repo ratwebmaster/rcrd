@@ -8,7 +8,7 @@ $view->setContext($context);
 
 $templates = array('index.html.twig');
 if(is_home()) {
-	array_unshift($templates, 'home.html.twig');
+    array_unshift($templates, 'home.html.twig');
 }
 $view->setTemplates($templates);
 

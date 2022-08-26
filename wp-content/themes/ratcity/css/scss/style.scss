@@ -3,7 +3,7 @@
 @import 'config/_variables';
 
 // Libraries
-@import '../../library/font-awesome/scss/font-awesome';
+@import '../../library/font_awesome/scss/fontawesome.scss';
 
 // Config
 @import 'config/_functions';
@@ -52,4 +52,6 @@
 
 // Templates
 @import 'templates/_archive';
+@import 'templates/_archive_event';
 @import 'templates/_single';
+@import 'templates/_single-event';

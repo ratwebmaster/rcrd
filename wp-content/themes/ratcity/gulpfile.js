@@ -2,10 +2,11 @@
 
 // project variables
 
-var themePath = './';
+var themePathCss = './css/';
+var themePathJs = './js/';
 
 var themeSassIncludePaths = [
-	themePath + 'css/scss'
+	themePathCss + 'scss'
 ];
 
 
@@ -18,29 +19,29 @@ var $ = require('gulp-load-plugins')();
 // theme tasks
 
 gulp.task('theme:css:dev', function() {
-	return gulp.src(themePath + 'css/scss/style.scss')
+	return gulp.src(themePathCss + 'scss/style.scss')
 		.pipe($.sourcemaps.init())
 		.pipe($.sass({ includePaths: themeSassIncludePaths })
 			.on('error', $.notify.onError({ title: 'SASS Compilation Error', message: '<%= error.message %>' })))
 		.pipe($.autoprefixer({ browsers: [ 'last 2 versions', 'ie >= 9' ] }))
 		// .pipe($.cssnano())
-		.pipe($.sourcemaps.write('./'))
-		.pipe(gulp.dest(themePath + 'css/'))
+		.pipe($.sourcemaps.write('../'))
+		.pipe(gulp.dest(themePathCss))
 		.pipe($.notify({ title: 'CSS Compiled Successfully', message: '<%= file.relative %>', onLast: true }))
 });
 
 gulp.task('theme:css:prod', ['theme:css:dev'], function() {
-	return gulp.src(themePath + 'css/style.css')
+	return gulp.src(themePathCss + 'style.css')
 		.pipe($.bless())
-		.pipe(gulp.dest(themePath + 'css/'));
+		.pipe(gulp.dest(themePathCss));
 });
 
 gulp.task('theme:js:prod', function() {
-	return gulp.src([ themePath + 'js/**/*.js', '!' + themePath + 'js/**/*.min.js' ])
+	return gulp.src([ themePathJs + '**/*.js', '!' + themePathJs + '**/*.min.js' ])
 		.pipe($.uglify())
 		.on('error', $.notify.onError({ title: 'JS Minification Error', message: '<%= error.message %>' }))
 		.pipe($.rename({ extname: '.min.js' }))
-		.pipe(gulp.dest(themePath + 'js/'))
+		.pipe(gulp.dest(themePathJs + '/'))
 		.pipe($.notify({ title: 'JS Minified Successfully', message: '<%= file.relative %>' }));
 });
 
@@ -48,16 +49,16 @@ gulp.task('theme:js:prod', function() {
 // watch tasks
 
 gulp.task('watch:dev', function() {
-	gulp.watch(themePath + 'css/scss/**/*.scss', ['theme:css:dev']);
-	gulp.watch([ themePath + 'js/**/*.js', '!' + themePath + 'js/**/*.min.js' ], ['theme:js:prod']);
+	gulp.watch(themePathCss + 'scss/**/*.scss', ['theme:css:dev']);
+	gulp.watch([ themePathJs + '**/*.js', '!' + themePathJs + '**/*.min.js' ], ['theme:js:prod']);
 });
 
 gulp.task('watch:prod', function() {
-	gulp.watch(themePath + 'css/scss/**/*.scss', ['theme:css:prod']);
-	gulp.watch([ themePath + 'js/**/*.js', '!' + themePath + 'js/**/*.min.js' ], ['theme:js:prod']);
+	gulp.watch(themePathCss + 'scss/style.scss', ['theme:css:prod']);
+	gulp.watch([ themePathJs + '**/*.js', '!' + themePathJs + '**/*.min.js' ], ['theme:js:prod']);
 });
 
 
 // default task
 
-gulp.task('default', ['watch:prod']);
+gulp.task('default', ['watch:dev']);

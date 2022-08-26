@@ -30,18 +30,52 @@ section.page-section {
 	}
 
 	.container {
-		padding-top: 40px;
-		padding-bottom: 40px;
+		padding-bottom: 55px;
+		padding-top: 55px;
 		@media (min-width: $screen-sm) {
-			padding-top: 80px;
+			padding-bottom: 55px;
+			padding-top: 55px;
+		}
+
+	}
+	&.padding-bottom-md {
+		.container {
+			padding-bottom: 55px;
+			@media (min-width: $screen-sm) {
+				padding-bottom: 55px;
+			}
+		}
+	}
+	&.padding-top-md {
+		.container {
+			padding-top: 55px;
+			@media (min-width: $screen-sm) {
+				padding-top: 55px;
+			}
+		}
+	}
+	&.padding-bottom-lg {
+		.container {
 			padding-bottom: 80px;
+			@media (min-width: $screen-sm) {
+				padding-bottom: 80px;
+			}
+		}
+	}
+	&.padding-top-lg {
+		.container {
+			padding-top: 80px;
+			@media (min-width: $screen-sm) {
+				padding-top: 80px;
+			}
 		}
 	}
 	&.flush-top .container {
 		padding-top: 0;
 	}
 	&.same-bg-as-next,
-	&.reduced-padding-bottom {
+	&.reduced-padding-bottom,
+	&.padding-bottom-sm {
 		.container {
 			padding-bottom: 40px;
 			@media (min-width: $screen-sm) {
@@ -53,7 +87,8 @@ section.page-section {
 		}
 	}
 	&.same-bg-as-prev,
-	&.reduced-padding-top {
+	&.reduced-padding-top,
+	&.padding-top-sm {
 		.container {
 			padding-top: 40px;
 			@media (min-width: $screen-sm) {
@@ -299,7 +334,7 @@ section.page-section.hero-slider-section {
 			display: flex;
 			align-items: flex-end;
 			&.white-text {
-				@extend section.page-section.white-text;
+				@extend section, .page-section, .white-text;
 			}
 			> .inner {
 				width: 100%;
@@ -1088,3 +1123,6 @@ section.page-section.locations-map-section {
 @import 'page-sections/blog-feed';
 @import 'page-sections/event-feed';
 @import 'page-sections/sponsor-feed';
+@import 'page-sections/member-feed';
+
+@import 'page-sections/helpers';

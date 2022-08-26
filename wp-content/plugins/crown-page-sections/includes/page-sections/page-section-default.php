@@ -2,7 +2,7 @@
 
 use Crown\Form\Field;
 use Crown\Form\FieldGroup;
-
+use Crown\Form\Select;
 use Crown\Form\Input\CheckboxSet;
 
 include_once(dirname(__FILE__).'/page-section.php');

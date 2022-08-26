@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+
+{% block head_css %}
+
+	<style>
+		.page-header {
+			height: 400px;
+		}
+	</style>
+
+{% endblock %}
+
+{% block team_logo %}
+	<img class="team_logo" src="{{ team_data.logo }}" />
+{% endblock %}
+
+{% block page_title %}{{ page_header.title ? page_header.title : 'team_data.name' }}{% endblock %}
+
+{% block page_sections %}
+
+	{% set page_id = post.id %}
+	{% set page_data = get_post(page_id) %}
+
+	{% set page_content_sections = page_data.meta.page_content_sections %}
+
+	{{ block('page_sections_loop') }}
+
+	<section class="page-section">
+		<div class="inner">
+			<div class="container">
+				<div class="inner">
+
+					{{ block('content') }}
+
+				</div><!-- .inner -->
+			</div><!-- .container -->
+		</div><!-- .inner -->
+	</section><!-- .page-section -->
+{% endblock %}
+
+
+

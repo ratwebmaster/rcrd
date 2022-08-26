@@ -44,7 +44,7 @@ if(!class_exists('CarbonTwig')) {
 			add_filter('carbon_content', 'wpautop');
 			add_filter('carbon_content', 'shortcode_unautop');
 			add_filter('carbon_content', 'prepend_attachment');
-			add_filter('carbon_content', 'wp_make_content_images_responsive');
+//			add_filter('carbon_content', 'wp_make_content_images_responsive');
 			add_filter('carbon_content', 'do_shortcode', 11);
 			add_filter('carbon_content', array($wp_embed, 'run_shortcode'), 8);
 			add_filter('carbon_content', array($wp_embed, 'autoembed'), 8);
@@ -84,6 +84,7 @@ if(!class_exists('CarbonTwig')) {
 				'action' => array('callback' => array(&$this, 'functionAction')),
 				'get_url' => array('callback' => array(&$this, 'functionGetUrl')),
 				'get_media_url' => array('callback' => array(&$this, 'functionGetMediaUrl')),
+				'get_media_srcset' => array('callback' => array(&$this, 'functionGetMediaSrcset')),
 				'get_media_filename' => array('callback' => array(&$this, 'functionGetMediaFilename')),
 				'get_media_filetype' => array('callback' => array(&$this, 'functionGetMediaFiletype')),
 				'get_media_alt_text' => array('callback' => array(&$this, 'functionGetMediaAltText')),
@@ -95,6 +96,7 @@ if(!class_exists('CarbonTwig')) {
 				'get_posts' => array('callback' => array(&$this, 'functionGetPosts')),
 				'get_term' => array('callback' => array(&$this, 'functionGetTerm')),
 				'get_terms' => array('callback' => array(&$this, 'functionGetTerms')),
+				'get_post_meta' => array('callback' => array(&$this, 'functionGetPostMeta')),
 				'use_white_foreground' => array('callback' => array(&$this, 'functionUseWhiteForeground')),
 				'get_luminosity' => array('callback' => array(&$this, 'functionGetLuminosity')),
 				'compare_colors' => array('callback' => array(&$this, 'functionCompareColors')),
@@ -229,6 +231,10 @@ if(!class_exists('CarbonTwig')) {
 			return '';
 		}
 
+		public function functionGetMediaSrcset($mediaId, $size = 'medium') {
+		    return wp_get_attachment_image_srcset($mediaId, $size);
+        }
+
 		public function functionGetMediaFilename($mediaId) {
 			$fileUrl = get_attached_file($mediaId);
 			return !empty($fileUrl) ? basename($fileUrl) : '';
@@ -292,6 +298,10 @@ if(!class_exists('CarbonTwig')) {
 		public function functionGetTerms($args = array()) {
 			return Carbon::getTerms((array)$args);
 		}
+
+		public function functionGetPostMeta($post_id) {
+		    return get_post_meta($post_id);
+        }
 
 		public function functionUseWhiteForeground($hex = '', $threshold = null) {
 			if(empty($threshold)) $threshold = apply_filters('default_white_foreground_threshold', 0.38);

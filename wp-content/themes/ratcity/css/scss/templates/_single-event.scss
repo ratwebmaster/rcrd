@@ -1,0 +1,48 @@
+body.single-event {
+
+  .entry-meta {
+    p {
+      margin-top: 1em;
+    }
+  }
+  .entry-image {
+    margin-bottom: 4rem;
+    img {
+      object-fit: cover;
+      width: 100%;
+      max-height: 280px;
+      object-position: center;
+    }
+  }
+  .entry-content {
+    letter-spacing: 0.5px;
+    line-height: 1.625em;
+  }
+
+  .event {
+    &-image {
+      background-color: #D8D8D8;
+      margin-bottom: 4rem;
+      img {
+        width: 100%;
+        max-height: 27rem;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+    &-date {
+      font-size: 14px;
+      color: #818380;
+      font-weight: 600;
+    }
+    &-time {
+      font-size: 1.6rem;
+      color: map-get($brand-colors, black);
+    }
+    &-location {
+      font-size: 2rem;
+      color: map-get($brand-colors, black);
+    }
+  }
+
+}

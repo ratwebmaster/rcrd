@@ -16,6 +16,8 @@
 	{% set section_class = section.layout_options ? section_class|merge(section.layout_options) : section_class %}
 	{% set section_class = section.bg_color ? section_class|merge([use_white_foreground(section.bg_color) ? 'white-text' : '']) : section_class %}
 	{% set section_class = section.bg_color and get_luminosity(section.bg_color) == 1 ? section_class|merge(['white-bg']) : section_class %}
+	{% set section_class = section.padding_top ? section_class|merge(['padding-top-' ~ section.padding_bottom]) : section_class %}
+	{% set section_class = section.padding_bottom ? section_class|merge(['padding-bottom-' ~ section.padding_bottom]) : section_class %}
 
 	{% for accent in section.accent %}
 		{% set section_class = section_class|merge(['accent-' ~ accent]) %}

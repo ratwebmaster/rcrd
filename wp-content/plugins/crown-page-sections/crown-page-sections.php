@@ -48,7 +48,8 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSections')) {
 			'CrownPageSectionTestimonialGrid',
 			'CrownPageSectionBlogPostSlider',
             'CrownPageSectionEventFeed',
-            'CrownPageSectionSponsorFeed'
+            'CrownPageSectionSponsorFeed',
+            'CrownPageSectionMemberFeed'
 		);
 
 		public static $init = false;

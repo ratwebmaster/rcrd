@@ -155,11 +155,18 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
                                     new Field(array(
                                         'label' => 'Question',
                                         'input' => new Select(array('name' => 'question', 'options' => array(
-                                            array('value' => 'q1', 'label' => 'What is your birthdate?'),
-                                            array('value' => 'q2', 'label' => 'What is your hometown?'),
-                                            array('value' => 'q3', 'label' => 'What other sports have you played?'),
-                                            array('value' => 'q4', 'label' => 'What position do you prefer on the track?'),
-                                            array('value' => 'q5', 'label' => 'What do you do for a living?'),
+                                            array('value' => 'birthdate', 'label' => 'What is your birthdate?'),
+                                            array('value' => 'hometown', 'label' => 'What is your hometown?'),
+                                            array('value' => 'sports', 'label' => 'What other sports have you played?'),
+                                            array('value' => 'position', 'label' => 'What position do you prefer on the track?'),
+                                            array('value' => 'career', 'label' => 'What do you do for a living?'),
+                                            array('value' => 'quote', 'label' => 'Favorite Quote'),
+                                            array('value' => 'history', 'label' => 'Derby History'),
+                                            array('value' => 'injury', 'label' => 'Injuries'),
+                                            array('value' => 'movie', 'label' => 'Favorite movie?'),
+                                            array('value' => 'awards', 'label' => 'Awards?'),
+                                            array('value' => 'song', 'label' => 'Get Pumped-Up Song'),
+                                            array('value' => 'fightsong', 'label' => 'Fight Song'),
                                         )))
                                     )),
                                     new Field(array(
@@ -214,6 +221,7 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 				'settings' => array(
 					'hierarchical' => true,
 					'rewrite' => array('slug' => 'teams', 'with_front' => false),
+                    'has_archive' => true,
 					'show_in_nav_menus' => false,
 					'publicly_queryable' => false,
 					'labels' => array(
@@ -231,7 +239,41 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
                     new Field(array(
                         'label' => 'Team Logo',
                         'input' => new MediaInput(array('name' => 'team_logo', 'buttonLabel' => 'Select Image', 'mimeType' => 'image'))
-                    ))
+                    )),
+                    new FieldRepeater(array(
+                        'name' => 'team_coaches',
+                        'label' => 'Team Coaches',
+                        'addNewLabel' => 'Add a Coach',
+                        'fields' => array(
+                            new Field(array(
+                                'label' => 'Coach',
+                                'input' => new Select(array('name' => 'coach', 'select2' => array('placeholder' => 'Select Member...', 'allowClear' => true))),
+                                'getOutputCb' => array(__CLASS__, 'setMemberSelectInputOptions')
+                            )),
+                        )
+                    )),
+                    new FieldRepeater(array(
+                        'name' => 'team_captains',
+                        'label' => 'Team Captains',
+                        'addNewLabel' => 'Add a Captain',
+                        'fields' => array(
+                            new Field(array(
+                                'label' => 'Captain',
+                                'input' => new Select(array('name' => 'captain', 'select2' => array('placeholder' => 'Select Member...', 'allowClear' => true))),
+                                'getOutputCb' => array(__CLASS__, 'setMemberSelectInputOptions')
+                            )),
+                        )
+                    )),
+//                    new FieldRepeater(array(
+//                        'label' => 'Captains',
+//                        'name' => 'captains',
+//                        'fields' => array(
+//                            new Field(array(
+//                                'input' => new Select(array('name' => 'captain')),
+//                                'getOutputCb' => array(__CLASS__, 'setMemberSelectInputOptions')
+//                            ))
+//                        )
+//                    )),
                 ),
 			));
 
@@ -259,6 +301,17 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
             ));
 
 		}
+
+
+        public static function setMemberSelectInputOptions($field) {
+            $options[] = array('value' => '', 'label' => 'Please Select');
+            $posts = get_posts(array('post_type' => 'member', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+            foreach($posts as $post) {
+                $options[] = array('value' => $post->ID, 'label' => $post->post_title, 'depth' => 0);
+            }
+            $field->getInput()->setOptions($options);
+
+        }
 
 
 		public static function registerShortcodes() {

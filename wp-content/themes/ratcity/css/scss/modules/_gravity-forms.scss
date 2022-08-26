@@ -40,7 +40,7 @@ $gform-gutter-width: 10px;
 
 	.validation_error {
 		@extend .alert;
-		@extend .alert.danger;
+		@extend .alert, .danger;
 	}
 
 }
@@ -252,5 +252,5 @@ $gform-gutter-width: 10px;
 
 #gforms_confirmation_message {
 	@extend .alert;
-	@extend .alert.success;
+	@extend .alert, .success;
 }

@@ -111,7 +111,7 @@
 {#									{% endblock %}#}
 								</div>
 							{% elseif page_header.configuration == 'default' %}
-								<div class="page-header {{ page_header.configuration }}" style="background-image: url({{ page_header.page_header_image ? page_header.page_header_image : site_branding.banner_default }});">
+								<div class="page-header page-header-default {{ page_header.configuration }}" style="background-image: url({{ page_header.page_header_image ? page_header.page_header_image : site_branding.banner_default }});">
 								</div>
 							{% else %}
 								<div class="page-header {{ page_header.configuration }}">
@@ -119,7 +119,10 @@
 										<div class="inner">
 											<div class="page-header__content">
 												{% if page_header.title %}
-													<h1 class="page-header__title">{{ page_header.title }}</h1>
+													<h1 class="page-header__title">
+														{% block team_logo %}{% endblock %}
+														{% block page_title %}{{ page_header.title }}{% endblock %}
+													</h1>
 												{% endif %}
 											</div>
 										</div>
@@ -159,9 +162,11 @@
 								{% set page_content_sections = [ page_section_fallback ] %}
 								
 								{% block page_sections_loop %}
+
 									{% set prev_section = null %}
 									{% set next_section = null %}
 									{% for index, section in page_content_sections %}
+
 										{% set next_section = page_content_sections[index + 1] ? page_content_sections[index + 1] : null %}
 										{% include ['page-section/' ~ section.crown_repeater_entry_type ~ '.html.twig', 'page-section/default-section.html.twig'] %}
 										{% set prev_section = section %}

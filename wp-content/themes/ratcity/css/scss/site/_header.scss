@@ -19,8 +19,12 @@
 
 .page-header {
 	background-size: cover;
-	background-position: center;
+	background-position: center bottom;
+	&-default {
+		height: 100vh;
+	}
 }
+
 
 /*	Branding
 ---------------------------------------------------------*/
@@ -43,7 +47,7 @@
 ---------------------------------------------------------*/
 
 #mobile-menu-toggle {
-	@extend .btn.link;
+	@extend .btn, .link;
 	float: right;
 	padding: 0;
 	border: none;

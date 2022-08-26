@@ -2,32 +2,35 @@
 
 
 {% block page_section_contents %}
-<div class="intro-text{{ section.intro_content_layout == 'centered' ? ' text-center' }}">
 
-	{% block page_section_title %}
+{% if section.title or section.section_content %}
+	<div class="intro-text{{ section.intro_content_layout == 'centered' ? ' text-center' }}">
 
-		{# section header, including specified heading level #}
-		{% if section.title_h_level == 'h1' %}
-			{% set h_level = 'h2' %}
-			{% if section_title and not prev_section %}
-				{% set h_class = 'h1 section-header' %}
+		{% block page_section_title %}
+
+			{# section header, including specified heading level #}
+			{% if section.title_h_level == 'h1' %}
+				{% set h_level = 'h2' %}
+				{% if section_title and not prev_section %}
+					{% set h_class = 'h1 section-header' %}
+				{% endif %}
+			{% else %}
+				{% set h_level = section.title_h_level|default('h2') %}
+				{% set h_class = 'section-header' %}
 			{% endif %}
-		{% else %}
-			{% set h_level = section.title_h_level|default('h2') %}
-			{% set h_class = 'section-header' %}
-		{% endif %}
 
-		{% if section_title %}
-			<{{ h_level }} class="{{ h_class }} {{ use_white_foreground(section.bg_color) ? 'text-white' }}">{{ section_title }}</{{ h_level }}>
-		{% endif %}
+			{% if section_title %}
+				<{{ h_level }} class="{{ h_class }} {{ use_white_foreground(section.bg_color) ? 'text-white' }}">{{ section_title }}</{{ h_level }}>
+			{% endif %}
 
-	{% endblock %}
+		{% endblock %}
 
-	{% block page_section_content %}
-		{{ section.section_content|default(section.content|content) }}
-	{% endblock %}
+		{% block page_section_content %}
+			{{ section.section_content|default(section.content|content) }}
+		{% endblock %}
 
 	</div>
+{% endif %}
 
 	<div class="section-columns">
 	{% block page_section_columns %}

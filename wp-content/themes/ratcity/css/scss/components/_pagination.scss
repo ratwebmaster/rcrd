@@ -24,7 +24,7 @@ nav.pagination {
 			z-index: 1;
 		}
 		&.current > a {
-			@extend .btn.active;
+			@extend .btn, .active;
 		}
 		&.prev > a:before { @include icon($fa-var-angle-left); }
 		&.next > a:before { @include icon($fa-var-angle-right); }
@@ -36,7 +36,7 @@ nav.pagination {
 			span { display: none; }
 		}
 		&.no-link > a {
-			@extend .btn.disabled;
+			@extend .btn, .disabled;
 		}
 		> a {
 			@extend .btn;

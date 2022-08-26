@@ -1,0 +1,128 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% set team_data = get_term(section.team, 'member_team') %}
+
+	{% set skaters = [] %}
+	{% set coaches = [] %}
+	{% set alums = [] %}
+	{% if section.team %}
+		{% if 'skaters' in section.display_group %}
+			{% set skaters = get_skaters(section.team, 'active') %}
+			{% set captains = get_captains(section.team) %}
+		{% endif %}
+		{% if 'coaches' in section.display_group %}
+			{% set coaches = get_coaches(section.team) %}
+		{% endif %}
+		{% if 'alums' in section.display_group %}
+			{% set alums = get_skaters(section.team, 'alumni') %}
+		{% endif %}
+	{% endif %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content text-{{ section.intro_content_layout == 'centered' ? 'center' : 'left' }}">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if section.team %}
+		{% if skaters %}
+			<div class="member-group skaters">
+			<h2>Skaters</h2>
+				<div class="skaters members flex flex-wrap">
+
+				{% for skater in skaters %}
+					{% set skater_meta = get_post_meta(skater.ID) %}
+					{% set id = skater.ID %}
+					{% set img = skater_meta._thumbnail_id[0] %}
+					{% set name = skater.post_title %}
+
+					<div class="member">
+						<div class="inner">
+
+							<a href="{{ skater.guid }}" class="block">
+
+								<div class="member__photo">
+									{% if img %}
+										<div class="photo">
+											<img src="{{ get_media_url(img, 'thumbnail') }}" alt="{{ get_media_alt_text(img)|escape('html_attr') }}">
+											{# srcset="{{ get_media_srcset(img) }}"#}
+										</div>
+									{% endif %}
+								</div>
+
+								<div class="member__info">
+
+									<div class="member__name">{{ name }}</div>
+
+									{% if id in captains %}
+										<div class="captain">Captain</div>
+									{% endif %}
+
+								</div>
+
+							</a>
+
+						</div>
+					</div>
+				{% endfor %}
+
+				</div>
+			</div>
+		{% endif %}
+
+		{% if coaches %}
+			<div class="member-group coaches">
+				<h2>Coaches</h2>
+				<div class="coaches members flex flex-wrap">
+
+					{% for coach in coaches %}
+						{% set coach_meta = get_post(coach) %}
+						{% set id = coach %}
+						{% set img = get_post_meta(coach)['_thumbnail_id'][0] %}
+						{% set name = coach_meta.title %}
+
+						<div class="member">
+							<div class="inner">
+
+								<div class="member__photo">
+									{% if img %}
+										<div class="photo">
+											<img src="{{ get_media_url(img, 'thumbnail') }}" alt="{{ get_media_alt_text(img)|escape('html_attr') }}">
+											{# srcset="{{ get_media_srcset(img) }}"#}
+										</div>
+									{% endif %}
+								</div>
+
+								<div class="member__info">
+
+									<div class="member__name">{{ name }}</div>
+
+								</div>
+
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		{% endif %}
+
+		{% if alums %}
+			<div class="member-group alums">
+				<h2>Alums</h2>
+					<ul class="alums">
+					{% for alum in alums if alum.post_title %}
+						<li><a href="{{ alum.guid }}">{{ alum.post_title }}</a></li>
+					{% endfor %}
+				</ul>
+
+			</div>
+		{% endif %}
+
+	{% endif %}
+	
+{% endblock %}

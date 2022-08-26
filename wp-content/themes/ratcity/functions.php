@@ -207,6 +207,12 @@ if(!class_exists('Zero')) {
             if ($query->is_post_type_archive('event')) {
                 $query->set('posts_per_page', -1);
                 $query->set('sort_by', 'event_start_date');
+
+//            filter
+//                $event_type = isset($_GET['type']) ? trim($_GET['event_type']) : 'all';
+//                $tax_terms = ['relation' => 'and'];
+//                if (isset($event_type) && $event_type != 'all') $tax_terms[] = array('taxonomy' => 'event_type', 'field' => 'slug', 'terms' => $event_type);
+//                if(!empty($event_type)) $query->set('tax_query', $tax_terms);
             }
 
             if ($query->is_post_type_archive('member')) {
@@ -260,7 +266,7 @@ if(!class_exists('Zero')) {
 
 			// custom theme stylesheet
 			wp_enqueue_style('google-fonts', 'https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700|Montserrat:300,400,500,600,700');
-			wp_enqueue_style('theme-style', get_template_directory_uri().'/css/style.css', array(), self::$version, 'all');
+			wp_enqueue_style('theme-style', get_template_directory_uri().'/css/style.css', array(), '1.0', 'all');
 
 		}
 
@@ -518,6 +524,10 @@ if(!class_exists('Zero')) {
 		public static function addTwigFunctions($functions) {
 			return array_merge($functions, array(
 				'get_map' => array('callback' => array(__CLASS__, 'twigFunctionGetMap')),
+                'get_skaters' => array('callback' => array(__CLASS__, 'twigFunctionGetMembers')),
+                'get_coaches' => array('callback' => array(__CLASS__, 'twigFunctionGetCoaches')),
+                'get_captains' => array('callback' => array(__CLASS__, 'twigFunctionGetCaptains')),
+                'get_event_type_index_filter_options' => array('callback' => array(__CLASS__, 'twigFunctionGetEventDateFilterOptions')),
 			));
 		}
 
@@ -547,6 +557,71 @@ if(!class_exists('Zero')) {
 			wp_enqueue_script('google-maps-infobox');
 			return Crown\Api\GoogleMaps::getMap($settings);
 		}
+
+
+		public static function twigFunctionGetMembers($team, $status) {
+		    $status = $status ? $status : 'active';
+		    return get_posts(array(
+                'post_type' => 'member',
+				'posts_per_page' => -1,
+				'orderby' => 'post_title',
+				'order' => 'ASC',
+                'tax_query' => array(
+                    'relation' => 'AND',
+                    array('taxonomy' => 'member_team', 'field' => 'term_id', 'terms' => $team),
+                    array('taxonomy' => 'member_status', 'field' => 'slug', 'terms' => $status)
+                )
+            ));
+        }
+
+
+        public static function twigFunctionGetCoaches($team_id) {
+            $team_coaches = get_repeater_entries('term', 'team_coaches', $team_id);
+
+            $coaches = [];
+            foreach ($team_coaches as $coach) {
+                $coaches[] = $coach['coach'];
+            }
+            return $coaches;
+        }
+
+
+        public static function twigFunctionGetCaptains($team_id) {
+            $team_caps = get_repeater_entries('term', 'team_captains', $team_id);
+
+            $captains = [];
+            foreach ($team_caps as $captain) {
+                $captains[] = $captain['captain'];
+            }
+            return $captains;
+        }
+
+
+        public static function twigFunctionGetEventDateFilterOptions() {
+            $options = array();
+
+            $baseUrl = get_post_type_archive_link('event');
+            if(isset($_GET['keyword'])) $baseUrl = add_query_arg('keyword', $_GET['keyword'], $baseUrl);
+
+            $queriedTypes = isset($_GET['type']) && !empty($_GET['type']) ? explode(',', $_GET['type']) : array();
+
+            $options[] = (object)array('key' => 'all', 'url' => remove_query_arg('type', $baseUrl), 'label' => 'All Events', 'active' => empty($queriedTypes));
+
+            if(class_exists('CrownEvents')) {
+                $terms = get_terms(array('taxonomy' => 'event_type')); //var_dump($terms);
+                foreach($terms as $term) {
+                    if (isset($term) && !empty($term)){
+                        $childOptions = array();
+                        foreach(get_terms(array('taxonomy' => 'event_type', 'parent' => $term->term_id)) as $subTerm) {
+                            $childOptions[] = (object)array('url' => add_query_arg('type', $subTerm->slug, $baseUrl), 'label' => $subTerm->name, 'active' => in_array($subTerm->slug, $queriedTypes));
+                        }
+                        $options[] = (object)array('key' => $term->slug, 'url' => add_query_arg('type', $term->slug, $baseUrl), 'label' => $term->name, 'children' => $childOptions, 'active' => in_array($term->slug, $queriedTypes));
+                    }
+                }
+            }
+
+            return $options;
+        }
 
 
 		/**
@@ -599,14 +674,9 @@ if(!class_exists('Zero')) {
             $context['page_header'] = (object)array(
                 'configuration' => 'default',
                 'title' => '',
-//                'callout' => '',
                 'page_header_image' => '',
                 'page_header_slides' => [],
                 'page_slider_enabled' => '',
-//                'bg_image_position' => 'top center',
-//                'contact' => array(),
-//                'display_title' => true,
-//                'title_alignment' => 'left',
                 'banner_height_full' => false
             );
 
@@ -634,11 +704,10 @@ if(!class_exists('Zero')) {
                 }
             }
 
-
-            if (!$postId && is_post_type_archive()) {
-                $post_type = get_post_type();
-                $postId = get_option("theme_options_{$post_type}_index_page");
-            }
+//            $team_index = get_repeater_entries('blog', 'theme_options_teams');
+//            foreach ($team_index as $team) {
+//                $postId = get_option($team['team_page']);
+//            }
 
             if(is_category()) {
                 $context['page_header']->configuration = 'default';
@@ -661,6 +730,11 @@ if(!class_exists('Zero')) {
             if(!empty($donate_label)) $context['site_branding']->donate['label'] = $donate_label;
 
 
+            if (!$postId && is_post_type_archive()) {
+                $post_type = get_queried_object()->name;
+                $postId = get_option("theme_options_{$post_type}s_index_page");
+            }
+
             if($postId) {
 
                 $configuration = get_post_meta($postId, 'page_header_type', true);
@@ -679,15 +753,19 @@ if(!class_exists('Zero')) {
 //                $header_position = get_post_meta($postId, 'page_header_position', true);
 //                if(!empty($header_position)) $context['page_header']->content_position = $header_position;
 
-                if (get_post_meta($postId, 'slider_enabled')[0]) {
-                    $page_slider = get_repeater_entries('post', 'page_header_slides', $postId);
-                    if(!empty($page_slider)) $context['page_header']->page_header_slides = ($page_slider) ? $page_slider : get_option('theme_options_default_page_header_image');
-                } else {
-                    $page_image = get_post_meta($postId, 'page_header_image', true);
-                    $image = wp_get_attachment_image_url(($page_image) ? $page_image : get_option('theme_options_default_page_header_image'), 'full');
-                    if(!empty($image)) $context['page_header']->page_header_image = $image;
-                }
-                $context['page_header']->page_slider_enabled = get_post_meta($postId, 'slider_enabled')[0];
+                    if ($context['page_header']->configuration == 'default') {
+                        if ($context['page_header']->page_slider_enabled && get_post_meta($postId, 'slider_enabled')[0]) {
+                            $page_slider = get_repeater_entries('post', 'page_header_slides', $postId);
+                            if(!empty($page_slider)) $context['page_header']->page_header_slides = ($page_slider) ? $page_slider : get_option('theme_options_default_page_header_image');
+                        } else {
+                            $page_image = get_post_meta($postId, 'page_header_image', true);
+                            $image = wp_get_attachment_image_url(($page_image) ? $page_image : get_option('theme_options_default_page_header_image'), 'full');
+                            if(!empty($image)) $context['page_header']->page_header_image = $image;
+                        }
+                        $context['page_header']->page_slider_enabled = get_post_meta($postId, 'slider_enabled')[0];
+                    }
+
+
 
 //                $display_title = get_post_meta($postId, 'title_enabled', true);
 //                if(!empty($display_title)) $context['page_header']->display_title = $display_title;
@@ -701,22 +779,35 @@ if(!class_exists('Zero')) {
 
             }
 
-//            if(is_archive('member')) {
-//                $context['page_header']->configuration = 'default';
-//            }
-//            if(is_singular('member')) {
-//                $context['page_header']->configuration = 'default';
-//            }
-
             if(is_single()) {
                 $context['page_header']->configuration = 'disabled';
 //                $context['page_header']->display_title = false;
             }
+
+            if(is_post_type_archive('event')) {
+                $context['page_header']->title = ucwords($post_type) . 's';
+                $context['page_header']->configuration = 'gradient';
+            }
+
+            if(is_singular('member')) {
+                $member_meta = get_post_meta($postId);
+                $number = $member_meta['member_number'][0];
+                $t = get_the_title($postId);
+                $title = $number ? "#{$number} {$t}" : $t;
+                $context['page_header']->title = $title;
+                $context['page_header']->configuration = 'gradient';
+            }
+
             if(is_404()) {
                 $context['page_header']->configuration = 'default';
 //                $context['page_header']->title = get_option('theme_options_404_page_message_title');
             }
 
+//            if (!$postId && is_post_type_archive()) {
+//                $post_type = get_queried_object()->name;
+//                $postId = get_option("theme_options_events_index_page");
+//            }
+//            var_dump($context);
 			return $context;
 		}
 

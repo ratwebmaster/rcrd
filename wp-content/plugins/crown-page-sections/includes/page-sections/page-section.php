@@ -128,7 +128,7 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 						)
 					)),
 					static::getContentField(array('inputName' => 'content_column_1', 'rows' => 10)),
-			        static::getColorField(array('label' => 'Background Color', 'inputName' => 'bg_color_column_1', 'themeColorsContext' => 'section_bg'))
+			        static::getColorField(array('label' => 'Background Color', 'inputName' => 'bg_color_column_1', 'themeColorsContext' => 'section_bg', 'defaultValue' => ''))
 				)
 			));
 		}
@@ -146,7 +146,7 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 						)
 					)),
 					static::getContentField(array('inputName' => 'content_column_2', 'rows' => 10)),
-                    static::getColorField(array('label' => 'Background Color', 'inputName' => 'bg_color_column_2', 'themeColorsContext' => 'section_bg'))
+                    static::getColorField(array('label' => 'Background Color', 'inputName' => 'bg_color_column_2', 'themeColorsContext' => 'section_bg', 'defaultValue' => ''))
 				)
 			));
 		}
@@ -456,9 +456,9 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 				'defaultValue' => array(),
 				'options' => array(
 					array('value' => 'text-center', 'label' => 'Center-Align Text'),
-					array('value' => 'full-window-height', 'label' => 'Full Window Height'),
-					array('value' => 'reduced-padding-top', 'label' => 'Reduced Top Padding'),
-					array('value' => 'reduced-padding-bottom', 'label' => 'Reduced Bottom Padding')
+					array('value' => 'full-window-height', 'label' => 'Full Window Height')
+//					array('value' => 'reduced-padding-top', 'label' => 'Reduced Top Padding'),
+//					array('value' => 'reduced-padding-bottom', 'label' => 'Reduced Bottom Padding')
 				),
 				'ignoreOptions' => array()
 			);
@@ -475,12 +475,91 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 				'label' => $args['label'],
 				'description' => $args['description'],
 				'fields' => array(
-					new Field(array(
-						'input' => new CheckboxSet(array('name' => $args['inputName'], 'defaultValue' => $args['defaultValue'], 'options' => $options))
-					))
+                    new Field(array(
+                        'input' => new CheckboxSet(array('name' => $args['inputName'], 'defaultValue' => $args['defaultValue'], 'options' => $options))
+                    )),
+                    static::getPaddingSelectField(),
 				)
 			));
 		}
+
+
+        protected static function getPaddingTopField($args = array()) {
+            $defaultArgs = array(
+                'label' => 'Padding Top',
+                'description' => '',
+                'inputName' => 'padding_top',
+                'defaultValue' => 'md',
+                'options' => array(
+                    array('value' => 'lg', 'label' => 'Large'),
+                    array('value' => 'md', 'label' => 'Medium'),
+                    array('value' => 'sm', 'label' => 'Small')
+                ),
+                'ignoreOptions' => array()
+            );
+            $args = array_merge($defaultArgs, $args);
+
+            $options = array();
+            foreach($args['options'] as $option) {
+                if(!in_array($option['value'], $args['ignoreOptions'])) {
+                    $options[] = $option;
+                }
+            }
+
+            return new Field(array(
+                'label' => $args['label'],
+                'description' => $args['description'],
+                'input' => new Select(array('name' => $args['inputName'], 'defaultValue' => $args['defaultValue'], 'options' => $options))
+            ));
+        }
+
+        protected static function getPaddingBottomField($args = array()) {
+            $defaultArgs = array(
+                'label' => 'Padding Bottom',
+                'description' => '',
+                'inputName' => 'padding_bottom',
+                'defaultValue' => 'md',
+                'options' => array(
+                    array('value' => 'lg', 'label' => 'Large'),
+                    array('value' => 'md', 'label' => 'Medium'),
+                    array('value' => 'sm', 'label' => 'Small')
+                ),
+                'ignoreOptions' => array()
+            );
+            $args = array_merge($defaultArgs, $args);
+
+            $options = array();
+            foreach($args['options'] as $option) {
+                if(!in_array($option['value'], $args['ignoreOptions'])) {
+                    $options[] = $option;
+                }
+            }
+
+            return new Field(array(
+                'label' => $args['label'],
+                'description' => $args['description'],
+                'input' => new Select(array('name' => $args['inputName'], 'defaultValue' => $args['defaultValue'], 'options' => $options))
+            ));
+        }
+
+        protected static function getPaddingSelectField($args = array()) {
+            $defaultArgs = array(
+                'label' => 'Padding Options',
+                'description' => '',
+            );
+            $args = array_merge($defaultArgs, $args);
+
+            return new FieldGroup(array(
+                'label' => $args['label'],
+                'description' => $args['description'],
+                'atts' => array('style' => 'margin-top: 20px; border-top: 1px solid #eee; padding-top: 4px;'),
+                'class' => 'no-border two-column',
+                'fields' => array(
+                    static::getPaddingTopField(),
+                    static::getPaddingBottomField(),
+                )
+            ));
+        }
 
 
 		protected static function getSectionBgColorField() {
