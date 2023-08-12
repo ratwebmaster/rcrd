@@ -339,9 +339,16 @@ class Utility extends Root {
 				$item = $item[ 0 ];
 			}
 
-			if ( substr( $item, -1 ) === '$' ) {
+			if ( substr( $item, 0, 1 ) === '^' && substr( $item, -1 ) === '$' ) {
 				// do exact match
-				if ( substr( $item, 0, -1 ) === $needle ) {
+				if ( substr( $item, 1, -1 ) === $needle ) {
+					$hit = $item;
+					break;
+				}
+			}
+			elseif ( substr( $item, -1 ) === '$' ) {
+				// match end
+				if ( substr( $item, 0, -1 ) === substr($needle, -strlen( $item ) + 1 ) ) {
 					$hit = $item;
 					break;
 				}
@@ -519,6 +526,14 @@ class Utility extends Root {
 	}
 
 	/**
+	 * Validate ip v4
+	 * @since 5.5
+	 */
+	public static function valid_ipv4($ip) {
+		return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE);
+	}
+
+	/**
 	 * Generate domain const
 	 *
 	 * This will generate http://www.example.com even there is a subfolder in home_url setting
@@ -546,7 +561,7 @@ class Utility extends Root {
 	 * @access public
 	 * @param  string $content
 	 * @param  bool $type String handler type
-	 * @return string
+	 * @return string|array
 	 */
 	public static function sanitize_lines( $arr, $type = null ) {
 		$types = $type ? explode( ',', $type ) : array();

@@ -20,18 +20,11 @@ class Lang extends Base {
 	public static function img_status( $status = null )
 	{
 		$list = array(
-			Img_Optm::STATUS_RAW		=> __( 'Images not requested', 'litespeed-cache' ),
+			Img_Optm::STATUS_NEW		=> __( 'Images not requested', 'litespeed-cache' ),
+			Img_Optm::STATUS_RAW		=> __( 'Images ready to request', 'litespeed-cache' ),
 			Img_Optm::STATUS_REQUESTED	=> __( 'Images requested', 'litespeed-cache' ),
 			Img_Optm::STATUS_NOTIFIED	=> __( 'Images notified to pull', 'litespeed-cache' ),
 			Img_Optm::STATUS_PULLED		=> __( 'Images optimized and pulled', 'litespeed-cache' ),
-			Img_Optm::STATUS_FAILED		=> __( 'Images failed to pull', 'litespeed-cache' ),
-			Img_Optm::STATUS_ERR_FETCH	=> __( 'Images failed to fetch', 'litespeed-cache' ),
-			Img_Optm::STATUS_ERR_404	=> __( 'Images failed to fetch', 'litespeed-cache') . ' (404)',
-			Img_Optm::STATUS_ERR_OPTM	=> __( 'Images previously optimized', 'litespeed-cache' ),
-			Img_Optm::STATUS_ERR			=> __( 'Images failed with other errors', 'litespeed-cache' ),
-			Img_Optm::STATUS_MISS		=> __( 'Image files missing', 'litespeed-cache' ),
-			Img_Optm::STATUS_DUPLICATED	=> __( 'Duplicate image files ignored', 'litespeed-cache' ),
-			Img_Optm::STATUS_XMETA		=> __( 'Images with wrong meta', 'litespeed-cache' ),
 		);
 
 		if ( $status !== null ) {
@@ -141,7 +134,8 @@ class Lang extends Base {
 			self::O_OPTM_CSS_COMB_EXT_INL		=> __( 'CSS Combine External and Inline', 'litespeed-cache' ),
 			self::O_OPTM_UCSS					=> __( 'Generate UCSS', 'litespeed-cache' ),
 			self::O_OPTM_UCSS_INLINE			=> __( 'UCSS Inline', 'litespeed-cache' ),
-			self::O_OPTM_UCSS_WHITELIST			=> __( 'UCSS Allowlist', 'litespeed-cache' ),
+			self::O_OPTM_UCSS_SELECTOR_WHITELIST	=> __( 'UCSS Selector Allowlist', 'litespeed-cache' ),
+			self::O_OPTM_UCSS_FILE_EXC_INLINE	=> __( 'UCSS File Excludes and Inline', 'litespeed-cache' ),
 			self::O_OPTM_UCSS_EXC				=> __( 'UCSS URI Excludes', 'litespeed-cache' ),
 			self::O_OPTM_JS_MIN					=> __( 'JS Minify', 'litespeed-cache' ),
 			self::O_OPTM_JS_COMB				=> __( 'JS Combine', 'litespeed-cache' ),
@@ -165,7 +159,7 @@ class Lang extends Base {
 			self::O_OPTM_CCSS_CON				=> __( 'Critical CSS Rules', 'litespeed-cache' ),
 			self::O_OPTM_CCSS_SEP_POSTTYPE		=> __( 'Separate CCSS Cache Post Types', 'litespeed-cache' ),
 			self::O_OPTM_CCSS_SEP_URI			=> __( 'Separate CCSS Cache URIs', 'litespeed-cache' ),
-			self::O_OPTM_JS_DEFER_EXC			=> __( 'JS Deferred Excludes', 'litespeed-cache' ),
+			self::O_OPTM_JS_DEFER_EXC			=> __( 'JS Deferred / Delayed Excludes', 'litespeed-cache' ),
 			self::O_OPTM_GM_JS_EXC				=> __( 'Guest Mode JS Excludes', 'litespeed-cache' ),
 			self::O_OPTM_EMOJI_RM				=> __( 'Remove WordPress Emoji', 'litespeed-cache' ),
 			self::O_OPTM_NOSCRIPT_RM			=> __( 'Remove Noscript Tags', 'litespeed-cache' ),
@@ -203,7 +197,7 @@ class Lang extends Base {
 			self::O_IMG_OPTM_CRON				=> __( 'Auto Pull Cron', 'litespeed-cache' ),
 			self::O_IMG_OPTM_ORI				=> __( 'Optimize Original Images', 'litespeed-cache' ),
 			self::O_IMG_OPTM_RM_BKUP			=> __( 'Remove Original Backups', 'litespeed-cache' ),
-			self::O_IMG_OPTM_WEBP				=> __( 'Create WebP Versions', 'litespeed-cache' ),
+			self::O_IMG_OPTM_WEBP				=> __( 'Image WebP Replacement', 'litespeed-cache' ),
 			self::O_IMG_OPTM_LOSSLESS			=> __( 'Optimize Losslessly', 'litespeed-cache' ),
 			self::O_IMG_OPTM_EXIF				=> __( 'Preserve EXIF/XMP data', 'litespeed-cache' ),
 			self::O_IMG_OPTM_WEBP_ATTR			=> __( 'WebP Attribute To Replace', 'litespeed-cache' ),
@@ -220,7 +214,6 @@ class Lang extends Base {
 			self::O_CACHE_EXC_COOKIES			=> __( 'Do Not Cache Cookies', 'litespeed-cache' ),
 			self::O_CACHE_EXC_USERAGENTS		=> __( 'Do Not Cache User Agents', 'litespeed-cache' ),
 			self::O_CACHE_LOGIN_COOKIE			=> __( 'Login Cookie', 'litespeed-cache' ),
-			self::O_IMG_OPTM_WEBP_REPLACE		=> __( 'Image WebP Replacement', 'litespeed-cache' ),
 
 			self::O_MISC_HEARTBEAT_FRONT		=> __( 'Frontend Heartbeat Control', 'litespeed-cache' ),
 			self::O_MISC_HEARTBEAT_FRONT_TTL	=> __( 'Frontend Heartbeat TTL', 'litespeed-cache' ),

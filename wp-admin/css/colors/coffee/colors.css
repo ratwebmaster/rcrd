@@ -1,7 +1,10 @@
-/*! This file is auto-generated */
 /*
  * Button mixin- creates a button effect with correct
  * highlights/shadows, based on a base color.
+ */
+/**
+ * This function name uses British English to maintain backward compatibility, as developers
+ * may use the function in their own admin CSS files. See #56811.
  */
 body {
   background: #f1f1f1;
@@ -292,6 +295,7 @@ ul#adminmenu > li.current > a.current:after {
 }
 
 /* Admin Menu: bubble */
+#adminmenu .menu-counter,
 #adminmenu .awaiting-mod,
 #adminmenu .update-plugins {
   color: #fff;
@@ -671,19 +675,4 @@ div#wp-responsive-toggle a:before {
   color: #0073aa;
 }
 
-/* Welcome Panel */
-.welcome-panel {
-  background-color: #f8f4f1;
-}
-
-.welcome-panel-header-image .about-six {
-  fill: #c7a589;
-}
-
-.welcome-panel-header-image .about-zero {
-  fill: #59524c;
-}
-
-[class*=welcome-panel-icon] {
-  background-color: #59524c;
-}
+/*# sourceMappingURL=colors.css.map */

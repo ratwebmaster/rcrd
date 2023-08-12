@@ -38,6 +38,14 @@ class Activation extends Base {
 	 * @access public
 	 */
 	public static function register_activation() {
+		global $wp_version;
+		$advanced_cache = LSCWP_CONTENT_DIR . '/advanced-cache.php';
+		if ( version_compare( $wp_version, '5.3', '<' ) && ! file_exists( $advanced_cache ) ) {
+			$file_pointer = fopen( $advanced_cache, 'w' );
+			fwrite( $file_pointer, "<?php\n\n// A compatibility placeholder for WordPress < v5.3\n" );
+			fclose( $file_pointer );
+		}
+
 		$count = 0;
 		! defined( 'LSCWP_LOG_TAG' ) && define( 'LSCWP_LOG_TAG', 'Activate_' . get_current_blog_id() );
 
@@ -455,7 +463,7 @@ class Activation extends Base {
 	 * @access public
 	 */
 	public function auto_update_hook( $update, $item ) {
-		if ( $item->slug == 'litespeed-cache' ) {
+		if ( ! empty( $item->slug ) && 'litespeed-cache' === $item->slug ) {
 			$auto_v = Cloud::version_check( 'auto_update_plugin' );
 
 			if ( ! empty( $auto_v[ 'latest' ] ) && ! empty( $item->new_version ) && $auto_v[ 'latest' ] === $item->new_version ) {

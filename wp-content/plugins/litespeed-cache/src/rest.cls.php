@@ -36,7 +36,9 @@ class REST extends Root {
 		register_rest_route( 'litespeed/v1', '/toggle_crawler_state', array(
 			'methods' => 'POST',
 			'callback' => array( $this, 'toggle_crawler_state' ),
-			'permission_callback'	=> '__return_true',
+			'permission_callback'	=> function() {
+				return current_user_can( 'manage_network_options' ) || current_user_can( 'manage_options' );
+			}
 		) );
 
 		register_rest_route( 'litespeed/v1', '/tool/check_ip', array(
@@ -90,6 +92,12 @@ class REST extends Root {
 		register_rest_route( 'litespeed/v1', '/notify_img', array(
 			'methods' => 'POST',
 			'callback' => array( $this, 'notify_img' ),
+			'permission_callback'	=> array( $this, 'is_from_cloud' ),
+		) );
+
+		register_rest_route( 'litespeed/v1', '/notify_ucss', array(
+			'methods' => 'POST',
+			'callback' => array( $this, 'notify_ucss' ),
 			'permission_callback'	=> array( $this, 'is_from_cloud' ),
 		) );
 
@@ -207,6 +215,14 @@ class REST extends Root {
 	 */
 	public function notify_img() {
 		return Img_Optm::cls()->notify_img();
+	}
+
+	/**
+	 * @since  5.2
+	 */
+	public function notify_ucss() {
+		self::debug('notify_ucss');
+		return UCSS::cls()->notify();
 	}
 
 	/**

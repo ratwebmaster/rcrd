@@ -488,7 +488,7 @@ class Conf extends Base {
 				}
 
 				// Reset crawler bypassed list when any of the options WebP replace, guest mode, or cache mobile got changed
-				if ( $id == self::O_IMG_OPTM_WEBP_REPLACE || $id == self::O_GUEST || $id == self::O_CACHE_MOBILE ) {
+				if ( $id == self::O_IMG_OPTM_WEBP || $id == self::O_GUEST || $id == self::O_CACHE_MOBILE ) {
 					$this->cls( 'Crawler' )->clear_disabled_list();
 				}
 			}
@@ -511,7 +511,7 @@ class Conf extends Base {
 		 * CDN related actions - QUIC.cloud
 		 * @since 2.3
 		 */
-		CDN\Quic::try_sync_config();
+		$this->cls( 'CDN\Quic' )->try_sync_conf();
 
 	}
 
@@ -531,6 +531,14 @@ class Conf extends Base {
 
 		if ( $id == self::_VER ) {
 			return;
+		}
+
+		if ($id==self::O_SERVER_IP) {
+			if (!Utility::valid_ipv4($val)) {
+				$msg = sprintf(__('Saving option failed. IPv4 only for %s.', 'litespeed-cache'), Lang::title(Base::O_SERVER_IP));
+				Admin_Display::error($msg);
+				return;
+			}
 		}
 
 		if ( ! array_key_exists( $id, self::$_default_options ) ) {
@@ -659,7 +667,10 @@ class Conf extends Base {
 			return false;
 		}
 
-		return in_array( $role, $this->conf( self::O_OPTM_EXC_ROLES ) ) ? $role : false;
+		$roles = explode( ',', $role );
+		$found = array_intersect( $roles, $this->conf( self::O_OPTM_EXC_ROLES ) );
+
+		return $found ? implode(',', $found) : false;
 	}
 
 	/**
