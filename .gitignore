@@ -23,3 +23,10 @@ wp-content/uploads/*
 #wp-content/themes/thewsga.org/library/carbon/cache/*
 
 .DS_Store
+.DS_Store
+wp-content/.DS_Store
+wp-content/plugins/.DS_Store
+wp-content/themes/.DS_Store
+wp-content/themes/ratcity/.DS_Store
+wp-content/themes/ratcity/library/.DS_Store
+wp-content/themes/ratcity/library/font_awesome/.DS_Store
