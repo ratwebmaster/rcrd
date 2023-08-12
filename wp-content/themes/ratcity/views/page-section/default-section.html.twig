@@ -54,14 +54,14 @@
 
 	{% set section_title = section.section_title|default(section.title|default('')) %}
 
-	{% set section_atts = (section.custom_id ? ['id="section-' ~ function('sanitize_title', section.custom_id) ~ '"'] : []) %}
-	{% set section_atts = section_atts|merge(['class="' ~ section_class|join(' ') ~ '"']) %}
-	{% set section_atts = section.bg_color ? section_atts|merge(['style="background-color: ' ~ section.bg_color ~ ';"']) : section_atts %}
+	{% set section_atts = (section.custom_id ? [ 'id="section-' ~ function('sanitize_title', section.custom_id) ~ '"'] : []) %}
+	{% set section_atts = section_atts|merge([' class="' ~ section_class|join(' ') ~ '"']) %}
+	{% set section_atts = section.bg_color ? section_atts|merge([' style="background-color: ' ~ section.bg_color ~ ';"']) : section_atts %}
 
 	<section {{ section_atts|join(' ') }}>
 
 		{% if section.custom_id %}
-			<a name="{{ function('sanitize_title', section.custom_id) }}" class="section-anchor"></a>
+			<a id="{{ function('sanitize_title', section.custom_id) }}" class="section-anchor"></a>
 		{% endif %}
 
 		{% block page_section_bg %}
