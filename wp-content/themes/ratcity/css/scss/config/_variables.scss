@@ -30,8 +30,8 @@ $footer-bg:                            map-get($brand-colors,black);
 $text-color:                           map-get($brand-colors,black);
 $text-muted:                           #aaa;
 
-$link-color:                           map-get($brand-colors, primary);
-$link-hover-color:                     map-get($brand-colors, green);
+$link-color:                           map-get($brand-colors, green);
+$link-hover-color:                     map-get($brand-colors, primary);
 
 $hr-border:                            map-get($brand-colors, primary);
 $abbr-border-color:                    #ccc;

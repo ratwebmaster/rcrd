@@ -1,0 +1,59 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% set team_data = [] %}
+	{% set team_data = section.member_tabs %}
+
+{#	{{ dump(team_data) }}#}
+
+{#	{% for team in team_data %}#}
+{#		{{ dump(team) }}#}
+{#		{{ team.id }}<br />#}
+{#		{{ team.title }}<br />#}
+{#		{{ team.content }}<br />#}
+{#		{{ team.team }}<br />#}
+{#	{% endfor %}#}
+
+{#	{% set members = [] %}#}
+{#	{% set members = get_skaters(team_data.team, 'active') %}#}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content text-{{ section.intro_content_layout == 'centered' ? 'center' : 'left' }}">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="member-tabs">
+
+		{% for team in team_data %}
+
+			{% set members = [] %}
+			{% set members = get_support(team.team) %}
+
+			{% set team_data = get_term(team.team, 'member_team') %}
+
+			<input id="{{ team_data.slug }}" type="radio" name="grp" checked="checked"/>
+			<label for="{{ team_data.slug }}">{{ team_data.name }}</label>
+			<div class="member-group support-team">
+				<h2>{{ team_data.name }}</h2>
+				<p>{{ team_data.description }}</p>
+				<div class="support-team members">
+
+					<ul class="list-unstyled">
+					{% for member in members %}
+						<li class="member"><a href="{{ member.guid }}" class="member__name">{{ member.post_title }}</a></li>
+					{% endfor %}
+					</ul>
+
+				</div>
+			</div>
+
+		{% endfor %}
+
+	</div>
+
+{% endblock %}

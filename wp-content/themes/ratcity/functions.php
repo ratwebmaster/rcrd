@@ -527,6 +527,7 @@ if(!class_exists('Zero')) {
                 'get_skaters' => array('callback' => array(__CLASS__, 'twigFunctionGetMembers')),
                 'get_coaches' => array('callback' => array(__CLASS__, 'twigFunctionGetCoaches')),
                 'get_captains' => array('callback' => array(__CLASS__, 'twigFunctionGetCaptains')),
+                'get_support' => array('callback' => array(__CLASS__, 'twigFunctionGetSupport')),
                 'get_event_type_index_filter_options' => array('callback' => array(__CLASS__, 'twigFunctionGetEventDateFilterOptions')),
 			));
 		}
@@ -594,6 +595,20 @@ if(!class_exists('Zero')) {
                 $captains[] = $captain['captain'];
             }
             return $captains;
+        }
+
+
+        public static function twigFunctionGetSupport($team) {
+            return get_posts(array(
+                'post_type' => 'member',
+                'posts_per_page' => -1,
+                'orderby' => 'post_title',
+                'order' => 'ASC',
+                'tax_query' => array(
+                    'relation' => 'AND',
+                    array('taxonomy' => 'member_team', 'field' => 'term_id', 'terms' => $team)
+                )
+            ));
         }
 
 

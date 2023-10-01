@@ -152,6 +152,69 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 		}
 
 
+
+        public static function setTeamSelectInputOptions($field) {
+            $options[] = array('value' => '', 'label' => 'Please Select');
+            //$teams = get_categories(array( 'taxonomy' => 'member_team', 'posts_per_page' => -1 ));
+            $teams = get_terms( array(
+                'taxonomy' => 'member_team',
+                'hide_empty' => false,
+                'hierarchical' => true,
+                'orderby' => 'date',
+                'posts_per_page' => -1
+            ) );
+            foreach($teams as $team) {
+                $options[] = array('value' => $team->term_id, 'label' => $team->name);
+            }
+            $field->getInput()->setOptions($options);
+
+        }
+
+
+        protected static function getMemberTabsField() {
+            return new FieldGroup(array(
+                'label' => 'Member Tabs',
+                'fields' => array(
+                    new FieldRepeater(array(
+                        'name' => 'member_tabs',
+                        'addNewLabel' => 'Add New Tab',
+                        'fields' => array(
+                            new Field(array(
+                                'label' => 'Team to Display',
+                                'input' => new Select(array('name' => 'team')),
+                                'getOutputCb' => array(__CLASS__, 'setTeamSelectInputOptions')
+                            )),
+                        )
+                    ))
+                )
+            ));
+        }
+
+
+//        protected static function getMemberTabsFields() {
+//            return array(
+//                new FieldGroup(array(
+//                    'class' => 'no-border two-column large-left',
+//                    'atts' => array('style' => 'margin-top: 0;'),
+//                    'fields' => array(
+//                        static::getTitleField(array('label' => 'Member Tab Title')),
+//                    )
+//                )),
+//                static::getContentField(array('rows' => 6)),
+//                new FieldGroup(array(
+//                    'label' => 'Members',
+//                    'fields' => array(
+//                        new FieldRepeater(array(
+//                            'name' => 'member_tabs_members',
+//                            'addNewLabel' => 'Add New Member',
+//                            'fields' => static::getMemberTabsFields()
+//                        ))
+//                    )
+//                ))
+//            );
+//        }
+
+
 		protected static function getSectionCellsField() {
 			return new FieldGroup(array(
 				'label' => 'Grid Cells',

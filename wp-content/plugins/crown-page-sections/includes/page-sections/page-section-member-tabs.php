@@ -12,13 +12,14 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSectionMemberTa
 	class CrownPageSectionMemberTabs extends CrownPageSection {
 
 
-		protected static $name = 'Default Section';
+		protected static $name = 'Member Tabs Section';
 
 
 		protected static function getContentFields() {
 			return array(
-				static::getSectionTitleField(),
-				static::getContentField()
+//				static::getSectionTitleField(),
+				static::getContentField(),
+                static::getMemberTabsField()
 			);
 		}
 

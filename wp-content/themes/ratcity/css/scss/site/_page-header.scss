@@ -6,6 +6,7 @@
   &__title {
     color: map-get($brand-colors, white);
     text-shadow: 0 1px 3px rgba(map-get($brand-colors, black),.3);
+    font-weight: 400;
   }
   &.gradient {
     background-image: linear-gradient(to right, map-get($brand-colors, black), #497C04 40%, map-get($brand-colors, primary));
