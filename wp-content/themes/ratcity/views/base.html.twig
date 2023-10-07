@@ -117,6 +117,10 @@
                             {% elseif page_header.configuration == 'default' %}
                                 <div class="page-header page-header-default {{ page_header.configuration }}"
                                      style="background-image: url({{ page_header.page_header_image ? page_header.page_header_image : site_branding.banner_default }});">
+                                    {%  if cta.label %}
+                                        <div class="page-header__overlay">
+                                            <div class="cta"><a href="{{ cta.url }}"{{ cta.newpage ? ' target="_blank"' }}>{{ cta.label }}</a></div></div>
+                                    {% endif %}
                                 </div>
                             {% else %}
                                 <div class="page-header {{ page_header.configuration }}">

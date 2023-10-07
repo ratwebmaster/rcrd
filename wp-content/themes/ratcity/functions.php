@@ -686,6 +686,12 @@ if(!class_exists('Zero')) {
                 ]
             );
 
+            $context['cta'] = (object)array(
+                'url' => '',
+                'label' => '',
+                'newpage' => false
+            );
+
             $context['page_header'] = (object)array(
                 'configuration' => 'default',
                 'title' => '',
@@ -744,6 +750,19 @@ if(!class_exists('Zero')) {
             $donate_label = get_option('theme_header_donate_label');
             if(!empty($donate_label)) $context['site_branding']->donate['label'] = $donate_label;
 
+            $cta_type = get_option('theme_cta_link_type');
+            $cta_internal = get_option('theme_cta_internal');
+            $cta_external = get_option('theme_cta_external');
+            if ($cta_type == 'internal' && is_numeric($cta_internal)) {
+                $context['cta']->url = get_permalink($cta_internal);
+                $context['cta']->newpage = false;
+            } else if ($cta_type == 'external' && $cta_external != '') {
+                $context['cta']->url = $cta_external;
+                $context['cta']->newpage = true;
+            }
+            $cta_label = get_option('theme_cta_label');
+            if(!empty($cta_label)) $context['cta']->label = $cta_label;
+
 
             if (!$postId && is_post_type_archive()) {
                 $post_type = get_queried_object()->name;
@@ -777,7 +796,7 @@ if(!class_exists('Zero')) {
                             $image = wp_get_attachment_image_url(($page_image) ? $page_image : get_option('theme_options_default_page_header_image'), 'full');
                             if(!empty($image)) $context['page_header']->page_header_image = $image;
                         }
-                        $context['page_header']->page_slider_enabled = get_post_meta($postId, 'slider_enabled')[0];
+//                        $context['page_header']->page_slider_enabled = get_post_meta($postId, 'slider_enabled')[0];
                     }
 
 
@@ -810,11 +829,11 @@ if(!class_exists('Zero')) {
                 $t = get_the_title($postId);
                 $title = $number ? "#{$number} {$t}" : $t;
                 $context['page_header']->title = $title;
-                $context['page_header']->configuration = 'gradient';
+                $context['page_header']->configuration = 'disabled';
             }
 
             if(is_404()) {
-                $context['page_header']->configuration = 'default';
+                $context['page_header']->configuration = 'disabled';
 //                $context['page_header']->title = get_option('theme_options_404_page_message_title');
             }
 

@@ -1,0 +1,20 @@
+body.single-member {
+  .member {
+    &__info {
+      h1 { font-size: 6rem; }
+      h2 { font-size: 3.2rem; }
+    }
+    &__photo { 
+      padding-bottom: 1.5rem;
+    }
+    &__pronouns {
+      margin: 0 0 2em;
+      font-weight: 700;
+    }
+    &__teams {
+      .team {
+        margin-right: .7em;
+      }
+    }
+  }
+}

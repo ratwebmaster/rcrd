@@ -237,6 +237,23 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownMember')) {
 				),
                 'fields' => array(
                     new Field(array(
+                        'label' => 'Short/Abbreviated Name',
+                        'input' => new TextInput(array('name' => 'team_name_short'))
+                    )),
+                    new FieldGroup(array(
+                        'class' => 'no-border two-column',
+                        'fields' => array(
+                            new Field(array(
+                                'label' => 'Primary Color (hex)',
+                                'input' => new TextInput(array('name' => 'team_color_primary'))
+                            )),
+                            new Field(array(
+                                'label' => 'Secondary Color (hex)',
+                                'input' => new TextInput(array('name' => 'team_color_secondary'))
+                            )),
+                        )
+                    )),
+                    new Field(array(
                         'label' => 'Team Logo',
                         'input' => new MediaInput(array('name' => 'team_logo', 'buttonLabel' => 'Select Image', 'mimeType' => 'image'))
                     )),

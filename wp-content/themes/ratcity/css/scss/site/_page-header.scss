@@ -11,4 +11,20 @@
   &.gradient {
     background-image: linear-gradient(to right, map-get($brand-colors, black), #497C04 40%, map-get($brand-colors, primary));
   }
+  &__overlay {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    background-color: #8DC63F;
+    padding: 1rem;
+    .cta {
+      &, & a {
+        font-size: 2rem;
+        font-weight: 700;
+        line-height: 1.5;
+        color: black;
+      }
+    }
+  }
+
 }

@@ -28,6 +28,24 @@
 
 					<header class="flex justify-between">
 
+						<div class="member__info flex-100">
+							<h1>{{ post.title }}</h1>
+{#							{{ dump(post.terms) }}#}
+							{% if post.meta.member_number %}<h2>#{{ post.meta.member_number }}</h2>{% endif %}
+							{% if post.meta.member_pronouns %}<p class="member__pronouns">{{ post.meta.member_pronouns }}</p>{% endif %}
+							{% if post.terms.member_team %}
+								<div class="member__teams">
+									<div class="flex">
+										{% for team in post.terms.member_team if team.meta.team_logo %}
+											<a class="team btn" href="{{ team.url }}" style="background-color: {{ team.meta.team_color_primary }}">{{ team.meta.team_name_short }}
+{#												<img src="{{ get_media_url(team.meta.team_logo, 'thumbnail') }}" alt="{{ team.name|escape('html_attr') }}">#}
+											</a>
+										{% endfor %}
+									</div>
+								</div>
+							{% endif %}
+						</div>
+
 						{% if img %}
 							<div class="member__photo flex-noshrink">
 								<div class="photo">
@@ -37,25 +55,10 @@
 							</div>
 						{% endif %}
 
-						<div class="flex-100">
-							{% if post.meta.member_pronouns %}<p class="member_pronouns">Pronouns: {{ post.meta.member_pronouns }}</p>{% endif %}
-							{% if post.meta.member_website %}<p class="member_pronouns">Website: {{ post.meta.member_website }}</p>{% endif %}
-							{% if post.terms.member_team %}
-								<div class="member_teams">
-									<h3>Teams:</h3>
-									<div class="flex">
-										{% for team in post.terms.member_team if team.meta.team_logo %}
-											<a class="team" href="{{ team.url }}"><img src="{{ get_media_url(team.meta.team_logo, 'thumbnail') }}" alt="{{ team.name|escape('html_attr') }}"></a>
-										{% endfor %}
-									</div>
-								</div>
-							{% endif %}
-						</div>
-
 
 					</header>
 					
-					<main class="member_bio">
+					<main class="member__bio">
 						{{ post.meta.member_bio|content }}
 					</main>
 
