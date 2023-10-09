@@ -23,7 +23,7 @@ wp-content/uploads/*
 #wp-content/themes/thewsga.org/library/carbon/cache/*
 
 .DS_Store
-.DS_Store
+*.DS_Store
 wp-content/.DS_Store
 wp-content/plugins/.DS_Store
 wp-content/themes/.DS_Store
