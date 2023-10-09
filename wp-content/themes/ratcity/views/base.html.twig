@@ -98,21 +98,6 @@
                                             </div>
                                         {% endfor %}
                                     </div>
-                                    {#                                    {% block header_overlay %} #}
-                                    {#                                        {% if page_header.title or page_header.content %} #}
-                                    {#                                            <div class="page-header__overlay"> #}
-                                    {#                                                <div class="container full-height"> #}
-                                    {#                                                    <div class="inner flex flex-column justify-between full-height"> #}
-                                    {#                                                        <div class="page-header__content flex flex-{{ page_header.content_width == 'partial' ? 'column align-self-' ~ page_header.content_position : 'row' }}"> #}
-                                    {#                                                            {% if page_header.configuration == 'default' %} #}
-                                    {#                                                                {% if page_header.title %}<h1>{{ page_header.title }}</h1>{% endif %} #}
-                                    {#                                                            {% endif %} #}
-                                    {#                                                        </div> #}
-                                    {#                                                    </div> #}
-                                    {#                                                </div> #}
-                                    {#                                            </div> #}
-                                    {#                                        {% endif %} #}
-                                    {#                                    {% endblock %} #}
                                 </div>
                             {% elseif page_header.configuration == 'default' %}
                                 <div class="page-header page-header-default {{ page_header.configuration }}"

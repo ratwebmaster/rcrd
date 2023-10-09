@@ -11254,7 +11254,7 @@ h4, .h4,
 h5, .h5,
 h6, .h6 {
   font-family: "Montserrat", Helvetica, sans-serif;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.4;
   color: inherit;
   margin-top: 0;
@@ -16548,6 +16548,37 @@ body.post-type-archive-event .event .event_title {
 body.post-type-archive-event .event .event_excerpt {
   color: #000000;
   font-size: 1.6rem;
+}
+
+body.page-template-page-team .page-header__overlay {
+  display: none;
+}
+body.page-template-page-team #main {
+  position: relative;
+  padding-top: 27.5px;
+}
+body.page-template-page-team .page__title {
+  position: absolute;
+  width: 100%;
+  z-index: 99;
+}
+@media (min-width: 768px) {
+  body.page-template-page-team .page__title {
+    top: -112.5px;
+  }
+}
+@media (max-width: 767px) {
+  body.page-template-page-team .page__title {
+    bottom: calc(100% + 2rem);
+  }
+}
+body.page-template-page-team .page__title-logo {
+  margin-right: 2rem;
+}
+body.page-template-page-team h1, body.page-template-page-team section.page-section.hero-section .section-title, section.page-section.hero-section body.page-template-page-team .section-title, body.page-template-page-team section.page-section.hero-slider-section .section-slider .hero-section.slide.white-text .section-title, section.page-section.hero-slider-section .section-slider .hero-section.slide.white-text body.page-template-page-team .section-title, body.page-template-page-team section.page-section.hero-slider-section .slide-title, section.page-section.hero-slider-section body.page-template-page-team .slide-title, body.page-template-page-team section.page-section.hero-slider-section .section-slider .hero-slider-section.slide.white-text .slide-title, section.page-section.hero-slider-section .section-slider .hero-slider-section.slide.white-text body.page-template-page-team .slide-title {
+  font-size: 48px;
+  color: #FFFFFF;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 body.single .content-section.primary article.hentry {

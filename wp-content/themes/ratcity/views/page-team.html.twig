@@ -6,16 +6,34 @@
 	<style>
 		.page-header {
 			height: 400px;
+			background-color: black;
+			opacity: 50%;
 		}
 	</style>
 
 {% endblock %}
 
 {% block team_logo %}
-	<img class="team_logo" src="{{ team_data.logo }}" />
+	<img class="team_logo" src="{{ team_data.logo[0] }}" />
 {% endblock %}
 
 {% block page_title %}{{ page_header.title ? page_header.title : 'team_data.name' }}{% endblock %}
+
+{% block team_page_title %}
+<div class="page__title">
+	<div class="container flex flex-column-xs align-items-center">
+		<div class="page__title-logo">{{ block('team_logo') }}</div>
+		<div class="page__title-name"><h1>{{ team_data.name }}</h1></div>
+	</div>
+</div>
+{% endblock %}
+
+{% block main %}
+	<div id="main">
+		{{ block('team_page_title') }}
+		{{ block('page_sections') }}
+	</div>
+{% endblock %}
 
 {% block page_sections %}
 
@@ -26,17 +44,17 @@
 
 	{{ block('page_sections_loop') }}
 
-	<section class="page-section">
-		<div class="inner">
-			<div class="container">
-				<div class="inner">
+{#	<section class="page-section">#}
+{#		<div class="inner">#}
+{#			<div class="container">#}
+{#				<div class="inner">#}
 
-					{{ block('content') }}
+{#					{{ block('content') }}#}
 
-				</div><!-- .inner -->
-			</div><!-- .container -->
-		</div><!-- .inner -->
-	</section><!-- .page-section -->
+{#				</div><!-- .inner -->#}
+{#			</div><!-- .container -->#}
+{#		</div><!-- .inner -->#}
+{#	</section><!-- .page-section -->#}
 {% endblock %}
 
 

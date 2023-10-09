@@ -1,0 +1,28 @@
+body.page-template-page-team {
+  .page-header__overlay {
+    display:none;
+  }
+  #main {
+    position: relative;
+    padding-top: calc(150px *1/4 - 10px);
+  }
+  .page__title {
+    position: absolute;
+    width: 100%;
+    @media (min-width: $screen-sm-min) {
+      top: calc(-150px *3/4);
+    }
+    z-index: 99;
+    @media (max-width: $screen-xs-max) {
+      bottom: calc(100% + 2rem);
+    }
+    &-logo {
+      margin-right: 2rem;
+    }
+  }
+  h1 {
+    font-size: 48px;
+    color: #FFFFFF;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.50);
+  }
+}
