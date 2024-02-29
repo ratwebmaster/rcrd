@@ -6,6 +6,7 @@ use Crown\Form\FieldGroupSet;
 use Crown\Form\FieldRepeater;
 use Crown\Form\Input\Text as TextInput;
 use Crown\Form\Input\Checkbox as CheckboxInput;
+use Crown\Form\Input\RadioSet;
 use Crown\Form\Input\Color as ColorInput;
 use Crown\Form\Input\Media as MediaInput;
 use Crown\Form\Input\Gallery as GalleryInput;
@@ -253,14 +254,91 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSection')) {
 					)
 				)),
 				static::getContentField(array('rows' => 6)),
-				new FieldGroup(array(
-					'label' => 'CTA Link',
-					'fields' => array(
-						static::getSectionLinkFields(array('inputNamePrefix' => 'link_', 'labelPlaceholder' => 'Learn More'))
-					)
-				))
+                new FieldGroup(array(
+                    'label' => 'Call to Action Button',
+                    'class' => 'two-column small-left',
+                    'fields' => array(
+                        new FieldGroup(array(
+                            'fields' => array(
+                                new Field(array(
+                                    'label' => 'Link Type',
+                                    'input' => new RadioSet(array('name' => 'grid_link_type', 'defaultValue' => 'internal', 'options' => array(
+                                        array('value' => 'page', 'label' => 'Page'),
+                                        array('value' => 'post', 'label' => 'Blog Post'),
+                                        array('value' => 'member', 'label' => 'Member'),
+                                        array('value' => 'external', 'label' => 'External Link'),
+                                    )))
+                                )),
+                                new Field(array(
+                                    'input' => new CheckboxInput(array('name' => 'grid_target_blank', 'label' => 'Open in a New Window'))
+                                ))
+                            )
+                        )),
+                        new FieldGroup(array(
+                            'class' => 'no-border',
+                            'getOutputCb' => array(__CLASS__, 'cta_link_data_transfer'),
+                            'fields' => array(
+                                new Field(array(
+                                    'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'grid_link_type'), 'value' => 'page'))),
+                                    'label' => 'Choose Page',
+                                    'input' => new Select(array('name' => 'tile_link_pages')),
+                                    'getOutputCb' => array(__CLASS__, 'setPageSelectInputOptions')
+                                )),
+                                new Field(array(
+                                    'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'grid_link_type'), 'value' => 'post'))),
+                                    'label' => 'Choose Post',
+                                    'input' => new Select(array('name' => 'tile_link_pages')),
+                                    'getOutputCb' => array(__CLASS__, 'setPostSelectInputOptions')
+                                )),
+                                new Field(array(
+                                    'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'grid_link_type'), 'value' => 'member'))),
+                                    'label' => 'Choose Member',
+                                    'input' => new Select(array('name' => 'tile_link_pages')),
+                                    'getOutputCb' => array(__CLASS__, 'setMemberSelectInputOptions')
+                                )),
+                                new Field(array(
+                                    'uIRules' => array(new UIRule(array('property' => 'input', 'options' => array('inputName' => 'grid_link_type'), 'value' => 'external'))),
+                                    'label' => 'Link URL',
+                                    'input' => new TextInput(array('name' => 'tile_link_external')),
+                                )),
+                                new Field(array(
+                                    'input' => new TextInput(array('name' => 'tile_link_label', 'label' => 'Link Label', 'placeholder' => 'Learn More'))
+                                ))
+                            )
+                        ))
+                    )
+                )),
 			);
 		}
+
+
+        public static function setPageSelectInputOptions($field) {
+            $options[] = array('value' => '', 'label' => 'Please Select');
+            $posts = get_posts(array('post_type' => 'page', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+            foreach($posts as $post) {
+                $options[] = array('value' => $post->ID, 'label' => $post->post_title, 'depth' => 0);
+            }
+            $field->getInput()->setOptions($options);
+
+        }
+        public static function setPostSelectInputOptions($field) {
+            $options[] = array('value' => '', 'label' => 'Please Select');
+            $posts = get_posts(array('post_type' => 'post', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+            foreach($posts as $post) {
+                $options[] = array('value' => $post->ID, 'label' => $post->post_title, 'depth' => 0);
+            }
+            $field->getInput()->setOptions($options);
+
+        }
+        public static function setMemberSelectInputOptions($field) {
+            $options[] = array('value' => '', 'label' => 'Please Select');
+            $posts = get_posts(array('post_type' => 'member', 'posts_per_page' => -1, 'orderby' => 'title', 'order' => 'ASC'));
+            foreach($posts as $post) {
+                $options[] = array('value' => $post->ID, 'label' => $post->post_title, 'depth' => 0);
+            }
+            $field->getInput()->setOptions($options);
+
+        }
 
 
 		protected static function getSectionLinkListGroupsField($args = array()) {

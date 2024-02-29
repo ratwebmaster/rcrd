@@ -1,5 +1,5 @@
 body.page-template-page-team {
-  .page-header__overlay {
+  .page-header__cta {
     display:none;
   }
   #main {
@@ -12,7 +12,7 @@ body.page-template-page-team {
     @media (min-width: $screen-sm-min) {
       top: calc(-150px *3/4);
     }
-    z-index: 99;
+    z-index: 10;
     @media (max-width: $screen-xs-max) {
       bottom: calc(100% + 2rem);
     }

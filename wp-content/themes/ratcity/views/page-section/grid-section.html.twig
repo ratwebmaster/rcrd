@@ -2,17 +2,60 @@
 
 
 {% block page_section_content %}
-	<div class="section-grid">
-		{% block page_section_grid_cells %}
 
-			{% for cell in section.cells %}
-				<div class="cell">
-					<div class="inner">
-						{{ cell.content|content }}
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% set grid_class = 'grid-' ~ section.configuration %}
+	{% set grid_class = (section.cells|length == section.column_count) ? grid_class ~ ' single-row' : grid_class %}
+<div class="section-grid {{ grid_class }}">
+	{% block page_section_grid_cells %}
+
+		{% for cell in section.cells %}
+
+			{% if section.configuration == 'thumbnails' and cell.image %}
+				{% set cell_image = '<img src="' ~ get_media_url(cell.image, '80w') ~ '" alt="' ~ get_media_alt_text(cell.image)|escape('html_attr') ~ '">' %}
+			{% endif %}
+
+			<div class="cell {{ section.configuration == ' default' ? ( section.cell_content_layout == ' centered' ? ' text-center' : section.cell_content_layout ) : '' }}">
+				<div class="inner relative">
+
+					{% set link_label = cell.tile_link_label ? cell.tile_link_label : null %}
+					{% set link_type = cell.grid_link_type %}
+					{% set link_url = link_type == 'external' ? cell.tile_link_external : get_url(cell.tile_link_pages)  %}
+
+					<a href="{{ link_url }}"{{ cell.grid_target_blank ? ' target="_blank"' : '' }}">
+
+					{% if cell_image %}<div class="cell__image">{{ cell_image }}</div>{% endif %}
+
+					{% if cell.title %}
+						<{{ cell.title_h_level }}>
+						{% if cell_icon %}{{ cell_icon }}{% endif %}
+						{{ cell.title }}
+						</{{ cell.title_h_level }}>
+					{% endif %}
+
+				{% if (cell.content or link_label) %}
+					<div class="cell__content">
+						{{ cell.content }}
+						{% if link_label %}
+							<a href="{{ link_url }}"{{ cell.grid_target_blank ? ' target="_blank"' : '' }}">{{ link_label }}</a>
+						{% endif %}
 					</div>
-				</div>
-			{% endfor %}
+				{% endif %}
 
-		{% endblock %}
+					</a>
+
+
+			</div>
+			</div>
+		{% endfor %}
+
+	{% endblock %}
 	</div>
 {% endblock %}

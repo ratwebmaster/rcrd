@@ -33,17 +33,25 @@
 					{% endif %}
 					<h1 class="entry-title">{{ post.title }}</h1>
 					<div class="entry-meta">
-						<p class="event-date">{{ post.meta.event_start_date|date('m/j/Y') }}</p>
-						<p class="event-time"><strong>{{ post.meta.event_time_doors }}</strong> doors open<br />
-						<strong>{{ post.meta.event_time_whistle }}</strong> first whistle</p>
-						<p class="event-location h5">{{ post.meta.event_venue }}</p>
+						{% if post.meta.event_start_date %}
+							<p class="event-date">{{ post.meta.event_start_date|date('m/j/Y') }}</p>
+						{% endif %}
+						<p class="event-time">
+							{% if post.meta.event_time_doors %}<strong>{{ post.meta.event_time_doors }}</strong> doors open<br />{% endif %}
+							{% if post.meta.event_time_whistle %}<strong>{{ post.meta.event_time_whistle }}</strong> first whistle{% endif %}
+						</p>
+						{% if post.meta.event_venue %}
+							<p class="event-location h5">{{ post.meta.event_venue }}</p>
+						{% endif %}
 					</div>
 					
 					<div class="entry-content">
 						{{ post.meta.event_details|content }}
 					</div>
 
-					<div class="event-tickets"><a class="btn btn-primary outline" href="{{ get_url(post.meta.event_ticket_link) }}">Get tickets</a></div>
+					{% if post.meta.event_ticket_link %}
+						<div class="event-tickets"><a class="btn btn-primary outline" href="{{ post.meta.event_ticket_link }}" target="_blank">Get tickets</a></div>
+					{% endif %}
 
 				{% endblock %}
 			</div>

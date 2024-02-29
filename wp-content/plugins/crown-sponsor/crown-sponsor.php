@@ -230,8 +230,8 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownSponsor')) {
 //                $input['sponsorship_end_time'] = date('H:i:s', $endDate);
 //            }
 
-            if(!empty($startDate)) $input['sponsorship_start_timestamp'] = date('Y-m-d H:i:s',$startDate);
-            if(!empty($endDate)) $input['sponsorship_end_timestamp'] = date('Y-m-d H:i:s',$endDate);
+            if(!empty($startDate)) $input['sponsorship_start_timestamp'] = date('Y-m-d H:i:s',strtotime($startDate));
+            if(!empty($endDate)) $input['sponsorship_end_timestamp'] = date('Y-m-d H:i:s',strtotime($endDate));
 
             foreach($fields as $field) {
                 $field->saveValue($input, 'post', $post->ID);

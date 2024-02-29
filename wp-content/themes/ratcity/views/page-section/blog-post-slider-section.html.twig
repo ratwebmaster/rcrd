@@ -38,9 +38,8 @@
 	{% endif %}
 
 	{% if feed_items %}
-		<div class="section-slider-wrap">
 			<div class="inner">
-				<div class="section-slider blog-posts flex justify-center">
+				<div class="blog-posts flex justify-center">
 
 					{% if section.num_slides_to_display == 1 %}
 						{% set classes_width = 'flex-100' %}
@@ -64,7 +63,7 @@
 {#									</div>#}
 
 								<div class="post__date">
-									{{ post.post_date|date('m/j/Y') }}
+									{{ post.date_posted|date('m/j/Y') }}
 								</div>
 
 								<div class="post__title h4">
@@ -78,7 +77,6 @@
 					{% endfor %}
 				</div>
 			</div>
-		</div>
 
 		<div class="blog-posts__link text-center"><a class="btn outline" href="{{ get_url(section.blog_button_link) }}">{{ section.blog_button_label }}</a></div>
 	{% endif %}

@@ -50,6 +50,7 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownPageSections')) {
             'CrownPageSectionEventFeed',
             'CrownPageSectionSponsorFeed',
             'CrownPageSectionMemberFeed',
+            'CrownPageSectionMemberStatusFeed',
             'CrownPageSectionMemberTabs'
 		);
 

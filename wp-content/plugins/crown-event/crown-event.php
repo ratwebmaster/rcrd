@@ -146,12 +146,12 @@ if(defined('CROWN_FRAMEWORK_VERSION') && !class_exists('CrownEvents')) {
                                 'fields' => array(
                                     new Field(array(
                                         'label' => 'Doors Open',
-                                        'input' => new TimeInput(array('name' => 'event_time_doors', 'defaultValue' => '12:00:00')),
+                                        'input' => new TimeInput(array('name' => 'event_time_doors', 'defaultValue' => '')),
 //                                        'class' => 'ce-field-dependent ce-field-dependent-ead ce-field-dependent-ead-0',
                                     )),
                                     new Field(array(
                                         'label' => 'First Whistle',
-                                        'input' => new TimeInput(array('name' => 'event_time_whistle', 'defaultValue' => '12:00:00')),
+                                        'input' => new TimeInput(array('name' => 'event_time_whistle', 'defaultValue' => '')),
 //                                        'class' => 'ce-field-dependent ce-field-dependent-ead ce-field-dependent-ead-0',
                                     )),
                                 )

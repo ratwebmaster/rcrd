@@ -1,0 +1,40 @@
+{% extends 'page-section/default-section.html.twig' %}
+
+
+{% block page_section_contents %}
+
+	{% set status_data = get_term(section.status, 'member_status') %}
+
+	{% set skaters = [] %}
+	{% if section.status %}
+		{% set skaters = get_status_skaters(status_data.slug) %}
+	{% endif %}
+
+	{% if section_title or section.section_content|default(section.content|content) %}
+		<div class="section-content text-{{ section.intro_content_layout == 'centered' ? 'center' : 'left' }}">
+			<div class="inner">
+				{{ parent() }}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if section.status %}
+		{% if skaters %}
+			<div class="member-group {{ status_data.slug }}">
+				<h2>{{ status_data.name }}</h2>
+				<p>{{ status_data.description }}</p>
+				<div class="{{ status_data.slug }} members">
+
+					<ul class="list-unstyled">
+						{% for member in skaters %}
+							<li class="member"><a href="{{ member.guid }}" class="member__name">{{ member.post_title }}</a></li>
+						{% endfor %}
+					</ul>
+
+				</div>
+			</div>
+		{% endif %}
+
+	{% endif %}
+	
+{% endblock %}

@@ -10,20 +10,21 @@
 }
 
 .header {
+	height: 8.8rem;
 	&__branding-logo {
 		img {
-			max-height: 8rem;
+			max-height: 6rem;
 		}
 	}
 }
 
-.page-header {
-	background-size: cover;
-	background-position: center bottom;
-	&-default {
-		height: 100vh;
-	}
-}
+//.page-header {
+//	background-size: cover;
+//	background-position: center bottom;
+//	&-default {
+//		//height: 100vh;
+//	}
+//}
 
 
 /*	Branding
@@ -48,16 +49,57 @@
 
 #mobile-menu-toggle {
 	@extend .btn, .link;
-	float: right;
-	padding: 0;
+	//float: right;
+	padding: 1em;
 	border: none;
-	margin-top: 14px;
+	//margin-top: 14px;
 	@include breakpoint(sm) {
 		display: none;
 	}
 	&:before {
 		@include icon($fa-var-bars);
 		margin-right: 0.4em;
+	}
+}
+
+.hamburger {
+	position: relative;
+	display: inline-block;
+	width: 26px;
+	height: 17px;
+	transform: rotate(0deg);
+	transition: transform .15s ease-in-out;
+	&-inner {
+		top: 50%;
+		display: block;
+		width: 26px;
+		transition-delay: .12s;
+		transition-timing-function: cubic-bezier(.215,.61,.355,1);
+		&, &:after, &:before {
+			position: absolute;
+			height: 3px;
+			transition-timing-function: ease;
+			transition-duration: .15s;
+			transition-property: transform;
+			transition-delay: .15s;
+			border-radius: 4px;
+			background-color: white;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+		&:after, &:before {
+			display: block;
+			content: "";
+			width: 26px;
+		}
+		&:before {
+			top: -7px;
+			transition: top 75ms ease .12s,opacity 75ms ease;
+		}
+		&:after {
+			bottom: -7px;
+			transition: bottom 75ms ease .12s,transform 75ms cubic-bezier(.215,.61,.355,1), left 75ms cubic-bezier(.215,.61,.355,1);
+		}
 	}
 }
 
@@ -80,7 +122,7 @@
 			padding: 0 1.5em;
 			> li {
 				> a {
-					padding: 2.1875em 1.5em;
+					padding: 1.93755em 1.5em;
 				}
 			}
 		}
@@ -116,6 +158,17 @@
 				opacity: 1;
 				visibility: visible;
 				transition-delay: 0s;
+			}
+		}
+		&.current_page_item {
+			a {
+				color: map-get($brand-colors, primary);
+			}
+			&:hover {
+				> a {
+					background-color:  #222;
+					color: map-get($brand-colors, primary);
+				}
 			}
 		}
 	}

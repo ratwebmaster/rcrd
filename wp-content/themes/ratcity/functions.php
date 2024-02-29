@@ -71,6 +71,9 @@ if(!class_exists('Zero')) {
 			remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0);
 			remove_action('woocommerce_after_shop_loop', 'woocommerce_pagination', 10);
 
+            // Incompatible Archive workaround
+            add_filter( 'unzip_file_use_ziparchive', '__return_false' );
+
 		}
 
 
@@ -525,6 +528,7 @@ if(!class_exists('Zero')) {
 			return array_merge($functions, array(
 				'get_map' => array('callback' => array(__CLASS__, 'twigFunctionGetMap')),
                 'get_skaters' => array('callback' => array(__CLASS__, 'twigFunctionGetMembers')),
+                'get_status_skaters' => array('callback' => array(__CLASS__, 'twigFunctionGetStatusMembers')),
                 'get_coaches' => array('callback' => array(__CLASS__, 'twigFunctionGetCoaches')),
                 'get_captains' => array('callback' => array(__CLASS__, 'twigFunctionGetCaptains')),
                 'get_support' => array('callback' => array(__CLASS__, 'twigFunctionGetSupport')),
@@ -607,6 +611,22 @@ if(!class_exists('Zero')) {
                 'tax_query' => array(
                     'relation' => 'AND',
                     array('taxonomy' => 'member_team', 'field' => 'term_id', 'terms' => $team)
+                )
+            ));
+        }
+
+
+        public static function twigFunctionGetStatusMembers($status) {
+//            $status = $status ? $status : 'active';
+            return get_posts(array(
+                'post_type' => 'member',
+                'posts_per_page' => -1,
+                'orderby' => 'post_title',
+                'order' => 'ASC',
+                'tax_query' => array(
+//                    'relation' => 'AND',
+//                    array('taxonomy' => 'member_team', 'field' => 'term_id', 'terms' => $team),
+                    array('taxonomy' => 'member_status', 'field' => 'slug', 'terms' => $status)
                 )
             ));
         }

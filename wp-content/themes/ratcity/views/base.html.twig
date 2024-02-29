@@ -37,7 +37,7 @@
 
     {% set banner_height = page_header.configuration == 'default' and page_header.banner_height_full ? ' banner-full-height' : '' %}
 
-    <body class="{{ body_class }} {{ banner_height }}">
+    <body class="{{ body_class }}">
 
     {% block paage %}
         <div id="page" class="hfeed site">
@@ -63,10 +63,6 @@
                                         {% endif %}
                                     </div><!-- #site-branding -->
 
-                                    {% block mobile_menu_toggle %}
-                                        <button id="mobile-menu-toggle"><span class="label">Menu</span></button>
-                                    {% endblock %}
-
                                     {% block header_navigation %}
                                         <nav id="header-navigation" role="navigation">
                                             {% include 'includes/menu.html.twig' with { 'items': theme.menus['header'].items } only %}
@@ -77,6 +73,16 @@
                                         <a class="btn"
                                            href="{{ site_branding.donate['url'] }}"{{ site_branding.donate['newpage'] ? ' target="_blank"' }}>{{ site_branding.donate['label'] }}</a>
                                     </div>
+
+                                    {% block mobile_menu_toggle %}
+                                        <button id="mobile-menu-toggle">
+                                            <span class="hamburger">
+                                                <span class="hamburger-inner"></span>
+                                            </span>
+                                            <span class="label sr-only">Menu</span>
+                                        </button>
+                                    {% endblock %}
+
                                 </div>
 
 
@@ -100,15 +106,14 @@
                                     </div>
                                 </div>
                             {% elseif page_header.configuration == 'default' %}
-                                <div class="page-header page-header-default {{ page_header.configuration }}"
-                                     style="background-image: url({{ page_header.page_header_image ? page_header.page_header_image : site_branding.banner_default }});">
+                                <div class="page-header page-header-default {{ page_header.configuration }}">
                                     {%  if cta.label %}
-                                        <div class="page-header__overlay">
-                                            <div class="cta"><a href="{{ cta.url }}"{{ cta.newpage ? ' target="_blank"' }}>{{ cta.label }}</a></div></div>
+                                        <div class="page-header__cta"><a href="{{ cta.url }}"{{ cta.newpage ? ' target="_blank"' }}>{{ cta.label }}</a></div>
                                     {% endif %}
+                                    <img src="{{ page_header.page_header_image ? page_header.page_header_image : site_branding.banner_default }}" />
                                 </div>
                             {% else %}
-                                <div class="page-header {{ page_header.configuration }}">
+                                <div class="page-header page-header-{{ page_header.configuration }}">
                                     <div class="container">
                                         <div class="inner">
                                             <div class="page-header__content">

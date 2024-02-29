@@ -7,8 +7,14 @@ ul.social-icons {
     }
     a {
       color: map-get($brand-colors, white);
+      svg {
+        transition: .2s ease-in-out fill;
+      }
       &:hover, &:active, &:focus {
-        color: map-get($brand-colors, primary);
+        svg {
+          fill: map-get($brand-colors, primary) !important;
+          transition: .2s ease-in-out fill;
+        }
       }
     }
   }

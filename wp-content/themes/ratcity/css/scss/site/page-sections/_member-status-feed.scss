@@ -1,0 +1,15 @@
+.page-section.member-status-feed-section {
+  .member {
+    &-group {
+      h2 {
+        margin-bottom: 1em;
+      }
+      p {
+        margin: 1rem 0 2rem 0;
+      }
+      + .member-group {
+        margin-top: 8rem;
+      }
+    }
+  }
+}

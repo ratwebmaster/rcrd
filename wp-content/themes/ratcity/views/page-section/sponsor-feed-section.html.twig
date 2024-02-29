@@ -42,7 +42,10 @@
 							{% set end = item.meta.sponsorship_end_date ? (item.meta.sponsorship_end_date ~ '23:59')|date('Y-m-d') %}
 							{% set now = function('current_time', 'Y-m-d') %}
 
-							{% if start <= now and end >= now %}
+							{% if (start <= now and end >= now)
+								or (start is empty and end >= now)
+								or (end is empty and start <= now)
+								or (start is empty and end is empty)  %}
 
 								<div class="sponsor">
 {#									{% set benefits = [] %}#}

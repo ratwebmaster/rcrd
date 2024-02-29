@@ -81,7 +81,7 @@
 										</div>
 									{% endif %}
 
-									<div class="event__content">{{ event.excerpt ? event.excerpt|content : get_custom_excerpt(event.meta.event_details)|content }}</div>
+									<div class="event__content">{{ event.excerpt ? event.excerpt|escape('html') : get_custom_excerpt(event.meta.event_details)|escape('html') }}</div>
 
 								</a>
 							</div>

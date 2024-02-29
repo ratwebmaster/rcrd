@@ -44,6 +44,8 @@ textarea {
 
 #page {
 	background-color: $body-bg;
+	position: relative;
+	z-index: 1;
 }
 
 // Links

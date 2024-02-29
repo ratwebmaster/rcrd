@@ -5,8 +5,9 @@ section.page-section.blog-post-slider-section {
     .post {
       &__date {
         text-transform: uppercase;
+        font-size: 1.4rem;
         font-weight: 600;
-        color: map-get($brand-colors, green);
+        color: map-get($brand-colors, primary);
         transition: all .25s ease-out;
       }
       &__title {
