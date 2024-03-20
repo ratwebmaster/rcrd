@@ -67,12 +67,10 @@
 	{% block filterable_content %}
 		<div class="content-section" role="main">
 			<div class="inner">
-				{% if posts %}
+				{% if events %}
 					<div class="events flex flex-wrap">
-{#						{% set posts = filtered_posts ? filtered_posts : posts %}#}
 
-						{% for post in posts %}
-
+						{% for post in events %}
 							<div id="post-{{ post.id }}" class="event flex-25-md flex-50-sm flex-100 {{ post.class }}">
 								{% block article_content %}
 									<a class="event_link" href="{{ post.link }}">
@@ -80,7 +78,7 @@
 											{% if post.thumbnail %}
 												<div class="event_image" style="background-image: url({{ get_media_url(post.thumbnail, 'full') }})"></div>
 											{% endif %}
-											<div class="event_date">{{ post.meta.event_start_date|date('F j') }}</div>
+											<div class="event_date">{{ post.event_start_date|date('F j, Y') }}</div>
 											<div class="event_title">{{ post.title }}</div>
 											<div class="event_excerpt">{{ post.excerpt }}</div>
 										</div>

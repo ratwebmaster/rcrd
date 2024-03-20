@@ -5,16 +5,23 @@ $view = new CarbonView();
 $context = Carbon::getGlobalContext();
 //var_dump($context);
 
-$all_events = $context['posts'];
+$all_events = $context['events'];
 
 $type = isset($_GET['type']) ? $_GET['type'] : 'all';
+
+foreach ($all_events as $key => $event) {
+    if ($event['event_start_date'] < date('Y-m-d')) {
+        unset($all_events[$key]);
+    }
+}
+
 $filtered = [];
 
-if ($type) {
+if ( $type ) {
 
     foreach ($all_events as $key => $event) {
         if ($type !== 'all') {
-            $terms = wp_get_post_terms($event->id, 'event_type');
+            $terms = wp_get_post_terms($event['id'], 'event_type');
             foreach ($terms as $term) {
                 if ($type == $term->slug) {
                     $filtered[$key] = $event;
@@ -25,7 +32,7 @@ if ($type) {
         }
     }
 
-    $context['posts'] = $filtered;
+    $context['events'] = $filtered;
 
 }
 
