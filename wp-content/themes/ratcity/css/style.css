@@ -12138,9 +12138,12 @@ section.page-section.event-feed-section .event, section.page-section.hero-slider
     section.page-section.event-feed-section .event + .event, section.page-section.hero-slider-section .section-slider .event-feed-section.slide.white-text .event + .event {
       margin-left: 4rem; } }
 
-.sponsor__image img {
-  max-height: 20rem;
-  margin: 0 auto; }
+.sponsor {
+  padding: 1rem 2rem; }
+  .sponsor__image img {
+    max-height: 20rem;
+    max-width: 30rem;
+    margin: 0 auto; }
 
 .page-section.member-feed-section .member, section.page-section.hero-slider-section .section-slider .member-feed-section.slide.white-text .member {
   color: #000000;

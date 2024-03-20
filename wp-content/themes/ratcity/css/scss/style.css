@@ -15913,8 +15913,12 @@ section.page-section.event-feed-section .events__link, section.page-section.hero
   }
 }
 
+.sponsor {
+  padding: 1rem 2rem;
+}
 .sponsor__image img {
   max-height: 20rem;
+  max-width: 30rem;
   margin: 0 auto;
 }
 
