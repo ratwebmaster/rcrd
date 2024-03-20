@@ -10,14 +10,14 @@
 	{% set alums = [] %}
 	{% if section.team %}
 		{% if 'skaters' in section.display_group %}
-			{% set skaters = get_skaters(section.team, 'active') %}
+			{% set skaters = get_skaters(team_data, 'active') %}
 			{% set captains = get_captains(section.team) %}
 		{% endif %}
 		{% if 'coaches' in section.display_group %}
 			{% set coaches = get_coaches(section.team) %}
 		{% endif %}
 		{% if 'alums' in section.display_group %}
-			{% set alums = get_skaters(section.team, 'alumni') %}
+			{% set alums = get_skaters(team_data, 'alumni') %}
 		{% endif %}
 	{% endif %}
 

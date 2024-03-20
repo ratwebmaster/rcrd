@@ -532,7 +532,7 @@ if(!class_exists('Zero')) {
                 'get_coaches' => array('callback' => array(__CLASS__, 'twigFunctionGetCoaches')),
                 'get_captains' => array('callback' => array(__CLASS__, 'twigFunctionGetCaptains')),
                 'get_support' => array('callback' => array(__CLASS__, 'twigFunctionGetSupport')),
-                'get_event_type_index_filter_options' => array('callback' => array(__CLASS__, 'twigFunctionGetEventDateFilterOptions')),
+                'get_event_type_index_filter_options' => array('callback' => array(__CLASS__, 'twigFunctionGetEventDateFilterOptions'))
 			));
 		}
 
@@ -565,17 +565,27 @@ if(!class_exists('Zero')) {
 
 
 		public static function twigFunctionGetMembers($team, $status) {
-		    $status = $status ? $status : 'active';
+//		    $status = $status == 'alumni' ? 'alum-'.$team->slug : $status;
+//            print($status);
+            if($status == 'active') {
+                $tax_query = array(
+                    'relation' => 'AND',
+                    array('taxonomy' => 'member_team', 'field' => 'term_id', 'terms' => $team->id),
+                    array('taxonomy' => 'member_status', 'field' => 'slug', 'terms' => $status)
+                );
+            } else if($status == 'alumni') {
+                $tax_query = array(
+                    'relation' => 'AND',
+                    array('taxonomy' => 'member_status', 'field' => 'slug', 'terms' => $status),
+                    array('taxonomy' => 'member_status', 'field' => 'slug', 'terms' => $team->slug)
+                );
+            };
 		    return get_posts(array(
                 'post_type' => 'member',
 				'posts_per_page' => -1,
 				'orderby' => 'post_title',
 				'order' => 'ASC',
-                'tax_query' => array(
-                    'relation' => 'AND',
-                    array('taxonomy' => 'member_team', 'field' => 'term_id', 'terms' => $team),
-                    array('taxonomy' => 'member_status', 'field' => 'slug', 'terms' => $status)
-                )
+                'tax_query' => $tax_query
             ));
         }
 
@@ -727,6 +737,57 @@ if(!class_exists('Zero')) {
                 'nonprofit' => get_option('theme_options_footer_nonprofit_text'),
                 'links' => get_repeater_entries('blog', 'theme_options_footer_links'),
             );
+
+            $context['events'] = (object)array(
+
+            );
+
+
+            $events_saved = get_posts(array(
+                'post_type'        => 'event',
+                'posts_per_page'   => -1,
+                'meta_key'         => 'event_start_date',
+                'meta_type'        => 'date',
+                'orderby'          => 'meta_value',
+                'order'            => 'ASC',
+            ));
+            $events_saved_meta = [];
+            foreach ($events_saved as $event) {
+                $event_meta = get_post_meta($event->ID);
+//                var_dump($event_meta);
+                $events_saved_meta[] = [
+                    'id' => $event->ID,
+                    'title' => $event->post_title,
+                    'link' => $event->guid,
+                    'class' => $event->class,
+                    'thumbnail' => $event->thumbnail,
+                    'excerpt' => $event->excerpt,
+                    'event_start_date' => array_key_exists('event_start_date', $event_meta) ? $event_meta['event_start_date'][0] : '',
+                    'event_time_doors' => array_key_exists('event_time_doors', $event_meta) ? $event_meta['event_time_doors'][0] : '',
+                    'event_time_whistle' => array_key_exists('event_time_whistle', $event_meta) ? $event_meta['event_time_whistle'][0] : '',
+                    'event_start_timestamp' => array_key_exists('event_start_timestamp', $event_meta) ? $event_meta['event_start_timestamp'][0] : '',
+                    'event_venue' => array_key_exists('event_venue', $event_meta) ? $event_meta['event_venue'][0] : '',
+                    'event_address' => array_key_exists('event_address', $event_meta) ? $event_meta['event_address'][0] : '',
+                    'event_city_state_zip' => array_key_exists('event_city_state_zip', $event_meta) ? $event_meta['event_city_state_zip'][0] : '',
+                    'event_ticket_link' => array_key_exists('event_ticket_link', $event_meta) ? $event_meta['event_ticket_link'][0] : '',
+                    'event_ticket_text' => array_key_exists('event_ticket_text', $event_meta) ? $event_meta['event_ticket_text'][0] : '',
+                    'event_details' => array_key_exists('event_details', $event_meta) ? $event_meta['event_details'][0] : '',
+                    'event_fbevent_link' => array_key_exists('event_fbevent_link', $event_meta) ? $event_meta['event_fbevent_link'][0] : '',
+
+                ];
+            }
+            usort($events_saved_meta, function($a, $b) {
+                return $a['event_start_date'] <=> $b['event_start_date'];
+            });
+//            $events_saved = [];
+//            foreach ($events_saved_meta as $event) {
+//                $event = array_filter($event['event_start_date'],function($date){
+//                    return strtotime($date) >= strtotime('today') ? $event : continue;
+//                });
+//                $events_saved.append($event);
+//            }
+
+            $context['events'] = $events_saved_meta;
 
 
             if(is_search()) {

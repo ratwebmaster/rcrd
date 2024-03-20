@@ -32,41 +32,37 @@
 	{% endif %}
 
 	{% if feed_items %}
-		<div class="section-slider-wrap">
-			<div class="inner">
-				<div class="section-slider sponsors">
+		<div class="sponsors flex justify-center flex-wrap">
 
-						{% for item in feed_items %}
+				{% for item in feed_items %}
 
-							{% set start = item.meta.sponsorship_start_date ? (item.meta.sponsorship_start_date ~ '00:00')|date('Y-m-d') %}
-							{% set end = item.meta.sponsorship_end_date ? (item.meta.sponsorship_end_date ~ '23:59')|date('Y-m-d') %}
-							{% set now = function('current_time', 'Y-m-d') %}
+					{% set start = item.meta.sponsorship_start_date ? (item.meta.sponsorship_start_date ~ '00:00')|date('Y-m-d') %}
+					{% set end = item.meta.sponsorship_end_date ? (item.meta.sponsorship_end_date ~ '23:59')|date('Y-m-d') %}
+					{% set now = function('current_time', 'Y-m-d') %}
 
-							{% if (start <= now and end >= now)
-								or (start is empty and end >= now)
-								or (end is empty and start <= now)
-								or (start is empty and end is empty)  %}
+					{% if (start <= now and end >= now)
+						or (start is empty and end >= now)
+						or (end is empty and start <= now)
+						or (start is empty and end is empty)  %}
 
-								<div class="sponsor">
+						<div class="sponsor align-self-center">
 {#									{% set benefits = [] %}#}
 {#									{% for benefit in item.terms.sponsor_benefit %}#}
 {#										{% set benefits = benefits|merge([benefit.name]) %}#}
 {#									{% endfor %}#}
 {#									{{ dump(benefits) }}#}
 {#									{% if 'Click-through Ad' in benefits %}#}
-										<a class="sponsor__link" href="{{ item.meta.sponsor_website }}">
-											{{ block('logo') }}
-										</a>
+								<a class="sponsor__link" href="{{ item.meta.sponsor_website }}">
+									{{ block('logo') }}
+								</a>
 {#									{% else %}#}
 {#										{{ block('logo') }}#}
 {#									{% endif %}#}
-								</div>
+						</div>
 
-							{% endif %}
+					{% endif %}
 
-						{% endfor %}
-				</div>
-			</div>
+				{% endfor %}
 		</div>
 
 	{% endif %}
