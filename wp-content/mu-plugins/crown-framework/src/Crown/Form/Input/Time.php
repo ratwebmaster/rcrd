@@ -50,7 +50,7 @@ class Time extends Select {
 	protected static $defaultTimeArgs = array(
 		'min' => '12am',
 		'max' => '11:59pm',
-		'interval' => 30
+		'interval' => 5
 	);
 
 
