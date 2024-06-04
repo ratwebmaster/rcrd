@@ -10,7 +10,7 @@ $all_events = $context['events'];
 $type = isset($_GET['type']) ? $_GET['type'] : 'all';
 
 foreach ($all_events as $key => $event) {
-    if ($event['event_start_date'] < date('Y-m-d', 'America/Los_Angeles')) {
+    if ($event['event_start_date'] < date('Y-m-d')) {
         unset($all_events[$key]);
     }
 }
