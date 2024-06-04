@@ -691,6 +691,8 @@ if(!class_exists('Zero')) {
 		public static function filterCarbonContext($context) {
 
 			// add data to global context here
+
+            date_default_timezone_set('America/Los_Angeles');
 			
 			$context['breadcrumbs'] = '';
 			if(class_exists('CrownBreadcrumbs')) {
